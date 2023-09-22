@@ -1,0 +1,3 @@
+[Autorun]
+open=Autorun.bat /C
+icon=setup.exe,0
