@@ -9,7 +9,7 @@ library(ggplot2)
 #rm(list = ls())
 
 #============================================================================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 #load and plot data
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp');
@@ -32,10 +32,10 @@ plot(grid_2, add = T);
 plot(dis_2, main = 'Distance to river', col = custom_colors);
 plot(grid_2, add = T);
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
 
 #============================================================================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 
 rc_ana_1 <- function(f_grid_num){
   f_dis_exa_1 <- crop(dis_2, extent(grid_2[f_grid_num,]));
@@ -61,10 +61,10 @@ rc_ana_1 <- function(f_grid_num){
   return(f_data_df_1);
 }
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
 
 #==========================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 rc_ana_2 <- function(f_grid_num, f_thres_1){
   f_breaks_1 <- c(0, f_thres_1, 80); #to_be_set
   f_labels_1 <- list();
@@ -84,10 +84,10 @@ rc_ana_2 <- function(f_grid_num, f_thres_1){
   return(f_data_df_2);
 }
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
 
 #==============================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 rc_ana_3 <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   f_breaks_2 <- seq(0, f_breaks_2_end, by = f_breaks_2_by)
   f_data_df_2 <- data_df_2[[f_grid_num]]
@@ -98,10 +98,10 @@ rc_ana_3 <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   return(f_data_df_3);
 }
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
 
 #===========================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   f_breaks_2b <- seq(f_breaks_2_by, f_breaks_2_end, by = f_breaks_2_by)
   f_breaks_2_num <- round(f_breaks_2_end / f_breaks_2_by)
@@ -128,15 +128,15 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   return(f_data_df_3_mean)
 }
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
 
 #=====================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
   f_breaks_2_num_2 <- f_breaks_2_num - 5;
   f_data_df_3_mean <- data_df_3_mean[[f_grid_num]];
   for (f_ii in 1:f_breaks_2_num_2){
-    if (f_data_df_3_mean[ii] > max(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE)) {
+    if (f_data_df_3_mean[f_ii] > max(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE)) {
       cat('serial number:', f_ii, '\n');
       f_RCD_1 <- f_ii;
       break;
@@ -161,10 +161,10 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
   return(f_data_df_4);
 }
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
 
 #=====================
-#up2023_0922_10:09_s
+#up2023_0922_16:49_s
 thres_1 <- c(50, 50); #to_be_set
 breaks_2_end <- c(500, 500); #to_be_set
 breaks_2_by <- c(20, 20); #to_be_set
@@ -186,4 +186,4 @@ for (ii in 1:grid_end){
   data_df_4[[ii]] <- rc_ana_4(ii, breaks_2_num[[ii]]);
 }
 
-#up2023_0922_10:09_e
+#up2023_0922_16:49_e
