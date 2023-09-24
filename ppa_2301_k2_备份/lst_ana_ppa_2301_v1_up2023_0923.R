@@ -133,26 +133,28 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
 #=====================
 #up2023_0922_16:49_s
 rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
-  f_breaks_2_num_2 <- f_breaks_2_num - 5;
+  f_breaks_2_num_2 <- f_breaks_2_num - 5;  #to_be_set
   f_data_df_3_mean <- data_df_3_mean[[f_grid_num]];
   for (f_ii in 1:f_breaks_2_num_2){
-    if (f_data_df_3_mean[f_ii] > max(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE)) {
+    if (is.na(f_data_df_3_mean[f_ii]) || f_data_df_3_mean[f_ii] <= max(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE)) {
+      cat('serial number:', f_ii, '\n');
+    } else {
       cat('serial number:', f_ii, '\n');
       f_RCD_1 <- f_ii;
       break;
-    } else {
-      cat('serial number:', f_ii, '\n');
     }
   }
   
-  print(f_RCD_1);
-  
-  f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean[1];
-  f_CRCI_1 <- 0 ;
-  for (f_ii in 1:f_RCD_1){ 
-    t_RCI <- f_data_df_3_mean[f_ii] - f_data_df_3_mean[1];
-    f_CRCI_1 <- f_CRCI_1 + t_RCI;
+  if (!is.na(f_data_df_3_mean[1])) {
+    f_data_df_3_mean_s <- f_data_df_3_mean[1];
+  } else if (!is.na(f_data_df_3_mean[2])){
+    f_data_df_3_mean_s <- f_data_df_3_mean[2];
+  } else {
+    f_data_df_3_mean_s <- f_data_df_3_mean[3];
   }
+  
+  f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean_s;
+  f_CRCI_1 <- sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
   
   f_data_df_4 <- list();
   f_data_df_4[1] <- f_RCD_1;
@@ -168,22 +170,31 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
 thres_1 <- c(50, 50); #to_be_set
 breaks_2_end <- c(500, 500); #to_be_set
 breaks_2_by <- c(20, 20); #to_be_set
-grid_end <- 1; #to_be_set
+grid_end <- 2; #to_be_set
 
 data_df_1 <- list();
 data_df_2 <- list();
 data_df_3 <- list();
 data_df_3_mean <- list();
 data_df_4 <- list();
+data_df_4v <- matrix(0, nrow = 3, ncol = grid_end);
 breaks_2_num <- list();
 
-for (ii in 1:grid_end){
+for (ii in 1: grid_end){
   breaks_2_num[[ii]] <- round(breaks_2_end[ii] / breaks_2_by[ii]);
   data_df_1[[ii]] <- rc_ana_1(ii);
   data_df_2[[ii]] <- rc_ana_2(ii, thres_1[ii]);
   data_df_3[[ii]] <- rc_ana_3(ii, breaks_2_end[ii], breaks_2_by[ii]);
   data_df_3_mean[[ii]] <- rc_ana_3_mean(ii, breaks_2_end[ii], breaks_2_by[ii]);
   data_df_4[[ii]] <- rc_ana_4(ii, breaks_2_num[[ii]]);
+  data_df_4v[1,ii] <- data_df_4[[ii]][1][[1]];
+  data_df_4v[2,ii] <- data_df_4[[ii]][2][[1]];
+  data_df_4v[3,ii] <- data_df_4[[ii]][3][[1]];
+  f_file_name <- paste("E:/zyf_gy/zyf_gy_2304_work/ppa_2301_k2/data_df_3_mean_", ii, ".csv", sep = "");
+  write.table(data_df_3_mean[[ii]], file = f_file_name);
 }
 
+write.csv(data_df_4v, file = "E:/zyf_gy/zyf_gy_2304_work/ppa_2301_k2/data_df_4v.csv", row.names = FALSE)
+
 #up2023_0922_16:49_e
+

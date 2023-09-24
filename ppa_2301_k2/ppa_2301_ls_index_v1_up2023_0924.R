@@ -16,17 +16,18 @@ setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp")
 grid_1 <- shapefile("2301_cq_water_09_a11.shp")
 grid_2 <- spTransform(grid_1, "+init=epsg:4326")
 
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2")
-year = 2021
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster")
+year = 2021 #to_be_set
 luse <- raster(paste0('ppa_2301_cq_luse_',year,'.tif')) #land cover data
-
 
 plot(luse)
 plot(grid_2, add=T)
 
+len_grid <- 5 #to_be_set
+#len_grid <- length(grid_2) #to_be_set
 
 ls_metric <- data.frame()
-for (ii in 1:length(grid_2)) {
+for (ii in 1:len_grid) {
   t_grid_id <- as.integer(ii)
   t_grid_x <- grid_2@polygons[[ii]]@labpt[1]
   t_grid_y <- grid_2@polygons[[ii]]@labpt[2]
@@ -55,7 +56,7 @@ write.csv(ls_metric,paste0("ls_",year,".csv"),row.names = FALSE)
 #mean patch area
 
 fg_metric <- data.frame()
-for (ii in 1:length(grid_2)) {
+for (ii in 1:len_grid) {
   t_grid_id <- as.integer(ii)
   t_grid_x <- grid_2@polygons[[ii]]@labpt[1]
   t_grid_y <- grid_2@polygons[[ii]]@labpt[2]
@@ -95,7 +96,7 @@ write.csv(fg_metric,paste0("fg_",year,".csv"),row.names = FALSE)
 
 
 rst_metric <- data.frame()
-for (ii in 1:length(grid_2)) {
+for (ii in 1:len_grid) {
   
   t_grid_id <- as.integer(ii)
   t_grid_x <- grid_2@polygons[[ii]]@labpt[1]
