@@ -21,14 +21,14 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster')
 year = 2021 #to_be_set
 luse <- raster(paste0('ppa_2301_cq_luse_',year,'.tif')) #land cover data
 
-setwd('E:/zyf_gy/zyf_gy_2304_work/ppa_2301_k2/outputs')
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp')
 plot(luse)
 plot(grid_1b, add = T)
 
 plot(luse)
 plot(grid_2, add = T)
 
-len_grid_1 <- 15 #to_be_set
+len_grid_1 <- length(grid_1b) #to_be_set
 len_grid_2 <- length(grid_1b) #to_be_set
 
 grid_2$r_x <- rep(0, len_grid_2)

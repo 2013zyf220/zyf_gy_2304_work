@@ -13,9 +13,9 @@ library(ggplot2)
 #load and plot data
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp');
-grid_1a <- shapefile('buf_terrain_1.shp');
+grid_1a <- shapefile('2301_river_2.shp');
 grid_1b <- spTransform(grid_1a, '+init=epsg:4326');
-grid_2 <- st_read('buf_terrain_1.shp');
+grid_2 <- st_read('2301_river_2.shp');
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/LST_DATA');
 lst_1 <- raster(paste0('ppa_2301_cq_lst_2019.tif')); #to_be_set
@@ -25,7 +25,7 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
 dis_1 <- raster(paste0('a2301_disr2.tif')); #land cover data
 dis_2 <- projectRaster(dis_1, crs = '+init=epsg:4326')
 
-setwd('E:/zyf_gy/zyf_gy_2304_work/ppa_2301_k2/outputs');
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp');
 custom_colors <- colorRampPalette(c("white", "red"))(256)
 
 jpeg('ppa_2301_lst_2_v2.jpg', width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
@@ -135,7 +135,7 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   print(f_plot)
   dev.off()  # Close the jpeg device
   
-  f_file_name2 <- paste("data_df_3_mean_", ii, ".csv", sep = "");
+  f_file_name2 <- paste("data_df_3_mean_", f_grid_num, ".csv", sep = "");
   write.table(f_data_df_3_mean, file = f_file_name2);
   
   return(f_data_df_3_mean)
@@ -181,6 +181,12 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
 #up2023_0924_10:31_e
 
 #=====================
+#up2023_0924_10:31_s
+grid_end1 <- 5; #to_be_set
+thres_1 <- rep(45, times = grid_end1); #to_be_set
+breaks_2_end <- rep(500, times = grid_end1); #to_be_set
+breaks_2_by <- rep(20, times = grid_end1); #to_be_set
+
 grid_end2 <- length(grid_1b)
 grid_2$r_x <- rep(0, grid_end2)
 grid_2$r_y <- rep(0, grid_end2)
@@ -188,25 +194,15 @@ grid_2$r_rcd <- rep(0, grid_end2)
 grid_2$r_rci <- rep(0, grid_end2)
 grid_2$r_crci <- rep(0, grid_end2)
 
-#up2023_0924_10:31_s
-grid_end <- 5; #to_be_set
-thres_1 <- rep(45, times = grid_end); #to_be_set
-breaks_2_end <- rep(500, times = grid_end); #to_be_set
-breaks_2_by <- rep(20, times = grid_end); #to_be_set
-
-
-
-
-
 data_df_1 <- list();
 data_df_2 <- list();
 data_df_3 <- list();
 data_df_3_mean <- list();
 data_df_4 <- list();
-data_df_4v <- matrix(0, nrow = 3, ncol = grid_end);
+data_df_4v <- matrix(0, nrow = 3, ncol = grid_end1);
 breaks_2_num <- list();
 
-for (ii in 1: grid_end){
+for (ii in 1: grid_end1){
   breaks_2_num[[ii]] <- round(breaks_2_end[ii] / breaks_2_by[ii]);
   data_df_1[[ii]] <- rc_ana_1(ii);
   data_df_2[[ii]] <- rc_ana_2(ii, thres_1[ii]);
@@ -223,8 +219,8 @@ for (ii in 1: grid_end){
   grid_2$r_rci[ii] <- data_df_4[[ii]][2][[1]];
   grid_2$r_crci[ii] <- data_df_4[[ii]][3][[1]];
 }
-#st_write(grid_2, 'buf_terrain_3.shp')
-#write.csv(data_df_4v, file = "data_df_4v.csv", row.names = FALSE)
+st_write(grid_2, '2301_river_3.shp')
+write.csv(data_df_4v, file = "data_df_4v.csv", row.names = FALSE)
 
 #up2023_0924_10:31_e
 
