@@ -28,9 +28,9 @@ bathrooms <- 1:10
 bedrooms <- rep(mean(data_2$bedrooms), 10) 
 sqft.living <- rep(mean(data_2$sqft.living), 10)
 dat.new <- data.frame(bedrooms, bathrooms, sqft.living)
-plot(bathrooms, exp(predict(model, newdata = dat.new)), type="l", lwd=3, ylab="price", xlab="bedrooms", cex.lab=2)
+plot(bathrooms, exp(predict(model, newdata = dat.new)), type="l", lwd=3, ylab="price", xlab="bathrooms", cex.lab=2)
 #type="l": specifies the type of plot - line plot. lwd=3: sets the line width for the plot to 3.
-#ylab="price": sets the label for the y-axis to "price. "xlab="bedrooms": sets the label for the x-axis to "bedrooms."
+#ylab="price": sets the label for the y-axis to "price. "xlab="bedrooms": sets the label for the x-axis to "bathrooms"
 #cex.lab=2: adjusts the size of the axis labels.
 
 #研究X变量是否都显著

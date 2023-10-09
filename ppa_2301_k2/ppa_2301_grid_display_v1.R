@@ -13,7 +13,7 @@ library(ggplot2)
 
 #============================================================================
 setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp")
-grid_1 <- shapefile("buf_terrain_1.shp")
+grid_1 <- shapefile("2301_cq_water_10_a2.shp")
 grid_2 <- spTransform(grid_1, "+init=epsg:4326")
 
 setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster")
@@ -25,7 +25,7 @@ plot(luse)
 plot(grid_2, add=T)
 
 
-grid_num = 2 #to_be_set
+grid_num = 1 #to_be_set
 plot(luse)
 plot(grid_2[grid_num,],add = T);
 
