@@ -13,8 +13,8 @@ library(car)
 #============================================================
 
 #initial setting
-index_y <- list('rx_rci', 'rx_crci')
-
+index_x <- list('XG_NDVI_ME', 'XG_SLOPE_M', 'rx_ps_imp', 'rx_co_imp', 'rx_ps_gre', 'rx_co_gre', 'XG_ANGLE_2')    #to_be_set
+index_y <- list('rx_rci', 'rx_crci')    #to_be_set
 cor_data_f <- function(f_year){
   
   #set empty lists
@@ -24,13 +24,14 @@ cor_data_f <- function(f_year){
   f_res_list <- list()
   
   #input data
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp')
+  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs')
   f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
+  f_data_2 = f_data_1[,c(3,7,16,18,22,24,38,39,41)]    #to_be_set
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs')
   
-  f_data_2 = f_data_1[,c(16,18,38,39,41)] #to_be_set
-  f_row <- 3 #to_be_set
-  f_col <- 2 #to_be_set
+  #set parameters
+  f_row <- length(index_x) 
+  f_col <- length(index_y)
   
   #plot data
   plot(f_data_2)
@@ -41,53 +42,55 @@ cor_data_f <- function(f_year){
   f_cor_1 <- cor(f_data_2)
   
   #model analysis
-  f_model_list[[1]] = lm(rx_rci ~ rx_ps_imp + rx_co_imp + XG_ANGLE_2, data = f_data_2)
-  f_model_list[[2]] = lm(rx_crci ~ rx_ps_imp + rx_co_imp + XG_ANGLE_2, data = f_data_2)
+  f_model_list[[1]] <- lm(rx_rci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
+  f_model_list[[2]] <- lm(rx_crci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
   
-  f_lm_cor <- matrix(0, nrow = f_row, ncol = f_col) #to_be_set
-  f_lm_slope <- matrix(0, nrow = f_row, ncol = f_col) #to_be_set
-  f_lm_p <- matrix(0, nrow = f_row, ncol = f_col) #to_be_set
-  f_lm_r <- matrix(0, nrow = 2, ncol = f_col) #to_be_set
+  #set empty arrays
+  f_lm_cor <- matrix(0, nrow = f_row, ncol = f_col)
+  f_lm_slope <- matrix(0, nrow = f_row, ncol = f_col)
+  f_lm_p <- matrix(0, nrow = f_row, ncol = f_col)
+  f_lm_r <- matrix(0, nrow = 2, ncol = f_col)
 #============================================================
 
   for (ii in 1: f_col){
     
     #plot model
-    par(mfrow=c(2,2))
+    par(mfrow = c(2,2))
     plot(f_model_list[[ii]])
     
     #model results
     f_model_sum_list[[ii]] <- summary(f_model_list[[ii]])
     f_model_anova_list[[ii]] <- anova(f_model_list[[ii]])
-  
-    f_lm_cor[1,ii] <- f_cor_1[index_y[[ii]],'rx_ps_imp']
-    f_lm_cor[2,ii] <- f_cor_1[index_y[[ii]],'rx_co_imp']
-    f_lm_cor[3,ii] <- f_cor_1[index_y[[ii]],'XG_ANGLE_2']
-    f_lm_slope[1,ii] <- f_model_list[[ii]]$coefficients['rx_ps_imp']
-    f_lm_slope[2,ii] <- f_model_list[[ii]]$coefficients['rx_co_imp']
-    f_lm_slope[3,ii] <- f_model_list[[ii]]$coefficients['XG_ANGLE_2']
-    f_lm_p[1,ii] <- f_model_sum_list[[ii]]$coefficients['rx_ps_imp','Pr(>|t|)']
-    f_lm_p[2,ii] <- f_model_sum_list[[ii]]$coefficients['rx_co_imp','Pr(>|t|)']
-    f_lm_p[3,ii] <- f_model_sum_list[[ii]]$coefficients['XG_ANGLE_2','Pr(>|t|)']
+    
+    for (jj in 1: f_row){
+      f_lm_cor[jj,ii] <- f_cor_1[index_y[[ii]],index_x[[jj]]]
+      f_lm_slope[jj,ii] <- f_model_list[[ii]]$coefficients[index_x[[jj]]]
+      f_lm_p[jj,ii] <- f_model_sum_list[[ii]]$coefficients[index_x[[jj]],'Pr(>|t|)']
+    }
+
     f_lm_r[1,ii] <- f_model_sum_list[[ii]]$r.squared
     f_lm_r[2,ii] <- f_model_sum_list[[ii]]$adj.r.squared
+    
+    f_res_list[[ii]] <- list()
+    f_res_list[[ii]][['model_sum_list']] <- f_model_sum_list[[ii]]
+    f_res_list[[ii]][['model_anova_list']] <- f_model_anova_list[[ii]]
   }
+  
+  f_res_list[['lm_cor']] <- f_lm_cor
+  f_res_list[['lm_slope']] <- f_lm_slope
+  f_res_list[['lm_p']] <- f_lm_p
+  f_res_list[['lm_r']] <- f_lm_r
   
   write.csv(f_lm_cor, file = paste0('2301_lm_cor_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_slope, file = paste0('2301_lm_slope_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_p, file = paste0('2301_lm_p_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_r, file = paste0('2301_lm_r_',f_year,'.csv'), row.names = FALSE)
   
-  f_res_list[[ii]][['lm_cor']] <- f_lm_cor 
-  f_res_list[[ii]][['lm_slope']] <- f_lm_slope 
-  f_res_list[[ii]][['lm_p']] <- f_lm_p
-  f_res_list[[ii]][['lm_r']] <- f_lm_r
-  
   return(f_res_list)
 }
 #==========================
 
-years <- seq(2015, 2016, by = 1) #to_be_set
+years <- seq(2019, 2019, by = 1) #to_be_set
 year_len <- length(years)
 res_list <- list()
 ii <- 1
