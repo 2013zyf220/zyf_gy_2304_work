@@ -9,7 +9,7 @@ cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 
 
 year_s <- 2010  #to_be_set
 year_e <- 2019  #to_be_set
-shp_data_1 <- 'chengdu1' #to_be_set
+shp_data_1 <- 'chongqing1' #to_be_set
 
 year_len <- year_e - year_s + 1;
 years <- seq(year_s, year_e);
@@ -54,8 +54,8 @@ for (ii in 1: year_len){
 } 
 
 #==================================================================================
-plot_data_1 <- data.frame(xx = years, yy = nl_res)
-plot_1 <- ggplot(plot_data_1, aes(xx, yy)) +
+plot_data_1 <- data.frame(YEAR = years, DATA = nl_res)
+plot_1 <- ggplot(plot_data_1, aes(YEAR, DATA)) +
   geom_line() +
   scale_x_continuous(
     breaks = seq(year_s, year_e, by = 1),  # Set custom breaks
@@ -66,3 +66,4 @@ plot_1 <- ggplot(plot_data_1, aes(xx, yy)) +
 ggsave(paste0('ppb_2302_k2/outputs/ppb_2302_nl_',shp_data_1,'_', year_s,'_', year_e,'.jpg'), 
        plot_1, width = 6, height = 4, units = 'in');
 
+write.csv(plot_data_1, file = paste0('ppb_2302_k2/outputs/nl_', shp_data_1,'.csv'), row.names = FALSE)

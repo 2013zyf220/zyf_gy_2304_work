@@ -14,6 +14,7 @@ library(car)
 
 #initial setting
 index_y <- list('price', 'price2')
+index_x <- list('bedrooms', 'bathrooms', 'sqft.living')
 
 cor_data_f <- function(f_year) {
   
@@ -44,6 +45,7 @@ cor_data_f <- function(f_year) {
   f_model_list[[1]] = lm(price ~ bedrooms + bathrooms + sqft.living, data = f_data_2)
   f_model_list[[2]] = lm(price2 ~ bedrooms + bathrooms + sqft.living, data = f_data_2)
   
+  #set empty arrays
   f_lm_cor <- matrix(0, nrow = f_row, ncol = f_col) #to_be_set
   f_lm_slope <- matrix(0, nrow = f_row, ncol = f_col) #to_be_set
   f_lm_p <- matrix(0, nrow = f_row, ncol = f_col) #to_be_set
@@ -53,7 +55,7 @@ cor_data_f <- function(f_year) {
   for (ii in 1:f_col){
     
     #plot model
-    par(mfrow=c(2,2))
+    par(mfrow = c(2,2))
     plot(f_model_list[[ii]])
     
     #model results
@@ -73,14 +75,23 @@ cor_data_f <- function(f_year) {
     f_lm_r[2,ii] <- f_model_sum_list[[ii]]$adj.r.squared
   }
   
+  rownames(f_lm_cor) <- index_x
+  colnames(f_lm_cor) <- index_y
+  rownames(f_lm_slope) <- index_x
+  colnames(f_lm_slope) <- index_y
+  rownames(f_lm_p) <- index_x
+  colnames(f_lm_p) <- index_y
+  rownames(f_lm_r) <- list('r2', 'r2_adj')
+  colnames(f_lm_r) <- index_y
+  
   #export results to csv file
   write.csv(f_lm_cor, file = paste0('2301_lm_cor_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_slope, file = paste0('2301_lm_slope_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_p, file = paste0('2301_lm_p_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_r, file = paste0('2301_lm_r_',f_year,'.csv'), row.names = FALSE)
   
-  f_res_list[['lm_cor']] <- f_lm_cor 
-  f_res_list[['lm_slope']] <- f_lm_slope 
+  f_res_list[['lm_cor']] <- f_lm_cor
+  f_res_list[['lm_slope']] <- f_lm_slope
   f_res_list[['lm_p']] <- f_lm_p
   f_res_list[['lm_r']] <- f_lm_r
   

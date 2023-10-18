@@ -18,12 +18,12 @@ model = lm(log(price) ~ sqft.living + bedrooms + bathrooms, data = data_2)
 model
 
 #回归诊断
-par(mfrow=c(2,2))
+par(mfrow = c(2,2))
 plot(model)
 hist(log(data_2$price))
 
 #解释beta
-par(mfrow=c(1,1))
+par(mfrow = c(1,1))
 bathrooms <- 1:10
 bedrooms <- rep(mean(data_2$bedrooms), 10) 
 sqft.living <- rep(mean(data_2$sqft.living), 10)
