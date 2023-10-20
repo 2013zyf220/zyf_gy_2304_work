@@ -1,3 +1,5 @@
+#up2023_1020 13:19
+
 library(raster)
 library(sp)
 library(rgdal)
@@ -9,8 +11,8 @@ cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 
 
 year_s <- 1995  #to_be_set
 year_e <- 2022  #to_be_set
-prov_1 <- 'niaoning' #to_be_set
-shp_data_1 <- 'dalian1' #to_be_set
+prov_1 <- 'heilongjiang' #to_be_set
+shp_data_1 <- 'haerbin_a1' #to_be_set
 
 year_len <- year_e - year_s + 1;
 years <- seq(year_s, year_e);
@@ -28,12 +30,12 @@ bu_area <- function(f_year, f_prov, f_shp_data){
   
   f_luse_2 <- crop(f_luse_1, extent(f_admini_2));
   f_luse_3 <- mask(f_luse_2, f_admini_2);
-  f_luse_3b <- projectRaster(f_luse_3, crs = '+init=epsg:4326')
-  plot(f_luse_3b)
+  #f_luse_3b <- projectRaster(f_luse_3, crs = '+init=epsg:4326')
+  #plot(f_luse_3b)
   
   f_luse_4 <- na.omit(getValues(f_luse_3));
   f_luse_5 <- sum(f_luse_4 == 8) * 900/(1000 * 1000); #to_be_set
-  writeRaster(f_luse_3b, filename = paste0('ppb_2302_k2/outputs/ppb_2302_luse_1_', f_shp_data, '_', f_year,'.tif'))
+  #writeRaster(f_luse_3b, filename = paste0('ppb_2302_k2/outputs/ppb_2302_luse_1_', f_shp_data, '_', f_year,'.tif'))
   
   return(f_luse_5)
 }  
