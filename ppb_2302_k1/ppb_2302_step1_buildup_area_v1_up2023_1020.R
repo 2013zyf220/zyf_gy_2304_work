@@ -28,19 +28,19 @@ bu_area <- function(f_year, f_prov, f_shp_data){
   
   f_luse_2 <- crop(f_luse_1, extent(f_admini_2));
   f_luse_3 <- mask(f_luse_2, f_admini_2);
-  #f_luse_3b <- projectRaster(f_luse_3, crs = '+init=epsg:4326')
-  #plot(f_luse_3b)
+  f_luse_3b <- projectRaster(f_luse_3, crs = '+init=epsg:4326')
+  plot(f_luse_3b)
   
-  f_luse_4 = na.omit(getValues(f_luse_3));
-  f_luse_5 = sum(f_luse_4 == 8) * 900/(1000 * 1000); #to_be_set
-  #writeRaster(f_luse_3b, filename = paste0('ppb_2302_k2/outputs/ppb_2302_luse_1_', f_shp_data, '_', f_year,'.tif'))
+  f_luse_4 <- na.omit(getValues(f_luse_3));
+  f_luse_5 <- sum(f_luse_4 == 8) * 900/(1000 * 1000); #to_be_set
+  writeRaster(f_luse_3b, filename = paste0('ppb_2302_k2/outputs/ppb_2302_luse_1_', f_shp_data, '_', f_year,'.tif'))
   
   return(f_luse_5)
 }  
 
 #==================================================================================
 
-area_res = rep(0, year_len)
+area_res <- rep(0, year_len)
 
 for (ii in 1: year_len){
   c_year <- ii + year_s - 1;

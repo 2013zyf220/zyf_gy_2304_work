@@ -15,6 +15,7 @@ year_len <- year_e - year_s + 1;
 list_data <- list();
 data_1 <- matrix(0, nrow = year_len, ncol = shp_data_len)
 data_source <- 'bu_area_'  #to_be_set('bu_area_','nl_')
+
 for (ii in 1: shp_data_len){
   f_shp <- shp_data_all[[ii]];
   list_data[[ii]] <- read.csv(paste0(data_source, f_shp, '.csv'));
