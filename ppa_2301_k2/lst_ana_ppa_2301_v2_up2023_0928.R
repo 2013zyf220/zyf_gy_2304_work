@@ -129,12 +129,11 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   }
   
   f_file_name1 <- paste('data_df_3_mean_', year,'_', f_grid_num, '.jpg', sep = '');
-  jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-  f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
-  f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals',
-         x = 'distance', y = 'LST')
-  print(f_plot)
-  dev.off()  # Close the jpeg device
+  #jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+  #f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
+  #f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals', x = 'distance', y = 'LST')
+  #print(f_plot)
+  #dev.off()  # Close the jpeg device
   
   f_file_name2 <- paste('data_df_3_mean_', year, '_', f_grid_num, '.csv', sep = '');
   write.table(f_data_df_3_mean, file = f_file_name2);
@@ -170,10 +169,10 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
   f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean_s;
   f_CRCI_1 <- sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
   
-  if(f_RCI_1 == 0){
+  if(f_RCI_1 <= 0){
     f_RCI_2 <- 0;
-    f_CRD_2 <- 0;
-    f_RCI_2 <- 0;
+    f_RCD_2 <- 0;
+    f_CRCI_2 <- 0;
   }else{
     f_RCI_2 <- log(f_RCI_1);
     f_CRCI_2 <- log(f_CRCI_1);

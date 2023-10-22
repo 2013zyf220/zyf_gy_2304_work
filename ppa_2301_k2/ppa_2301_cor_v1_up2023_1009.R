@@ -14,9 +14,9 @@ library(car)
 
 #initial setting
 index_x <- list('XG_NDVI_ME', 'XG_SLOPE_M', 'rx_ps_imp', 'rx_co_imp', 'rx_ps_gre', 'rx_co_gre', 'XG_ANGLE_2')    #to_be_set
-index_y <- list('rx_rci', 'rx_crci')    #to_be_set
+index_y <- list('rx_rci', 'rx_crci', 'rx_rcd')    #to_be_set
 cor_data_f <- function(f_year){
-  
+  cat('Analysis Year:', f_year)
   #set empty lists
   f_model_list <- list()
   f_model_sum_list <- list()
@@ -26,8 +26,8 @@ cor_data_f <- function(f_year){
   #input data
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
-  f_data_1b = f_data_1[,c(3,7,16,18,22,24,38,39,41)]    #to_be_set
-  f_data_2 <- f_data_1b[f_data_1b$rx_rci != 0, ]
+  f_data_1b = f_data_1[,c(3,7,16,18,22,24,37,38,39,44)]    #to_be_set
+  f_data_2 <- f_data_1b[f_data_1b$rx_rci != 0, ] #to_be_set
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   
   #set parameters
@@ -37,7 +37,7 @@ cor_data_f <- function(f_year){
   #plot data
   plot(f_data_2)
   chart.Correlation(f_data_2, method = 'pearson', pch = 19, col = 'blue', tl.cex = 1.2)
-  hist(f_data_2$rx_crci) 
+  hist(f_data_2$rx_crci)  #to_be_set
   
   #correlation analysis
   f_cor_1 <- cor(f_data_2)
@@ -45,12 +45,12 @@ cor_data_f <- function(f_year){
   #model analysis
   f_model_list[[1]] <- lm(rx_rci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
   f_model_list[[2]] <- lm(rx_crci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
-  
+  f_model_list[[3]] <- lm(rx_rcd ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
   #set empty arrays
   f_lm_cor <- matrix(0, nrow = f_row, ncol = f_col)
   f_lm_slope <- matrix(0, nrow = f_row, ncol = f_col)
   f_lm_p <- matrix(0, nrow = f_row, ncol = f_col)
-  f_lm_r <- matrix(0, nrow = 2, ncol = f_col)
+  f_lm_r <- matrix(0, nrow = 3, ncol = f_col)
 #============================================================
 
   for (ii in 1: f_col){
@@ -71,6 +71,7 @@ cor_data_f <- function(f_year){
 
     f_lm_r[1,ii] <- f_model_sum_list[[ii]]$r.squared
     f_lm_r[2,ii] <- f_model_sum_list[[ii]]$adj.r.squared
+    f_lm_r[3,ii] <- f_model_sum_list[[ii]]$fstatistic[1]
     
     f_res_list[[ii]] <- list()
     f_res_list[[ii]][['model_sum_list']] <- f_model_sum_list[[ii]]
@@ -91,7 +92,7 @@ cor_data_f <- function(f_year){
 }
 #==========================
 
-years <- seq(2019, 2019, by = 1) #to_be_set
+years <- seq(2019, 2022, by = 1) #to_be_set
 year_len <- length(years)
 res_list <- list()
 ii <- 1
