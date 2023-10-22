@@ -24,13 +24,14 @@ cor_data_f <- function(f_year){
   f_res_list <- list()
   
   #input data
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs')
+  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
-  f_data_2 = f_data_1[,c(3,7,16,18,22,24,38,39,41)]    #to_be_set
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs')
+  f_data_1b = f_data_1[,c(3,7,16,18,22,24,38,39,41)]    #to_be_set
+  f_data_2 <- f_data_1b[f_data_1b$rx_rci != 0, ]
+  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   
   #set parameters
-  f_row <- length(index_x) 
+  f_row <- length(index_x)
   f_col <- length(index_y)
   
   #plot data

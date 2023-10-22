@@ -30,15 +30,15 @@ dis_2 <- projectRaster(dis_1, crs = '+init=epsg:4326')
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2');
 custom_colors <- colorRampPalette(c('white', 'red'))(256)
 
-jpeg(paste0('ppa_2301_cq_lst_v2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-plot(lst_2, main = 'Land surface temperature', col = custom_colors);
-plot(grid_2, add = T);
-dev.off()  # Close the jpeg device
+#jpeg(paste0('ppa_2301_cq_lst_v2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+#plot(lst_2, main = 'Land surface temperature', col = custom_colors);
+#plot(grid_2, add = T);
+#dev.off()  # Close the jpeg device
 
-jpeg(paste0('ppa_2301_cq_dis_2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-plot(dis_2, main = 'Distance to river', col = custom_colors);
-plot(grid_2, add = T);
-dev.off()  
+#jpeg(paste0('ppa_2301_cq_dis_2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+#plot(dis_2, main = 'Distance to river', col = custom_colors);
+#plot(grid_2, add = T);
+#dev.off()  
 
 #up2023_0924_10:31_e
 
@@ -170,9 +170,15 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
   f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean_s;
   f_CRCI_1 <- sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
   
-  f_RCI_2 <- log(f_RCI_1);
-  f_CRCI_2 <- log(f_CRCI_1);
-  f_RCD_2 <- log(f_RCD_1);
+  if(f_RCI_1 == 0){
+    f_RCI_2 <- 0;
+    f_CRD_2 <- 0;
+    f_RCI_2 <- 0;
+  }else{
+    f_RCI_2 <- log(f_RCI_1);
+    f_CRCI_2 <- log(f_CRCI_1);
+    f_RCD_2 <- log(f_RCD_1);
+  }
   
   f_data_df_4 <- list();
   f_data_df_4[1] <- f_RCD_1;

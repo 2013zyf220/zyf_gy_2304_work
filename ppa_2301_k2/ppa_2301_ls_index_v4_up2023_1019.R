@@ -55,7 +55,7 @@ ls_index_f <- function(f_year){
   f_ls_metric <- data.frame()
   
   for (ii in 1: f_len_grid_1) {
-    cat("Gird_",ii)
+    cat("Year_",f_year,'--Gird_', ii)
     fc_grid_id <- as.integer(ii);
     fc_grid_x <- f_grid_1b@polygons[[ii]]@labpt[1];
     fc_grid_y <- f_grid_1b@polygons[[ii]]@labpt[2];
@@ -147,8 +147,8 @@ ls_index_f <- function(f_year){
 
 #=========================================================================
 
-year_s <- 2021; #to_be_set
-year_e <- 2021; #to_be_set
+year_s <- 2022; #to_be_set
+year_e <- 2022; #to_be_set
 
 for(c_year in year_s: year_e){
   ls_index_f(c_year)
