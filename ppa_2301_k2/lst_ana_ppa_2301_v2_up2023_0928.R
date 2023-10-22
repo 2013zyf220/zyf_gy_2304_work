@@ -12,7 +12,7 @@ library(ggplot2)
 #up2023_0924_10:31_s
 #load and plot data
 
-year = 2019; #to_be_set
+year = 2022; #to_be_set
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs');
 grid_1a <- shapefile(paste0('2301_river_4_',year,'.shp'));
@@ -27,7 +27,7 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
 dis_1 <- raster(paste0('a2301_disr2.tif')); #land cover data
 dis_2 <- projectRaster(dis_1, crs = '+init=epsg:4326')
 
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs');
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2');
 custom_colors <- colorRampPalette(c('white', 'red'))(256)
 
 jpeg(paste0('ppa_2301_cq_lst_v2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
@@ -170,12 +170,19 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
   f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean_s;
   f_CRCI_1 <- sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
   
+  f_RCI_2 <- log(f_RCI_1);
+  f_CRCI_2 <- log(f_CRCI_1);
+  f_RCD_2 <- log(f_RCD_1);
+  
   f_data_df_4 <- list();
   f_data_df_4[1] <- f_RCD_1;
   f_data_df_4[2] <- f_RCI_1;
   f_data_df_4[3] <- f_CRCI_1;
-  f_data_df_4[4] <- grid_1b@polygons[[ii]]@labpt[1];
-  f_data_df_4[5] <- grid_1b@polygons[[ii]]@labpt[2];
+  f_data_df_4[4] <- f_RCD_2;
+  f_data_df_4[5] <- f_RCI_2;
+  f_data_df_4[6] <- f_CRCI_2;
+  f_data_df_4[7] <- grid_1b@polygons[[ii]]@labpt[1];
+  f_data_df_4[8] <- grid_1b@polygons[[ii]]@labpt[2];
   return(f_data_df_4);
 }
 
@@ -194,13 +201,16 @@ grid_2$rx_y2 <- rep(0, grid_end2)
 grid_2$rx_rcd <- rep(0, grid_end2)
 grid_2$rx_rci <- rep(0, grid_end2)
 grid_2$rx_crci <- rep(0, grid_end2)
+grid_2$rx_rcd2 <- rep(0, grid_end2)
+grid_2$rx_rci2 <- rep(0, grid_end2)
+grid_2$rx_crci2 <- rep(0, grid_end2)
 
 data_df_1 <- list();
 data_df_2 <- list();
 data_df_3 <- list();
 data_df_3_mean <- list();
 data_df_4 <- list();
-data_df_4v <- matrix(0, nrow = 3, ncol = grid_end1);
+data_df_4v <- matrix(0, nrow = 6, ncol = grid_end1);
 breaks_2_num <- list();
 
 for (ii in 1: grid_end1){
@@ -213,12 +223,18 @@ for (ii in 1: grid_end1){
   data_df_4v[1,ii] <- data_df_4[[ii]][1][[1]];
   data_df_4v[2,ii] <- data_df_4[[ii]][2][[1]];
   data_df_4v[3,ii] <- data_df_4[[ii]][3][[1]];
+  data_df_4v[4,ii] <- data_df_4[[ii]][4][[1]];
+  data_df_4v[5,ii] <- data_df_4[[ii]][5][[1]];
+  data_df_4v[6,ii] <- data_df_4[[ii]][6][[1]];
   
-  grid_2$rx_x2[ii] <- data_df_4[[ii]][4][[1]];
-  grid_2$rx_y2[ii] <- data_df_4[[ii]][5][[1]];
+  grid_2$rx_x2[ii] <- data_df_4[[ii]][7][[1]];
+  grid_2$rx_y2[ii] <- data_df_4[[ii]][8][[1]];
   grid_2$rx_rcd[ii] <- data_df_4[[ii]][1][[1]];
   grid_2$rx_rci[ii] <- data_df_4[[ii]][2][[1]];
   grid_2$rx_crci[ii] <- data_df_4[[ii]][3][[1]];
+  grid_2$rx_rcd2[ii] <- data_df_4[[ii]][4][[1]];
+  grid_2$rx_rci2[ii] <- data_df_4[[ii]][5][[1]];
+  grid_2$rx_crci2[ii] <- data_df_4[[ii]][6][[1]];
 }
 st_write(grid_2, paste0('2301_river_5_',year,'.shp'))
 write.csv(data_df_4v, file = paste0('2301_data_df_4v_',year,'.csv'), row.names = FALSE)
