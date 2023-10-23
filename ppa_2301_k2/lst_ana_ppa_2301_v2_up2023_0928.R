@@ -30,15 +30,15 @@ dis_2 <- projectRaster(dis_1, crs = '+init=epsg:4326')
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2');
 custom_colors <- colorRampPalette(c('white', 'red'))(256)
 
-#jpeg(paste0('ppa_2301_cq_lst_v2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-#plot(lst_2, main = 'Land surface temperature', col = custom_colors);
-#plot(grid_2, add = T);
-#dev.off()  # Close the jpeg device
+jpeg(paste0('ppa_2301_cq_lst_v2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+plot(lst_2, main = 'Land surface temperature', col = custom_colors);
+plot(grid_2, add = T);
+dev.off()  # Close the jpeg device
 
-#jpeg(paste0('ppa_2301_cq_dis_2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-#plot(dis_2, main = 'Distance to river', col = custom_colors);
-#plot(grid_2, add = T);
-#dev.off()  
+jpeg(paste0('ppa_2301_cq_dis_2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+plot(dis_2, main = 'Distance to river', col = custom_colors);
+plot(grid_2, add = T);
+dev.off()  
 
 #up2023_0924_10:31_e
 
@@ -52,11 +52,11 @@ rc_ana_1 <- function(f_grid_num){
   f_dis_exa <- mask(f_dis_exa_1,grid_2[f_grid_num,]);
   f_lst_exa <- mask(f_lst_exa_1,grid_2[f_grid_num,]);
   
-  #plot(f_dis_exa, col = custom_colors);
-  #plot(grid_2[f_grid_num,],add = T);
+  plot(f_dis_exa, col = custom_colors);
+  plot(grid_2[f_grid_num,],add = T);
   
-  #plot(f_lst_exa, col = custom_colors);
-  #plot(grid_2[f_grid_num,],add = T);
+  plot(f_lst_exa, col = custom_colors);
+  plot(grid_2[f_grid_num,],add = T);
   
   f_disv_exa <- getValues(f_dis_exa);
   f_lstv_exa <- getValues(f_lst_exa);
@@ -129,11 +129,11 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
   }
   
   f_file_name1 <- paste('data_df_3_mean_', year,'_', f_grid_num, '.jpg', sep = '');
-  #jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-  #f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
-  #f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals', x = 'distance', y = 'LST')
-  #print(f_plot)
-  #dev.off()  # Close the jpeg device
+  jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+  f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
+  f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals', x = 'distance', y = 'LST')
+  print(f_plot)
+  dev.off()  # Close the jpeg device
   
   f_file_name2 <- paste('data_df_3_mean_', year, '_', f_grid_num, '.csv', sep = '');
   write.table(f_data_df_3_mean, file = f_file_name2);
