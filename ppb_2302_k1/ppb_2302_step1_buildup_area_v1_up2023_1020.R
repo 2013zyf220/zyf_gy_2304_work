@@ -11,8 +11,8 @@ cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 
 
 year_s <- 1995  #to_be_set
 year_e <- 2022  #to_be_set
-prov_1 <- 'chongqing' #to_be_set
-shp_data_1 <- 'tongliang_a1' #to_be_set
+prov_1 <- 'fujian' #to_be_set
+shp_data_1 <- 'xiamen_a1' #to_be_set
 
 year_len <- year_e - year_s + 1;
 years <- seq(year_s, year_e);

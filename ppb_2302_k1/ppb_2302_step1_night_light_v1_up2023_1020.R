@@ -9,9 +9,9 @@ library(ggplot2)
 
 cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')  #to_be_set
 
-year_s <- 2010  #to_be_set
-year_e <- 2019  #to_be_set
-shp_data_1 <- 'chongqing1' #to_be_set
+year_s <- 1993  #to_be_set
+year_e <- 2022  #to_be_set
+shp_data_1 <- 'chengdu_a1' #to_be_set
 
 year_len <- year_e - year_s + 1;
 years <- seq(year_s, year_e);
