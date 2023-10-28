@@ -14,7 +14,7 @@ library(ggplot2)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp');
 grid_exa <- st_read(paste0('outputs3/2301_river_7_2022.shp')); #to_be_set
 
-grid_ymean <- grid_exa['NUMBER'];
+grid_ysta <- grid_exa['NUMBER'];
 grid_len <- nrow(grid_exa);
 
 attri_list <- list('area','XG_DIS_CEN'); #to_be_set_key
@@ -44,10 +44,14 @@ ymean_1 <- function(f_year_s, f_year_e, f_attri){
 
 #==================================================================
 
+year_s <- 2019; #to_be_set_key
+year_e <- 2022; #to_be_set_key
+years <- year_s: year_e
+
 ymean_res_1 <- list();
 for(ii in 1: attri_len){
   c_attri <- attri_list[[ii]];
-  ymean_res_1[[c_attri]] <- ymean_1(2022, 2022, c_attri); #to_be_set_key
+  ymean_res_1[[c_attri]] <- ymean_1(year_s, year_e, c_attri); #to_be_set_key
 }
 
 #==================================================================
@@ -57,20 +61,28 @@ ymean_2 <- function(f_attri){
   return(f_ymean_res_2)
 }
 
+yrate_2 <- function(f_attri){
+  f_r2 <- rep(0, grid_len)
+  for(ii in 1: grid_len){
+    f_1 <- ymean_res_1[[f_attri]][,ii];
+    f_r1 <- lm(f_1 ~ years)
+    f_r2[ii] <- f_r1$coefficients['f_1']
+    return(f_r2)
+  }
+}
 #==================================================================
 
-ymean_res_2 <- list();
+ysta_res_1 <- list();
 for(ii in 1: attri_len){
   c_attri <- attri_list[[ii]];
-  ymean_res_2[[c_attri]] <- ymean_2(c_attri)
+  c_attri_a <- paste0(c_attri,'_mean')
+  c_attri_b <- paste0(c_attri,'_std')
+  ysta_res_1[[c_attri_a]] <- ymean_2(c_attri)
+  ysta_res_1[[c_attri_b]] <- yrate_2(c_attri)
+  grid_ysta[[c_attri_a]] <- ysta_res_1[[c_attri_a]];
+  grid_ysta[[c_attri_b]] <- ysta_res_1[[c_attri_b]];
 } 
 
-#==================================================================
-
-for(ii in 1: attri_len){
-    c_attri <- attri_list[[ii]];
-    grid_ymean[[c_attri]] <- ymean_res_2[[c_attri]];
-  }
-st_write(grid_ymean, paste0('outputs3/2301_river_7_ymean.shp'));
+st_write(grid_ysta, paste0('outputs3/2301_river_7_ysta.shp'));
 
 
