@@ -76,7 +76,7 @@ ysta_res_1 <- list();
 for(ii in 1: attri_len){
   c_attri <- attri_list[[ii]];
   c_attri_a <- paste0(c_attri,'_mean')
-  c_attri_b <- paste0(c_attri,'_std')
+  c_attri_b <- paste0(c_attri,'_rate')
   ysta_res_1[[c_attri_a]] <- ymean_2(c_attri)
   ysta_res_1[[c_attri_b]] <- yrate_2(c_attri)
   grid_ysta[[c_attri_a]] <- ysta_res_1[[c_attri_a]];
