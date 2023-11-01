@@ -13,6 +13,7 @@ library(ggplot2)
 #load and plot data
 
 year = 2022; #to_be_set
+lst_data = 2; #to_be_set
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs');
 grid_1a <- shapefile(paste0('2301_river_4_',year,'.shp'));
@@ -20,7 +21,11 @@ grid_1b <- spTransform(grid_1a, '+init=epsg:4326');
 grid_2 <- st_read(paste0('2301_river_4_',year,'.shp'));
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/LST_DATA');
-lst_1 <- raster(paste0('ppa_2301_cq_lst_', year,'.tif')); #to_be_set
+if(lst_data == 1){
+  lst_1 <- raster(paste0('ppa_2301_cq_lst_', year,'.tif'));
+}else{
+  lst_1 <- raster(paste0('ppa_2301_cq_lstb_', year,'.tif'));
+}
 lst_2 <- projectRaster(lst_1, crs = '+init=epsg:4326')
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
