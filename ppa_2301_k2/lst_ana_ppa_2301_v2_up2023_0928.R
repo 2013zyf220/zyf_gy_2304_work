@@ -12,8 +12,8 @@ library(ggplot2)
 #up2023_0924_10:31_s
 #load and plot data
 
-year = 2022; #to_be_set
-lst_data = 2; #to_be_set
+year = 2021; #to_be_set_key
+lst_data = 2; #to_be_set_key
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs');
 grid_1a <- shapefile(paste0('2301_river_4_',year,'.shp'));
@@ -23,13 +23,15 @@ grid_2 <- st_read(paste0('2301_river_4_',year,'.shp'));
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/LST_DATA');
 if(lst_data == 1){
   lst_1 <- raster(paste0('ppa_2301_cq_lst_', year,'.tif'));
+  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
+  dis_1 <- raster(paste0('a2301_disr2.tif')); #land cover data
 }else{
   lst_1 <- raster(paste0('ppa_2301_cq_lstb_', year,'.tif'));
+  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
+  dis_1 <- raster(paste0('a2301_disr3.tif')); #land cover data
 }
-lst_2 <- projectRaster(lst_1, crs = '+init=epsg:4326')
 
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
-dis_1 <- raster(paste0('a2301_disr2.tif')); #land cover data
+lst_2 <- projectRaster(lst_1, crs = '+init=epsg:4326')
 dis_2 <- projectRaster(dis_1, crs = '+init=epsg:4326')
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2');
