@@ -186,6 +186,10 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
     f_RCD_2 <- log(f_RCD_1);
   }
   
+  f_RCI_3 <- exp(f_RCI_1);
+  f_CRCI_3 <- exp(f_CRCI_1);
+  f_RCD_3 <- exp(f_RCD_1);
+  
   f_data_df_4 <- list();
   f_data_df_4[1] <- f_RCD_1;
   f_data_df_4[2] <- f_RCI_1;
@@ -193,8 +197,11 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
   f_data_df_4[4] <- f_RCD_2;
   f_data_df_4[5] <- f_RCI_2;
   f_data_df_4[6] <- f_CRCI_2;
-  f_data_df_4[7] <- grid_1b@polygons[[ii]]@labpt[1];
-  f_data_df_4[8] <- grid_1b@polygons[[ii]]@labpt[2];
+  f_data_df_4[7] <- f_RCD_3;
+  f_data_df_4[8] <- f_RCI_3;
+  f_data_df_4[9] <- f_CRCI_3;
+  f_data_df_4[10] <- grid_1b@polygons[[ii]]@labpt[1];
+  f_data_df_4[11] <- grid_1b@polygons[[ii]]@labpt[2];
   return(f_data_df_4);
 }
 
@@ -216,6 +223,9 @@ grid_2$rx_crci <- rep(0, grid_end2)
 grid_2$rx_rcd2 <- rep(0, grid_end2)
 grid_2$rx_rci2 <- rep(0, grid_end2)
 grid_2$rx_crci2 <- rep(0, grid_end2)
+grid_2$rx_rcd3 <- rep(0, grid_end2)
+grid_2$rx_rci3 <- rep(0, grid_end2)
+grid_2$rx_crci3 <- rep(0, grid_end2)
 
 data_df_1 <- list();
 data_df_2 <- list();
@@ -238,15 +248,21 @@ for (ii in 1: grid_end1){
   data_df_4v[4,ii] <- data_df_4[[ii]][4][[1]];
   data_df_4v[5,ii] <- data_df_4[[ii]][5][[1]];
   data_df_4v[6,ii] <- data_df_4[[ii]][6][[1]];
+  data_df_4v[7,ii] <- data_df_4[[ii]][7][[1]];
+  data_df_4v[8,ii] <- data_df_4[[ii]][8][[1]];
+  data_df_4v[9,ii] <- data_df_4[[ii]][9][[1]];
   
-  grid_2$rx_x2[ii] <- data_df_4[[ii]][7][[1]];
-  grid_2$rx_y2[ii] <- data_df_4[[ii]][8][[1]];
+  grid_2$rx_x2[ii] <- data_df_4[[ii]][10][[1]];
+  grid_2$rx_y2[ii] <- data_df_4[[ii]][11][[1]];
   grid_2$rx_rcd[ii] <- data_df_4[[ii]][1][[1]];
   grid_2$rx_rci[ii] <- data_df_4[[ii]][2][[1]];
   grid_2$rx_crci[ii] <- data_df_4[[ii]][3][[1]];
   grid_2$rx_rcd2[ii] <- data_df_4[[ii]][4][[1]];
   grid_2$rx_rci2[ii] <- data_df_4[[ii]][5][[1]];
   grid_2$rx_crci2[ii] <- data_df_4[[ii]][6][[1]];
+  grid_2$rx_rcd3[ii] <- data_df_4[[ii]][7][[1]];
+  grid_2$rx_rci3[ii] <- data_df_4[[ii]][8][[1]];
+  grid_2$rx_crci3[ii] <- data_df_4[[ii]][9][[1]];
 }
 st_write(grid_2, paste0('2301_river_5_',year,'.shp'))
 write.csv(data_df_4v, file = paste0('2301_data_df_4v_',year,'.csv'), row.names = FALSE)

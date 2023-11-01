@@ -26,7 +26,7 @@ cor_data_f <- function(f_year){
   #input data
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
-  f_data_1b = f_data_1[,c(3,7,16,18,22,24,37,38,39,44)]    #to_be_set
+  f_data_1b = f_data_1[,c(3,7,16,18,20,22,33,34,35,40)]    #to_be_set
   f_data_2 <- f_data_1b[f_data_1b$rx_rci != 0, ] #to_be_set
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   
@@ -92,7 +92,7 @@ cor_data_f <- function(f_year){
 }
 #==========================
 
-years <- seq(2019, 2022, by = 1) #to_be_set
+years <- seq(2021, 2021, by = 1) #to_be_set
 year_len <- length(years)
 res_list <- list()
 ii <- 1

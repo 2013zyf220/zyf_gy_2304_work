@@ -17,8 +17,8 @@ merge_res <- function(f_year){
 
 #=====================================
 
-year_s <- 2019; #to_be_set
-year_e <- 2022; #to_be_set
+year_s <- 2021; #to_be_set
+year_e <- 2021; #to_be_set
 for(c_year in year_s: year_e){
   merge_res(c_year)
 }
