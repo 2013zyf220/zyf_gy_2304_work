@@ -41,7 +41,7 @@ merge2_shp <- function(f_year){
 #==========================================================================
 #up2023_1025 14:33
 
-year_s <- 2022; #to_be_set
+year_s <- 2019; #to_be_set
 year_e <- 2022; #to_be_set
 
 merge2_shp_res <- list();

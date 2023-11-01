@@ -60,7 +60,7 @@ ls_index_f <- function(f_year){
     fc_grid_x <- f_grid_1b@polygons[[ii]]@labpt[1];
     fc_grid_y <- f_grid_1b@polygons[[ii]]@labpt[2];
     
-    fc_lss_0 <- sample_lsm(f_luse, f_grid_2[ii,], what = c('lsm_c_pland','lsm_c_cohesion'), shape = 'square'); #to_be_set
+    fc_lss_0 <- sample_lsm(f_luse, f_grid_2[ii,], what = c('lsm_c_pland','lsm_c_cohesion', 'lsm_c_ai'), shape = 'square'); #to_be_set
     fc_lsc_0 <- sample_lsm(f_luse, f_grid_2[ii,], what = c('lsm_c_pland'), shape = 'circle'); #to_be_set
     
     fc_class_lss <- data.frame(class = rep(c(1:8),5), metric=c(rep('pland',8),rep('cohesion',8), rep('ai',8), rep('pd',8), rep('lsi',8))) #to_be_set
