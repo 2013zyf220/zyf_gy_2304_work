@@ -36,6 +36,7 @@ bh_f1 <- function(f_grid_num){
   f_bh_6_mean <- mean(f_bh_6);
   f_bh_5_std <- sd(f_bh_5);
   f_bh_6_std <- sd(f_bh_6);
+  f_bh_ratio <- f_bh_5_len/f_bh_6_len
   
   f_res_list[['1']] <- f_bh_5;
   f_res_list[['2']] <- f_bh_6;
@@ -45,6 +46,7 @@ bh_f1 <- function(f_grid_num){
   f_res_list[['2_mean']] <- f_bh_6_mean;
   f_res_list[['1_std']] <- f_bh_5_std;
   f_res_list[['2_std']] <- f_bh_6_std;
+  f_res_list[['ratio']] <- f_bh_ratio;
   return(f_res_list);
 }
 

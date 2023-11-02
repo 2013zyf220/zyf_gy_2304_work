@@ -232,7 +232,7 @@ data_df_2 <- list();
 data_df_3 <- list();
 data_df_3_mean <- list();
 data_df_4 <- list();
-data_df_4v <- matrix(0, nrow = 6, ncol = grid_end1);
+data_df_4v <- matrix(0, nrow = 9, ncol = grid_end1);
 breaks_2_num <- list();
 
 for (ii in 1: grid_end1){
