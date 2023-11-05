@@ -31,8 +31,8 @@ luse_data <- function(f_year, f_clip_extent){
 
 #==================================================
 
-year_s <- 2018; #to_be_set
-year_e <- 2019; #to_be_set
+year_s <- 2021; #to_be_set
+year_e <- 2022; #to_be_set
 
 clip_area_1 <- clip_area_f(2, 106.4, 106.7, 29.4, 29.75) #to_be_set
 
