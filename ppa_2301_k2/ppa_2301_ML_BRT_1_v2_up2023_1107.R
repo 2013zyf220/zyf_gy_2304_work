@@ -135,7 +135,7 @@ year_1 <- 2021; #to_be_set
 ii_1 <- 1; #to_be_set
 index_y_1 <- indexes_y[[1]]; #to_be_set
 
-jpeg(paste0("ppa_2301_brt_1b_", year_1, "_", 1,".jpg"))
+jpeg(paste0("ppa_2301_brt_1b_", year_1, "_", index_y_1,".jpg"))
 plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = 1)
 dev.off()  
 
