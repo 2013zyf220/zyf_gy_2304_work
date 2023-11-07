@@ -178,7 +178,7 @@ for(c_year in year_s: year_e){
     write.csv(c_rf_pred_train[["mat"]], file = paste0("2301_rf_pred_1_train_", c_year,"_", c_index_y, ".csv"), row.names = FALSE)
     write.csv(c_rf_pred_test[["mat"]], file = paste0("2301_rf_pred_1_test_", c_year,"_", c_index_y, ".csv"), row.names = FALSE)
     write.csv(c_rf_pred_all[["mat"]], file = paste0("2301_rf_pred_2_all_", c_year,"_", c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_rf_impor_res, file = paste0("2301_rf_impor_1_",c_year,".csv"), row.names = FALSE)
+    write.csv(c_rf_impor_res, file = paste0("2301_rf_impor_1_", c_year,"_", c_index_y, ".csv"), row.names = FALSE)
   }
 }
 
