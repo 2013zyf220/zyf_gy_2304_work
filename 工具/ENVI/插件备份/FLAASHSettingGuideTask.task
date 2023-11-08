@@ -1,0 +1,27 @@
+{
+  "name":"FLAASHSettingGuideTask",
+  "baseClass":"ENVITaskFromProcedure",
+  "routine":"FLAASHSettingGuideTask",
+  "displayName":"Flaash Setting Guide",
+  "description":"Flaash Setting Guide.",
+  "version":"5.3",
+  "parameters":[
+    {
+      "name":"INPUT_RASTER",
+      "displayName":"Input Radiance Raster",
+      "dataType":"ENVIRASTER",
+      "direction":"input",
+      "parameterType":"required",
+      "description":"Input radiance raster."
+    },
+    {
+      "name":"over_water",
+      "displayName":"Maritime Raster",
+      "dataType":"BOOL",
+      "direction":"input",
+      "parameterType":"required",
+      "defaultValue":false,
+      "description":"Raster is over water or not."
+    }
+  ]
+}

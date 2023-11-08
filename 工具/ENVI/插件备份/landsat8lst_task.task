@@ -1,0 +1,50 @@
+{
+  "name":"Landsat8LST",
+  "baseClass":"ENVITaskFromProcedure",
+  "routine":"Landsat8LST_Task",
+  "displayName":"Landsat LST",
+  "version":"5.3",
+  "description":"This task performs Land Surface Temperature Retrieval on Landsat 8 TIRS imagery.",
+  "parameters":[
+    {
+      "name":"inputURI",
+      "displayName":"Input Landsat MTL File",
+      "dataType":"ENVIURI",
+      "direction":"input",
+      "parameterType":"required",
+      "description":"Input Landsat MTL File."
+    },
+    {
+      "name":"Transmission",
+      "displayName":"Atmospheric Transmission",
+      "dataType":"double",
+      "direction":"input",
+      "parameterType":"required",
+      "description":"Band average atmospheric Transmission."
+    },
+    {
+      "name":"upwelling_RADIANCE",
+      "displayName":"Upwelling Radiance",
+      "dataType":"double",
+      "direction":"input",
+      "parameterType":"required",
+      "description":"Effective bandpass upwelling Radiance."
+    },
+    {
+      "name":"downwelling_RADIANCE",
+      "displayName":"Downwelling Radiance",
+      "dataType":"double",
+      "direction":"input",
+      "parameterType":"required",
+      "description":"Effective bandpass downwelling Radiance."
+    },
+    {
+      "name":"OUTPUT_RASTER",
+      "displayName":"Output Raster",
+      "dataType":"ENVIRASTER",
+      "direction":"output",
+      "parameterType":"required",
+      "description":"This is a reference to the output raster of filetype ENVI."
+    }
+  ]
+}
