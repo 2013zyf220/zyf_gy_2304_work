@@ -26,9 +26,12 @@ cor_data_f <- function(f_year){
   #input data
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
-  f_data_1b = f_data_1[,c(3,7,16,18,20,22,33,34,35,48)]    #to_be_set
-  f_data_2 <- f_data_1b[f_data_1b$rx_rci != 0, ] #to_be_set
+  f_data_1b = f_data_1[,c(3,7,16,18,20,22,33,34,35,42,43,44,45,46,48)]    #to_be_set
+  f_data_1c <- f_data_1b[f_data_1b$rx_rci != 0, ] #to_be_set
+  f_data_2 <- f_data_1c[-c(49,142,143), ] #to_be_set
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
+  
+  f_data_out_1 <- f_data_2[,c(1,8,10)]  #to_be_set
   
   #set parameters
   f_row <- length(index_x)
@@ -37,15 +40,15 @@ cor_data_f <- function(f_year){
   #plot data
   plot(f_data_2)
   chart.Correlation(f_data_2, method = 'pearson', pch = 19, col = 'blue', tl.cex = 1.2)
-  hist(f_data_2$rx_crci)  #to_be_set
+  #hist(f_data_2$rx_crci)  #to_be_set
   
   #correlation analysis
   f_cor_1 <- cor(f_data_2)
   
   #model analysis
-  f_model_list[[1]] <- lm(rx_rci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
-  f_model_list[[2]] <- lm(rx_crci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
-  f_model_list[[3]] <- lm(rx_rcd ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + XG_ANGLE_2, data = f_data_2) #to_be_set
+  f_model_list[[1]] <- lm(rx_rci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + bh_6_mean + bh_7_mean + bh_ratio + XG_ANGLE_2, data = f_data_2) #to_be_set
+  f_model_list[[2]] <- lm(rx_crci ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + bh_6_mean + bh_7_mean + bh_ratio + XG_ANGLE_2, data = f_data_2) #to_be_set
+  f_model_list[[3]] <- lm(rx_rcd ~ XG_NDVI_ME + XG_SLOPE_M + rx_ps_imp + rx_co_imp + rx_ps_gre + rx_co_gre + bh_6_mean + bh_7_mean + bh_ratio + XG_ANGLE_2, data = f_data_2) #to_be_set
   #set empty arrays
   f_lm_cor <- matrix(0, nrow = f_row, ncol = f_col)
   f_lm_slope <- matrix(0, nrow = f_row, ncol = f_col)
@@ -82,7 +85,7 @@ cor_data_f <- function(f_year){
   f_res_list[['lm_slope']] <- f_lm_slope
   f_res_list[['lm_p']] <- f_lm_p
   f_res_list[['lm_r']] <- f_lm_r
-  
+  f_res_list[['out_1']] <- f_data_out_1
   write.csv(f_lm_cor, file = paste0('2301_lm_cor_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_slope, file = paste0('2301_lm_slope_',f_year,'.csv'), row.names = FALSE)
   write.csv(f_lm_p, file = paste0('2301_lm_p_',f_year,'.csv'), row.names = FALSE)
@@ -101,3 +104,6 @@ for (c_year in years){
   ii <- ii + 1
 }
 
+#==========================
+cor_exa_1 <- res_list[[1]][['out_1']] #to_be_set
+cor_exa_2 <- cor(cor_exa_1)
