@@ -20,7 +20,8 @@ bh_1a <- raster(paste0('building_height_k2/CNBH10m_X107Y29_rep.tif')); #to_be_se
 bh_1b <- raster(paste0('chongqing_bh/cq_bh4.tif')); #to_be_set
 bh_list <- list(bh_1a, bh_1b); #to_be_set
 
-grid_1 <- shapefile(paste0('ppa_2301_k2/shp/outputs2/2301_river_5_2022.shp')); #to_be_set
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2');
+grid_1 <- shapefile(paste0('2301_river_5_2022.shp')); #to_be_set
 plot(grid_1)
 grid_len <- length(grid_1);
 
@@ -84,7 +85,8 @@ bh_f1 <- function(f_bh_1){
 }
 
 #==============================================
-
+year_s <- 2021; #to_be_set
+year_e <- 2021; #to_be_set
 res_1a <- bh_f1(bh_1a);
 res_1b <- bh_f1(bh_1b);
 for(c_year in year_s: year_e){
