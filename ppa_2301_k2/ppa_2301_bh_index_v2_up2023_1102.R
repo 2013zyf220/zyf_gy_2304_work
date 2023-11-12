@@ -19,9 +19,9 @@ data_sel <- 1; #to_be_set
 if(data_sel == 1){
   bh_1 <- raster(paste0('building_height_k2/CNBH10m_X107Y29_rep.tif'));
 }else if(data_sel == 2){
-  bh_1 <- raster(paste0('chongqing_bh/chongqing_bh.tif'));
+  bh_1 <- raster(paste0('chongqing_bh/cq_bh4.tif'));
 }else{
-  bh_1 <- raster(paste0('chongqing_bh/chongqing_bh2.tif'));
+  cat('no input data');
 }
 
 bh_2 <- crop(bh_1, extent_1)
