@@ -13,7 +13,7 @@ library(car)
 #============================================================
 
 #initial setting
-index_x <- list('XG_NDVI_ME', 'XG_SLOPE_M', 'rx_co_imp', 'bh1a_M6')    #to_be_set
+index_x <- list('XG_NDVI_ME', 'XG_DIS_CEN', 'XG_SLOPE_M', 'XG_DEM_MEA', 'rx_ps_imp', 'rx_co_imp', 'rx_ai_imp', 'rx_ps_gre', 'rx_pd', 'rx_lsi', 'bh1a_M6', 'XG_ANGLE_2')    #to_be_set
 index_y <- list('rx_rcd', 'rx_rci', 'rx_crci')    #to_be_set
 
 row_1 <- length(index_x)
@@ -30,7 +30,7 @@ cor_data_f <- function(f_year){
   #input data
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
   f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
-  f_data_1b = f_data_1[,c(3,7,18,33,34,35,44)]    #to_be_set
+  f_data_1b = f_data_1[,c(3,4,7,12,16,18,19,20,28,29,33,34,35,44,57)]    #to_be_set
   f_data_1c <- f_data_1b[f_data_1b$rx_rci != 0, ] #to_be_set
   f_data_2 <- f_data_1c[-c(49,142,143), ] #to_be_set
   setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')

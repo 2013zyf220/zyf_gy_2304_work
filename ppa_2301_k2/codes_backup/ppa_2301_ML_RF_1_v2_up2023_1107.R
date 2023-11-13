@@ -148,8 +148,7 @@ col_2d3 <- c(1,2,3,4,5,6,10); #to_be_set
 year_s <- 2021; #to_be_set
 year_e <- 2021; #to_be_set
 indexes_y <- list("rx_rci"); #to_be_set
-rows_remove <- c(49,143,156); #to_be_set
-
+rows_remove <- c(143); #to_be_set
 len_indexes_y <- length(indexes_y)
 len_col_2d3 <- length(col_2d3);
 
