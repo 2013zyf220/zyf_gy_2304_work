@@ -30,7 +30,12 @@ col_values_f <- function(f_mat, f_col_name){
 brt_f1 <- function(f_year, f_index_y, f_col_1d2, f_col_2d3, f_rows_remove){
   f_data_1 <- read.csv(paste0("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2/2301_river_6_", f_year, ".csv")); 
   f_data_1b <- f_data_1[, f_col_1d2];
-  f_data_2 <- f_data_1b[-f_rows_remove,]
+  if(length(f_rows_remove) == 0){
+    f_data_2 <- f_data_1b
+  }else{
+    f_data_2 <- f_data_1b[-f_rows_remove,]
+  }
+  
   skim(f_data_2) #鸟瞰数据
   plot_missing(f_data_2) #数据缺失状况
   
@@ -106,10 +111,10 @@ brt_pred_f <- function(f_fit_1, f_data, f_perf_gbm1, f_data_y){
 year_s <- 2021; #to_be_set
 year_e <- 2021; #to_be_set
 indexes_y <- list("rx_rci") #to_be_set
-col_1d2 <- c(3,7,16,18,33,34,35,44,58); #to_be_set
-col_2d3 <- c(1,2,3,4,8,9); #to_be_set
+col_1d2 <- c(3,7,9,12,13,16,18,33,34,35,44,58); #to_be_set
+col_2d3 <- c(1,2,3,4,5,6,7,11,12); #to_be_set
 len_col_2d3 <- length(col_2d3);
-rows_remove <- c(143); #to_be_set
+rows_remove <- c(49,142,143); #to_be_set
 
 brt_f2_res_2 <- list();
 ii <- 1;

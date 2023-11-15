@@ -17,7 +17,7 @@ merge_f <- function(f_year){
   f_shp_1a$XG_ANGLE_1 <- f_shp_2a$XG_ANGLE_1
   f_shp_1a$XG_ANGLE_2 <- f_shp_2a$XG_ANGLE_2
   f_shp_1a$NUMBER2 <- f_shp_2a$NUMBER
-  #st_write(f_shp_1a, paste0('2301_river_6_', c_year,'.shp'))
+  st_write(f_shp_1a, paste0('2301_river_6_', c_year,'.shp'))
   
   res_list <- list();
   res_list[['shp_1a']] <- f_shp_1a

@@ -132,7 +132,7 @@ for(c_year in year_s: year_e){
   c_grid_2$bh1d_S6 <- res_1d[['bh_6_std']]
   c_grid_2$bh1d_S7 <- res_1d[['bh_7_std']]
   c_grid_2$bh1d_r <- res_1d[['bh_ratio']]
-  st_write(c_grid_2, paste0('2301_river_5b_', c_year,'.shp'))
+  #st_write(c_grid_2, paste0('2301_river_5b_', c_year,'.shp'))
 }
 
 #==============================================
@@ -167,6 +167,9 @@ bh_data_export[, 25] <- res_1d[['bh_7_mean']]
 bh_data_export[, 26] <- res_1d[['bh_6_std']]
 bh_data_export[, 27] <- res_1d[['bh_7_std']]
 bh_data_export[, 28] <- res_1d[['bh_ratio']]
-colnames(bh_data_export) <- c("1a_len_1", "1a_len_2", "1a_mean_1", "1a_mean_2", "1a_std_1", "1a_std_2", "1a_ratio", "1b_len_1", "1b_len_2", "1b_mean_1", "1b_mean_2", "1b_std_1", "1b_std_2", "1b_ratio")
+colnames(bh_data_export) <- c("1a_len_1", "1a_len_2", "1a_mean_1", "1a_mean_2", "1a_std_1", "1a_std_2", "1a_ratio", 
+                              "1b_len_1", "1b_len_2", "1b_mean_1", "1b_mean_2", "1b_std_1", "1b_std_2", "1b_ratio",
+                              "1c_len_1", "1c_len_2", "1c_mean_1", "1c_mean_2", "1c_std_1", "1c_std_2", "1c_ratio", 
+                              "1d_len_1", "1d_len_2", "1d_mean_1", "1d_mean_2", "1d_std_1", "1d_std_2", "1d_ratio")
 write.csv(bh_data_export, file = paste0('2301_bh_sum.csv'), row.names = FALSE)
 
