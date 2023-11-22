@@ -148,8 +148,8 @@ ls_index_f <- function(f_year){
     f_grid_2$rx_lsi[ii] <- fc_lsi_v
   }
   
-  st_write(f_grid_2, paste0('ppa_2301_lsi_', f_year,'.shp'))
-  write.csv(f_ls_metric,paste0('ppa_2301_lsi_', f_year,'.csv'),row.names = FALSE)
+  st_write(f_grid_2, paste0('ppa_2301_lsi_', f_year, '_buf', buffer_1, '.shp'))
+  write.csv(f_ls_metric,paste0('ppa_2301_lsi_', f_year, '_buf', buffer_1, '.csv'),row.names = FALSE)
 }
 
 #=========================================================================
