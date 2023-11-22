@@ -11,17 +11,37 @@ library(ggplot2)
 
 #============================================================================
 
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2')
+
+year_1 <- 2021; #to_be_set
+buffer_1 <- 1000; #to_be_set
+
+if(buffer_1 == 200){
+  shp_0 <- 'shp/2/2301_cq_water_b11_buf200_a05.shp'
+}else if(buffer_1 == 400){
+  shp_0 <- 'shp/2/2301_cq_water_b11_buf400_a04.shp'
+}else if(buffer_1 == 500){
+  shp_0 <- 'shp/2/2301_cq_water_b11_buf500_a01.shp'
+}else if(buffer_1 == 600){
+  shp_0 <- 'shp/2/2301_cq_water_b11_buf600_a08.shp'
+}else if(buffer_1 == 800){
+  shp_0 <- 'shp/2/2301_cq_water_b11_buf800_a09.shp'
+}else if(buffer_1 == 1000){
+  shp_0 <- 'shp/2/2301_cq_water_b11_buf1000_a16.shp'
+}else{
+  cat('ERROR')
+}
+
+#============================================================================
+
 ls_index_f <- function(f_year){
   
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs')
-  f_grid_1a <- shapefile(paste0('2301_river_3_', f_year,'.shp'))
+  f_grid_1a <- shapefile(shp_0)
   f_grid_1b <- spTransform(f_grid_1a, '+init=epsg:4326')
-  f_grid_2 <- st_read(paste0('2301_river_3_', f_year,'.shp'))
+  f_grid_2 <- st_read(shp_0)
+  f_luse <- raster(paste0('raster/ppa_2301_cq_luseb_', f_year,'.tif')) #land cover data
   
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster')
-  f_luse <- raster(paste0('ppa_2301_cq_luseb_', f_year,'.tif')) #land cover data
-  
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs')
+  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3')
   plot(f_luse)
   plot(f_grid_1b, add = T)
   
@@ -56,8 +76,8 @@ ls_index_f <- function(f_year){
     fc_grid_x <- f_grid_1b@polygons[[ii]]@labpt[1];
     fc_grid_y <- f_grid_1b@polygons[[ii]]@labpt[2];
     
-    fc_lss_0 <- sample_lsm(f_luse, f_grid_2[ii,], what = c('lsm_c_pland','lsm_c_cohesion', 'lsm_c_ai','lsm_l_pd','lsm_l_lsi'), shape = 'square'); #to_be_set
-    fc_lsc_0 <- sample_lsm(f_luse, f_grid_2[ii,], what = c('lsm_c_pland'), shape = 'circle'); #to_be_set
+    fc_lss_0 <- sample_lsm(f_luse, f_grid_1b[ii,], what = c('lsm_c_pland','lsm_c_cohesion', 'lsm_c_ai','lsm_l_pd','lsm_l_lsi'), shape = 'square'); #to_be_set
+    fc_lsc_0 <- sample_lsm(f_luse, f_grid_1b[ii,], what = c('lsm_c_pland'), shape = 'circle'); #to_be_set
     
     fc_class_lss <- data.frame(class = rep(c(1:8),3), metric=c(rep('pland',8),rep('cohesion',8), rep('ai',8))) #to_be_set
     fc_lss <- left_join(fc_class_lss, fc_lss_0)
@@ -128,16 +148,10 @@ ls_index_f <- function(f_year){
     f_grid_2$rx_lsi[ii] <- fc_lsi_v
   }
   
-  st_write(f_grid_2, paste0('2301_river_4_', f_year,'.shp'))
-  write.csv(f_ls_metric,paste0('2301_ls_', f_year,'.csv'),row.names = FALSE)
-  
+  st_write(f_grid_2, paste0('ppa_2301_lsi_', f_year,'.shp'))
+  write.csv(f_ls_metric,paste0('ppa_2301_lsi_', f_year,'.csv'),row.names = FALSE)
 }
 
 #=========================================================================
 
-year_s <- 2021; #to_be_set
-year_e <- 2021; #to_be_set
-
-for(c_year in year_s: year_e){
-  ls_index_f(c_year)
-}
+ls_index_f(year_1)
