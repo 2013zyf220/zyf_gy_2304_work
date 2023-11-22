@@ -17,17 +17,17 @@ year_1 <- 2021; #to_be_set
 buffer_1 <- 1000; #to_be_set
 
 if(buffer_1 == 200){
-  shp_0 <- 'shp/2/2301_cq_water_b11_buf200_a05.shp'
+  shp_0 <- 'shp/2/2301_cq_water_b12_buf200_a01.shp'
 }else if(buffer_1 == 400){
-  shp_0 <- 'shp/2/2301_cq_water_b11_buf400_a04.shp'
+  shp_0 <- 'shp/2/2301_cq_water_b12_buf400_a01.shp'
 }else if(buffer_1 == 500){
-  shp_0 <- 'shp/2/2301_cq_water_b11_buf500_a01.shp'
+  shp_0 <- 'shp/2/2301_cq_water_b12_buf500_a01.shp'
 }else if(buffer_1 == 600){
-  shp_0 <- 'shp/2/2301_cq_water_b11_buf600_a08.shp'
+  shp_0 <- 'shp/2/2301_cq_water_b12_buf600_a01.shp'
 }else if(buffer_1 == 800){
-  shp_0 <- 'shp/2/2301_cq_water_b11_buf800_a09.shp'
+  shp_0 <- 'shp/2/2301_cq_water_b12_buf800_a01.shp'
 }else if(buffer_1 == 1000){
-  shp_0 <- 'shp/2/2301_cq_water_b11_buf1000_a16.shp'
+  shp_0 <- 'shp/2/2301_cq_water_b12_buf1000_a01.shp'
 }else{
   cat('ERROR')
 }
