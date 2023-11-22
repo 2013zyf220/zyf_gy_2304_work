@@ -12,37 +12,36 @@ library(ggplot2)
 #up2023_0924_10:31_s
 #load and plot data
 
-year = 2021; #to_be_set_key
-lst_data = 2; #to_be_set_key
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2')
+order_1 <- 1; #to_be_set_key
+lst_data <- 2; #to_be_set
 
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs');
-grid_1a <- shapefile(paste0('2301_river_4_',year,'.shp'));
+buffer_1 <- read.csv('shp/1/2301_cq_water_b10_buf500_a19_buf.csv')
+buffer_2 <- buffer_1$buffer
+
+grid_1a <- shapefile(paste0('shp/1/2301_cq_water_b10_buf500_a20.shp'));
 grid_1b <- spTransform(grid_1a, '+init=epsg:4326');
-grid_2 <- st_read(paste0('2301_river_4_',year,'.shp'));
+grid_2 <- st_read(paste0('shp/1/2301_cq_water_b10_buf500_a20.shp'));
 
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/LST_DATA');
 if(lst_data == 1){
-  lst_1 <- raster(paste0('ppa_2301_cq_lst_', year,'.tif'));
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
-  dis_1 <- raster(paste0('a2301_disr2.tif')); #land cover data
+  lst_1 <- raster(paste0('raster/ppa_2301_lst_s', order_1,'.tif'));
+  dis_1 <- raster(paste0('raster/a2301_disr2.tif')); #land cover data
 }else{
-  lst_1 <- raster(paste0('ppa_2301_cq_lstb_', year,'.tif'));
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
-  dis_1 <- raster(paste0('a2301_disr3.tif')); #land cover data
+  lst_1 <- raster(paste0('raster/ppa_2301_lstb_s', order_1,'.tif'));
+  dis_1 <- raster(paste0('raster/a2301_disr3.tif')); #land cover data
 }
 
 lst_2 <- projectRaster(lst_1, crs = '+init=epsg:4326')
 dis_2 <- projectRaster(dis_1, crs = '+init=epsg:4326')
 
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2');
 custom_colors <- colorRampPalette(c('white', 'red'))(256)
 
-jpeg(paste0('ppa_2301_cq_lst_v2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+jpeg(paste0('shp/3/ppa_2301_rce_lst_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
 plot(lst_2, main = 'Land surface temperature', col = custom_colors);
 plot(grid_2, add = T);
 dev.off()  # Close the jpeg device
 
-jpeg(paste0('ppa_2301_cq_dis_2_', year,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+jpeg(paste0('shp/3/ppa_2301_rce_dis_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
 plot(dis_2, main = 'Distance to river', col = custom_colors);
 plot(grid_2, add = T);
 dev.off()  
@@ -135,14 +134,14 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
     }
   }
   
-  f_file_name1 <- paste('data_df_3_mean_', year,'_', f_grid_num, '.jpg', sep = '');
+  f_file_name1 <- paste('ppa_2301_rce_3_mean_', order_1, '_', f_grid_num, '.jpg', sep = '');
   jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
   f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
   f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals', x = 'distance', y = 'LST')
   print(f_plot)
   dev.off()  # Close the jpeg device
   
-  f_file_name2 <- paste('data_df_3_mean_', year, '_', f_grid_num, '.csv', sep = '');
+  f_file_name2 <- paste('ppa_2301_rce_3_mean_', order_1, '_', f_grid_num, '.csv', sep = '');
   write.table(f_data_df_3_mean, file = f_file_name2);
   
   return(f_data_df_3_mean)
@@ -211,7 +210,7 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num){
 #up2023_0924_10:31_s
 grid_end1 <- length(grid_1b); #to_be_set
 thres_1 <- rep(20, times = grid_end1); #to_be_set
-breaks_2_end <- rep(500, times = grid_end1); #to_be_set
+breaks_2_end <- buffer_2;
 breaks_2_by <- rep(20, times = grid_end1); #to_be_set
 
 grid_end2 <- length(grid_1b)
@@ -264,8 +263,9 @@ for (ii in 1: grid_end1){
   grid_2$rx_rci3[ii] <- data_df_4[[ii]][8][[1]];
   grid_2$rx_crci3[ii] <- data_df_4[[ii]][9][[1]];
 }
-st_write(grid_2, paste0('2301_river_5_',year,'.shp'))
-write.csv(data_df_4v, file = paste0('2301_data_df_4v_',year,'.csv'), row.names = FALSE)
+
+st_write(grid_2, paste0('shp/3/ppa_2301_rce_', order_1,'.shp'))
+write.csv(data_df_4v, file = paste0('shp/3/ppa_2301_rce_',order_1,'.csv'), row.names = FALSE)
 
 #up2023_0924_10:31_e
 
