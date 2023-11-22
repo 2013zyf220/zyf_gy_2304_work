@@ -18,17 +18,17 @@ extent_1 <- extent(c(106.4, 106.7, 29.4, 29.75)); #to_be_set
 buffer_1 <- 1000   #to_be_set_key
 
 if(buffer_1 == 200){
-  buffer_2 <- '2301_cq_water_b11_buf200_a05.shp';
+  buffer_2 <- '2301_cq_water_b12_buf200_a01.shp';
 }else if(buffer_1 == 400){
-  buffer_2 <- '2301_cq_water_b11_buf400_a04.shp';
+  buffer_2 <- '2301_cq_water_b12_buf400_a01.shp';
 }else if(buffer_1 == 500){
-  buffer_2 <- '2301_cq_water_b11_buf500_a01.shp';
+  buffer_2 <- '2301_cq_water_b12_buf500_a01.shp';
 }else if(buffer_1 == 600){
-  buffer_2 <- '2301_cq_water_b11_buf600_a08.shp';
+  buffer_2 <- '2301_cq_water_b12_buf600_a01.shp';
 }else if(buffer_1 == 800){
-  buffer_2 <- '2301_cq_water_b11_buf800_a09.shp';
+  buffer_2 <- '2301_cq_water_b12_buf800_a01.shp';
 }else if(buffer_1 == 1000){
-  buffer_2 <- '2301_cq_water_b11_buf1000_a16.shp';
+  buffer_2 <- '2301_cq_water_b12_buf1000_a01.shp';
 }else{
   print('ERROR')
 }
@@ -57,6 +57,7 @@ bh_f1 <- function(f_bh_1){
   f_res_bh_6_std <- rep(0, grid_len);
   f_res_bh_7_std <- rep(0, grid_len);
   f_res_bh_ratio <- rep(0, grid_len);
+  f_res_NUMBER <- rep(0, grid_len);
   
   f_bh_2 <- crop(f_bh_1, extent_1) #to_be_set
   plot(f_bh_2)
@@ -78,6 +79,7 @@ bh_f1 <- function(f_bh_1){
     f_res_bh_6_len[f_ii] <- length(fc_bh_6);
     f_res_bh_7_len[f_ii] <- length(fc_bh_7);
     f_res_bh_ratio[f_ii] <- f_res_bh_6_len[f_ii]/f_res_bh_7_len[f_ii]
+    f_res_NUMBER[f_ii] <- f_ii
     
     c_1 <- length(fc_bh_5) - 2;
     if(sum(is.na(fc_bh_5)) > c_1){
@@ -104,7 +106,7 @@ bh_f1 <- function(f_bh_1){
   f_res_list[['bh_6_std']] <- f_res_bh_6_std
   f_res_list[['bh_7_std']] <- f_res_bh_7_std
   f_res_list[['bh_ratio']] <- f_res_bh_ratio
-  
+  f_res_list[['NUMBER']] <- f_res_NUMBER
   return(f_res_list)
 }
 
@@ -151,7 +153,7 @@ st_write(grid_2, paste0('ppa_2301_k2/shp/3/ppa_2301_bh_1_buf', buffer_1, '.shp')
 
 #==============================================
 
-bh_data_export <- matrix(0, nrow = grid_len, ncol = 28); #to_be_set
+bh_data_export <- matrix(0, nrow = grid_len, ncol = 29); #to_be_set
 bh_data_export[, 1] <- res_1a[['bh_6_len']]
 bh_data_export[, 2] <- res_1a[['bh_7_len']]
 bh_data_export[, 3] <- res_1a[['bh_6_mean']]
@@ -181,9 +183,10 @@ bh_data_export[, 25] <- res_1d[['bh_7_mean']]
 bh_data_export[, 26] <- res_1d[['bh_6_std']]
 bh_data_export[, 27] <- res_1d[['bh_7_std']]
 bh_data_export[, 28] <- res_1d[['bh_ratio']]
+bh_data_export[, 29] <- res_1a[['NUMBER']]
 colnames(bh_data_export) <- c("1a_len_1", "1a_len_2", "1a_mean_1", "1a_mean_2", "1a_std_1", "1a_std_2", "1a_ratio", 
                               "1b_len_1", "1b_len_2", "1b_mean_1", "1b_mean_2", "1b_std_1", "1b_std_2", "1b_ratio",
                               "1c_len_1", "1c_len_2", "1c_mean_1", "1c_mean_2", "1c_std_1", "1c_std_2", "1c_ratio", 
-                              "1d_len_1", "1d_len_2", "1d_mean_1", "1d_mean_2", "1d_std_1", "1d_std_2", "1d_ratio")
+                              "1d_len_1", "1d_len_2", "1d_mean_1", "1d_mean_2", "1d_std_1", "1d_std_2", "1d_ratio", "NUMBER")
 write.csv(bh_data_export, file = paste0('ppa_2301_k2/shp/3/ppa_2301_bh_1_buf', buffer_1, '.csv'), row.names = FALSE)
 
