@@ -38,12 +38,12 @@ custom_colors <- colorRampPalette(c('white', 'red'))(256)
 
 jpeg(paste0('shp/3/ppa_2301_rce_lst_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
 plot(lst_2, main = 'Land surface temperature', col = custom_colors);
-plot(grid_2, add = T);
+plot(grid_1b, add = T);
 dev.off()  # Close the jpeg device
 
 jpeg(paste0('shp/3/ppa_2301_rce_dis_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
 plot(dis_2, main = 'Distance to river', col = custom_colors);
-plot(grid_2, add = T);
+plot(grid_1b, add = T);
 dev.off()  
 
 #up2023_0924_10:31_e
@@ -52,17 +52,17 @@ dev.off()
 #up2023_0924_10:31_s
 
 rc_ana_1 <- function(f_grid_num){
-  f_dis_exa_1 <- crop(dis_2, extent(grid_2[f_grid_num,]));
-  f_lst_exa_1 <- crop(lst_2, extent(grid_2[f_grid_num,]));
+  f_dis_exa_1 <- crop(dis_2, extent(grid_1b[f_grid_num,]));
+  f_lst_exa_1 <- crop(lst_2, extent(grid_1b[f_grid_num,]));
   
-  f_dis_exa <- mask(f_dis_exa_1,grid_2[f_grid_num,]);
-  f_lst_exa <- mask(f_lst_exa_1,grid_2[f_grid_num,]);
+  f_dis_exa <- mask(f_dis_exa_1,grid_1b[f_grid_num,]);
+  f_lst_exa <- mask(f_lst_exa_1,grid_1b[f_grid_num,]);
   
   plot(f_dis_exa, col = custom_colors);
-  plot(grid_2[f_grid_num,],add = T);
+  plot(grid_1b[f_grid_num,],add = T);
   
   plot(f_lst_exa, col = custom_colors);
-  plot(grid_2[f_grid_num,],add = T);
+  plot(grid_1b[f_grid_num,],add = T);
   
   f_disv_exa <- getValues(f_dis_exa);
   f_lstv_exa <- getValues(f_lst_exa);
@@ -264,8 +264,8 @@ for (ii in 1: grid_end1){
   grid_2$rx_crci3[ii] <- data_df_4[[ii]][9][[1]];
 }
 
-st_write(grid_2, paste0('shp/3/ppa_2301_rce_', order_1,'.shp'))
-write.csv(data_df_4v, file = paste0('shp/3/ppa_2301_rce_',order_1,'.csv'), row.names = FALSE)
+st_write(grid_2, paste0('shp/3/ppa_2301_rce_s', order_1,'.shp'))
+write.csv(data_df_4v, file = paste0('shp/3/ppa_2301_rce_s',order_1,'.csv'), row.names = FALSE)
 
 #up2023_0924_10:31_e
 
