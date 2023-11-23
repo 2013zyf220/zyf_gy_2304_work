@@ -119,35 +119,35 @@ res_1d <- bh_f1(bh_1d);
 
 grid_2 <- st_read(paste0('ppa_2301_k2/shp/2/', buffer_2));
   
-grid_2$bh1a_L6 <- res_1a[['bh_6_len']]
-grid_2$bh1a_L7 <- res_1a[['bh_7_len']]
-grid_2$bh1a_M6 <- res_1a[['bh_6_mean']]
-grid_2$bh1a_M7 <- res_1a[['bh_7_mean']]
-grid_2$bh1a_S6 <- res_1a[['bh_6_std']]
-grid_2$bh1a_S7 <- res_1a[['bh_7_std']]
-grid_2$bh1a_r <- res_1a[['bh_ratio']]
-grid_2$bh1b_L6 <- res_1b[['bh_6_len']]
-grid_2$bh1b_L7 <- res_1b[['bh_7_len']]
-grid_2$bh1b_M6 <- res_1b[['bh_6_mean']]
-grid_2$bh1b_M7 <- res_1b[['bh_7_mean']]
-grid_2$bh1b_S6 <- res_1b[['bh_6_std']]
-grid_2$bh1b_S7 <- res_1b[['bh_7_std']]
-grid_2$bh1b_r <- res_1b[['bh_ratio']]
+grid_2$XB1a_len_1 <- res_1a[['bh_6_len']]
+grid_2$XB1a_len_2 <- res_1a[['bh_7_len']]
+grid_2$XB1a_mean_1 <- res_1a[['bh_6_mean']]
+grid_2$XB1a_mean_2 <- res_1a[['bh_7_mean']]
+grid_2$XB1a_std_1 <- res_1a[['bh_6_std']]
+grid_2$XB1a_std_2 <- res_1a[['bh_7_std']]
+grid_2$XB1a_ratio <- res_1a[['bh_ratio']]
+grid_2$XB1b_len_1 <- res_1b[['bh_6_len']]
+grid_2$XB1b_len_2 <- res_1b[['bh_7_len']]
+grid_2$XB1b_mean_1 <- res_1b[['bh_6_mean']]
+grid_2$XB1b_mean_2 <- res_1b[['bh_7_mean']]
+grid_2$XB1b_std_1 <- res_1b[['bh_6_std']]
+grid_2$XB1b_std_2 <- res_1b[['bh_7_std']]
+grid_2$XB1b_ratio <- res_1b[['bh_ratio']]
   
-grid_2$bh1c_L6 <- res_1c[['bh_6_len']]
-grid_2$bh1c_L7 <- res_1c[['bh_7_len']]
-grid_2$bh1c_M6 <- res_1c[['bh_6_mean']]
-grid_2$bh1c_M7 <- res_1c[['bh_7_mean']]
-grid_2$bh1c_S6 <- res_1c[['bh_6_std']]
-grid_2$bh1c_S7 <- res_1c[['bh_7_std']]
-grid_2$bh1c_r <- res_1c[['bh_ratio']]
-grid_2$bh1d_L6 <- res_1d[['bh_6_len']]
-grid_2$bh1d_L7 <- res_1d[['bh_7_len']]
-grid_2$bh1d_M6 <- res_1d[['bh_6_mean']]
-grid_2$bh1d_M7 <- res_1d[['bh_7_mean']]
-grid_2$bh1d_S6 <- res_1d[['bh_6_std']]
-grid_2$bh1d_S7 <- res_1d[['bh_7_std']]
-grid_2$bh1d_r <- res_1d[['bh_ratio']]
+grid_2$XB1c_len_1 <- res_1c[['bh_6_len']]
+grid_2$XB1c_len_2 <- res_1c[['bh_7_len']]
+grid_2$XB1c_mean_1 <- res_1c[['bh_6_mean']]
+grid_2$XB1c_mean_2 <- res_1c[['bh_7_mean']]
+grid_2$XB1c_std_1 <- res_1c[['bh_6_std']]
+grid_2$XB1c_std_2 <- res_1c[['bh_7_std']]
+grid_2$XB1c_ratio <- res_1c[['bh_ratio']]
+grid_2$XB1d_len_1 <- res_1d[['bh_6_len']]
+grid_2$XB1d_len_2 <- res_1d[['bh_7_len']]
+grid_2$XB1d_mean_1 <- res_1d[['bh_6_mean']]
+grid_2$XB1d_mean_2 <- res_1d[['bh_7_mean']]
+grid_2$XB1d_std_1 <- res_1d[['bh_6_std']]
+grid_2$XB1d_std_2 <- res_1d[['bh_7_std']]
+grid_2$XB1d_ratio <- res_1d[['bh_ratio']]
 st_write(grid_2, paste0('ppa_2301_k2/shp/3/ppa_2301_bh_1_buf', buffer_1, '.shp'))
 
 
@@ -184,9 +184,9 @@ bh_data_export[, 26] <- res_1d[['bh_6_std']]
 bh_data_export[, 27] <- res_1d[['bh_7_std']]
 bh_data_export[, 28] <- res_1d[['bh_ratio']]
 bh_data_export[, 29] <- res_1a[['NUMBER']]
-colnames(bh_data_export) <- c("1a_len_1", "1a_len_2", "1a_mean_1", "1a_mean_2", "1a_std_1", "1a_std_2", "1a_ratio", 
-                              "1b_len_1", "1b_len_2", "1b_mean_1", "1b_mean_2", "1b_std_1", "1b_std_2", "1b_ratio",
-                              "1c_len_1", "1c_len_2", "1c_mean_1", "1c_mean_2", "1c_std_1", "1c_std_2", "1c_ratio", 
-                              "1d_len_1", "1d_len_2", "1d_mean_1", "1d_mean_2", "1d_std_1", "1d_std_2", "1d_ratio", "NUMBER")
+colnames(bh_data_export) <- c("XB1a_len_1", "XB1a_len_2", "XB1a_mean_1", "XB1a_mean_2", "XB1a_std_1", "XB1a_std_2", "XB1a_ratio", 
+                              "XB1b_len_1", "XB1b_len_2", "XB1b_mean_1", "XB1b_mean_2", "XB1b_std_1", "XB1b_std_2", "XB1b_ratio",
+                              "XB1c_len_1", "XB1c_len_2", "XB1c_mean_1", "XB1c_mean_2", "XB1c_std_1", "XB1c_std_2", "XB1c_ratio", 
+                              "XB1d_len_1", "XB1d_len_2", "XB1d_mean_1", "XB1d_mean_2", "XB1d_std_1", "XB1d_std_2", "XB1d_ratio", "NUMBER")
 write.csv(bh_data_export, file = paste0('ppa_2301_k2/shp/3/ppa_2301_bh_1_buf', buffer_1, '.csv'), row.names = FALSE)
 

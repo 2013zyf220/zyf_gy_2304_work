@@ -51,22 +51,22 @@ ls_index_f <- function(f_year){
   f_len_grid_1 <- length(f_grid_1b) #to_be_set
   f_len_grid_2 <- length(f_grid_1b) #to_be_set
   
-  f_grid_2$rx_grid_x <- rep(0, f_len_grid_2)
-  f_grid_2$rx_grid_y <- rep(0, f_len_grid_2)
-  f_grid_2$rx_ps_imp <- rep(0, f_len_grid_2)
-  f_grid_2$rx_pc_imp <- rep(0, f_len_grid_2)
-  f_grid_2$rx_co_imp <- rep(0, f_len_grid_2)
-  f_grid_2$rx_ai_imp <- rep(0, f_len_grid_2)
-  f_grid_2$rx_ps_gre <- rep(0, f_len_grid_2)
-  f_grid_2$rx_pc_gre <- rep(0, f_len_grid_2)
-  f_grid_2$rx_co_gre <- rep(0, f_len_grid_2)
-  f_grid_2$rx_ai_gre <- rep(0, f_len_grid_2)
-  f_grid_2$rx_ps_wat <- rep(0, f_len_grid_2)
-  f_grid_2$rx_pc_wat <- rep(0, f_len_grid_2)
-  f_grid_2$rx_co_wat <- rep(0, f_len_grid_2)
-  f_grid_2$rx_ai_wat <- rep(0, f_len_grid_2)
-  f_grid_2$rx_pd <- rep(0, f_len_grid_2)
-  f_grid_2$rx_lsi <- rep(0, f_len_grid_2)
+  f_grid_2$XL_grid_x <- rep(0, f_len_grid_2)
+  f_grid_2$XL_grid_y <- rep(0, f_len_grid_2)
+  f_grid_2$XL_ps_imp <- rep(0, f_len_grid_2)
+  f_grid_2$XL_pc_imp <- rep(0, f_len_grid_2)
+  f_grid_2$XL_co_imp <- rep(0, f_len_grid_2)
+  f_grid_2$XL_ai_imp <- rep(0, f_len_grid_2)
+  f_grid_2$XL_ps_gre <- rep(0, f_len_grid_2)
+  f_grid_2$XL_pc_gre <- rep(0, f_len_grid_2)
+  f_grid_2$XL_co_gre <- rep(0, f_len_grid_2)
+  f_grid_2$XL_ai_gre <- rep(0, f_len_grid_2)
+  f_grid_2$XL_ps_wat <- rep(0, f_len_grid_2)
+  f_grid_2$XL_pc_wat <- rep(0, f_len_grid_2)
+  f_grid_2$XL_co_wat <- rep(0, f_len_grid_2)
+  f_grid_2$XL_ai_wat <- rep(0, f_len_grid_2)
+  f_grid_2$XL_pd <- rep(0, f_len_grid_2)
+  f_grid_2$XL_lsi <- rep(0, f_len_grid_2)
   
   f_ls_metric <- data.frame()
   
@@ -119,33 +119,33 @@ ls_index_f <- function(f_year){
     fc_pland_c_wat <- fc_pland_c$value[fc_pland_c$class == 5]
     fc_pland_c_imp <- fc_pland_c$value[fc_pland_c$class == 8]
     
-    fc_df <- data.frame(rx_grid_id = fc_grid_id, rx_grid_x = fc_grid_x, rx_grid_y = fc_grid_y, 
-                       rx_pland_s_imp = fc_pland_s_imp, rx_cohesion_imp = fc_cohesion_imp, rx_pland_c_imp = fc_pland_c_imp, 
-                       rx_ai_imp = fc_ai_imp, 
-                       rx_pland_s_gre = fc_pland_s_gre, rx_cohesion_gre = fc_cohesion_gre, rx_pland_c_gre = fc_pland_c_gre, 
-                       rx_ai_gre = fc_ai_gre, 
-                       rx_pland_s_wat = fc_pland_s_wat, rx_cohesion_wat = fc_cohesion_wat, rx_pland_c_wat = fc_pland_c_wat, 
-                       rx_ai_wat = fc_ai_wat, rx_pd = fc_pd_v,  rx_lsi = fc_lsi_v) 
+    fc_df <- data.frame(NUMBER = fc_grid_id, XL_grid_x = fc_grid_x, XL_grid_y = fc_grid_y, 
+                       XL_ps_imp = fc_pland_s_imp, XL_co_imp = fc_cohesion_imp, XL_pc_imp = fc_pland_c_imp, 
+                       XL_ai_imp = fc_ai_imp, 
+                       XL_ps_gre = fc_pland_s_gre, XL_co_gre = fc_cohesion_gre, XL_pc_gre = fc_pland_c_gre, 
+                       XL_ai_gre = fc_ai_gre, 
+                       XL_ps_wat = fc_pland_s_wat, XL_co_wat = fc_cohesion_wat, XL_pc_wat = fc_pland_c_wat, 
+                       XL_ai_wat = fc_ai_wat, XL_pd = fc_pd_v,  XL_lsi = fc_lsi_v) 
     
     f_ls_metric <- rbind(f_ls_metric,fc_df)
   
-    f_grid_2$rx_grid_id[ii] <- fc_grid_id
-    f_grid_2$rx_grid_x[ii] <- fc_grid_x
-    f_grid_2$rx_grid_y[ii] <- fc_grid_y
-    f_grid_2$rx_ps_imp[ii] <- fc_pland_s_imp
-    f_grid_2$rx_pc_imp[ii] <- fc_pland_c_imp
-    f_grid_2$rx_co_imp[ii] <- fc_cohesion_imp
-    f_grid_2$rx_ai_imp[ii] <- fc_ai_imp
-    f_grid_2$rx_ps_gre[ii] <- fc_pland_s_gre
-    f_grid_2$rx_pc_gre[ii] <- fc_pland_c_gre
-    f_grid_2$rx_co_gre[ii] <- fc_cohesion_gre
-    f_grid_2$rx_ai_gre[ii] <- fc_ai_gre
-    f_grid_2$rx_ps_wat[ii] <- fc_pland_s_wat
-    f_grid_2$rx_pc_wat[ii] <- fc_pland_c_wat
-    f_grid_2$rx_co_wat[ii] <- fc_cohesion_wat
-    f_grid_2$rx_ai_wat[ii] <- fc_ai_wat
-    f_grid_2$rx_pd[ii] <- fc_pd_v
-    f_grid_2$rx_lsi[ii] <- fc_lsi_v
+    f_grid_2$XL_grid_id[ii] <- fc_grid_id
+    f_grid_2$XL_grid_x[ii] <- fc_grid_x
+    f_grid_2$XL_grid_y[ii] <- fc_grid_y
+    f_grid_2$XL_ps_imp[ii] <- fc_pland_s_imp
+    f_grid_2$XL_pc_imp[ii] <- fc_pland_c_imp
+    f_grid_2$XL_co_imp[ii] <- fc_cohesion_imp
+    f_grid_2$XL_ai_imp[ii] <- fc_ai_imp
+    f_grid_2$XL_ps_gre[ii] <- fc_pland_s_gre
+    f_grid_2$XL_pc_gre[ii] <- fc_pland_c_gre
+    f_grid_2$XL_co_gre[ii] <- fc_cohesion_gre
+    f_grid_2$XL_ai_gre[ii] <- fc_ai_gre
+    f_grid_2$XL_ps_wat[ii] <- fc_pland_s_wat
+    f_grid_2$XL_pc_wat[ii] <- fc_pland_c_wat
+    f_grid_2$XL_co_wat[ii] <- fc_cohesion_wat
+    f_grid_2$XL_ai_wat[ii] <- fc_ai_wat
+    f_grid_2$XL_pd[ii] <- fc_pd_v
+    f_grid_2$XL_lsi[ii] <- fc_lsi_v
   }
   
   st_write(f_grid_2, paste0('ppa_2301_lsi_', f_year, '_buf', buffer_1, '.shp'))
