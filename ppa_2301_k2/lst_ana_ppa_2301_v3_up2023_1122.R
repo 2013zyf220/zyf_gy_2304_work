@@ -231,8 +231,9 @@ data_df_2 <- list();
 data_df_3 <- list();
 data_df_3_mean <- list();
 data_df_4 <- list();
-data_df_4v <- matrix(0, nrow = 9, ncol = grid_end1);
+data_df_4v <- matrix(0, nrow = grid_end1, ncol = 12);
 breaks_2_num <- list();
+
 
 for (ii in 1: grid_end1){
   breaks_2_num[[ii]] <- round(breaks_2_end[ii] / breaks_2_by[ii]);
@@ -241,18 +242,19 @@ for (ii in 1: grid_end1){
   data_df_3[[ii]] <- rc_ana_3(ii, breaks_2_end[ii], breaks_2_by[ii]);
   data_df_3_mean[[ii]] <- rc_ana_3_mean(ii, breaks_2_end[ii], breaks_2_by[ii]);
   data_df_4[[ii]] <- rc_ana_4(ii, breaks_2_num[[ii]]);
-  data_df_4v[1,ii] <- data_df_4[[ii]][1][[1]];
-  data_df_4v[2,ii] <- data_df_4[[ii]][2][[1]];
-  data_df_4v[3,ii] <- data_df_4[[ii]][3][[1]];
-  data_df_4v[4,ii] <- data_df_4[[ii]][4][[1]];
-  data_df_4v[5,ii] <- data_df_4[[ii]][5][[1]];
-  data_df_4v[6,ii] <- data_df_4[[ii]][6][[1]];
-  data_df_4v[7,ii] <- data_df_4[[ii]][7][[1]];
-  data_df_4v[8,ii] <- data_df_4[[ii]][8][[1]];
-  data_df_4v[9,ii] <- data_df_4[[ii]][9][[1]];
+  data_df_4v[ii,1] <- data_df_4[[ii]][1][[1]];
+  data_df_4v[ii,2] <- data_df_4[[ii]][2][[1]];
+  data_df_4v[ii,3] <- data_df_4[[ii]][3][[1]];
+  data_df_4v[ii,4] <- data_df_4[[ii]][4][[1]];
+  data_df_4v[ii,5] <- data_df_4[[ii]][5][[1]];
+  data_df_4v[ii,6] <- data_df_4[[ii]][6][[1]];
+  data_df_4v[ii,7] <- data_df_4[[ii]][7][[1]];
+  data_df_4v[ii,8] <- data_df_4[[ii]][8][[1]];
+  data_df_4v[ii,9] <- data_df_4[[ii]][9][[1]];
+  data_df_4v[ii,10] <- data_df_4[[ii]][10][[1]];
+  data_df_4v[ii,11] <- data_df_4[[ii]][11][[1]];
+  data_df_4v[ii,12] <- ii;
   
-  grid_2$rx_x2[ii] <- data_df_4[[ii]][10][[1]];
-  grid_2$rx_y2[ii] <- data_df_4[[ii]][11][[1]];
   grid_2$rx_rcd[ii] <- data_df_4[[ii]][1][[1]];
   grid_2$rx_rci[ii] <- data_df_4[[ii]][2][[1]];
   grid_2$rx_crci[ii] <- data_df_4[[ii]][3][[1]];
@@ -262,8 +264,12 @@ for (ii in 1: grid_end1){
   grid_2$rx_rcd3[ii] <- data_df_4[[ii]][7][[1]];
   grid_2$rx_rci3[ii] <- data_df_4[[ii]][8][[1]];
   grid_2$rx_crci3[ii] <- data_df_4[[ii]][9][[1]];
+  grid_2$rx_x2[ii] <- data_df_4[[ii]][10][[1]];
+  grid_2$rx_y2[ii] <- data_df_4[[ii]][11][[1]];
 }
 
+data_df_4v_col <- c('rx_rcd', 'rx_rci', 'rx_crci', 'rx_rcd2', 'rx_rci2', 'rx_crci2', 'rx_rcd3', 'rx_rci3', 'rx_crci3', 'rx_x', 'rx_y', 'NUMBER')
+colnames(data_df_4v) <- data_df_4v_col
 st_write(grid_2, paste0('shp/3/ppa_2301_rce_s', order_1,'.shp'))
 write.csv(data_df_4v, file = paste0('shp/3/ppa_2301_rce_s',order_1,'.csv'), row.names = FALSE)
 
