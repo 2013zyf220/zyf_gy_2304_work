@@ -34,10 +34,10 @@ order_1 <- 1; #to_be_set_key
 buffer_1 <- 1000; #to_be_set_key
 
 data_terrain_1 <- paste0('ppa_2301_terrain_1_buf', buffer_1, '.shp');
-data_terrain_var <- c('NUMBER', 'XG_CEN_X', 'XG_CEN_Y', 'XG_DEM_MEA', 'XG_DEM_STD', 'XG_SLOPE_M', 'XG_ASPECT_', 'XG_DIS_CEN');
+data_terrain_var <- c('NUMBER', 'XT_CEN_X', 'XT_CEN_Y', 'XT_DEM_MEA', 'XT_DEM_STD', 'XT_SLOPE_M', 'XT_ASPECT_', 'XT_DIS_CEN');
 data_terrain_out <- paste0('ppa_2301_terrain_1_buf', buffer_1, '.csv');
 data_ndvi_1 <- paste0('ppa_2301_ndvi_s', order_1,  '_buf', buffer_1, '.shp');
-data_ndvi_var <- c('NUMBER', 'XG_CEN_X2', 'XG_CEN_Y2', 'XG_NDVI_ME');
+data_ndvi_var <- c('NUMBER', 'XN_CEN_X2', 'XN_CEN_Y2', 'XN_NDVI_ME');
 data_ndvi_out <- paste0('ppa_2301_ndvi_s', order_1,  '_buf', buffer_1, '.csv'); 
 
 #==========================================================
