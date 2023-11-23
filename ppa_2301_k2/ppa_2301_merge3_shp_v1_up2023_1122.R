@@ -2,8 +2,8 @@ library(sf)
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3')
 
-data_terrain_var <- c('NUMBER', 'XG_CEN_X', 'XG_CEN_Y', 'XG_DEM_MEA', 'XG_DEM_STD', 'XG_SLOPE_M', 'XG_ASPECT_', 'XG_DIS_CEN');  #to_be_set
-data_ndvi_var <- c('NUMBER', 'XG_CEN_X2', 'XG_CEN_Y2', 'XG_NDVI_ME');  #to_be_set
+data_terrain_var <- c('NUMBER', 'XT_CEN_X', 'XT_CEN_Y', 'XT_DEM_MEA', 'XT_DEM_STD', 'XT_SLOPE_M', 'XT_ASPECT_', 'XT_DIS_CEN');  #to_be_set
+data_ndvi_var <- c('NUMBER', 'XN_CEN_X2', 'XN_CEN_Y2', 'XN_NDVI_ME');  #to_be_set
 
 merged_data_f <- function(f_order, f_year, f_buffer){
  
