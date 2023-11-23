@@ -9,7 +9,7 @@ library(caret)
 library(pROC)
 
 #重点输出：非线性曲线&R2&重要性
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs3")
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3")
 
 #==============================================================
 
@@ -27,8 +27,8 @@ col_values_f <- function(f_mat, f_col_name){
 
 #==============================================================
 
-brt_f1 <- function(f_year, f_index_y, f_col_1d2, f_col_2d3, f_rows_remove){
-  f_data_1 <- read.csv(paste0("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2/2301_river_6_", f_year, ".csv")); 
+brt_f1 <- function(f_order, f_buffer, f_index_y, f_col_1d2, f_col_2d3, f_rows_remove){
+  f_data_1 <- read.csv(paste0("ppa_2301_ana_s", f_order, '_buf', f_buffer,".csv")); 
   f_data_1b <- f_data_1[, f_col_1d2];
   if(length(f_rows_remove) == 0){
     f_data_2 <- f_data_1b
@@ -108,42 +108,43 @@ brt_pred_f <- function(f_fit_1, f_data, f_perf_gbm1, f_data_y){
 
 #=================================================================
 
-year_s <- 2021; #to_be_set
-year_e <- 2021; #to_be_set
-indexes_y <- list("rx_rci") #to_be_set
-col_1d2 <- c(3,7,9,12,13,16,18,33,34,35,44,58); #to_be_set
-col_2d3 <- c(1,2,3,4,5,6,7,11,12); #to_be_set
+order_1 <- 1; #to_be_set_key
+buffer_1s <- c(1000) #to_be_set_key
+indexes_y <- list("XY_rci") #to_be_set
+col_1d2 <- c(2,5,6,8,9,17,18,21,49,51,53,56,57,58,59); #to_be_set
+col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12); #to_be_set
 len_col_2d3 <- length(col_2d3);
-rows_remove <- c(49,142,143); #to_be_set
+rows_remove <- c(37,174); #to_be_set
 
 brt_f2_res_2 <- list();
 ii <- 1;
-for(c_year in year_s: year_e){
+for(c_buffer in buffer_1s){
   brt_f2_res_2[[ii]] <- list();
   for(c_index_y in indexes_y){
-    c_brt_f1_res <- brt_f1(c_year, c_index_y, col_1d2, col_2d3, rows_remove)
+    c_brt_f1_res <- brt_f1(order_1, c_buffer, c_index_y, col_1d2, col_2d3, rows_remove)
     c_1 <- brt_f2(c_brt_f1_res$form_reg, c_brt_f1_res$train_data)
     brt_f2_res_2[[ii]][[c_index_y]] <- c_1
     c_brt_f2_res_sum <- c_1$sum_fit_1
-
+    
     c_brt_pred_train <- brt_pred_f(c_1$fit_1, c_brt_f1_res$train_data, c_1$perf_gbm,  c_brt_f1_res$train_data_y)
     c_brt_pred_test <- brt_pred_f(c_1$fit_1, c_brt_f1_res$test_data, c_1$perf_gbm,  c_brt_f1_res$test_data_y)
     
-    write.csv(c_brt_pred_train$mat, file = paste0("2301_brt_pred_1_train_", c_year, "_", c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_brt_pred_test$mat, file = paste0("2301_brt_pred_1_test_", c_year, "_", c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_brt_f2_res_sum, file = paste0("2301_brt_impor_1_", c_year, "_", c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_pred_train$mat, file = paste0("2301_brt_pred_1_train_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_pred_test$mat, file = paste0("2301_brt_pred_1_test_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_f2_res_sum, file = paste0("2301_brt_impor_1_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
   }
   ii <- ii + 1;
 }
 
 #=================================================================
 
-year_1 <- 2021; #to_be_set
+buffer_1e <- 1000 #to_be_set
 ii_1 <- 1; #to_be_set
 index_y_1 <- indexes_y[[1]]; #to_be_set
 
-jpeg(paste0("ppa_2301_brt_1b_", year_1, "_", index_y_1,".jpg"))
+jpeg(paste0("ppa_2301_brt_1b_", order_1,'_buf', buffer_1e, "_", index_y_1,".jpg"))
 plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = 1)
 dev.off()  
 
 #plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = c(1,5)) #生成第1个和第5个变量的偏依赖图
+

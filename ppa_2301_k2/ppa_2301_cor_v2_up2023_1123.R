@@ -11,16 +11,18 @@ library(car)
 #rm(list = ls())
 
 #============================================================
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3")
 
 #initial setting
-index_x <- list('XG_NDVI_ME', 'XG_DIS_CEN', 'XG_SLOPE_M', 'XG_DEM_MEA', 'rx_ps_imp', 'rx_co_imp', 'rx_ai_imp', 'rx_ps_gre', 'rx_pd', 'rx_lsi', 'bh1a_M6', 'XG_ANGLE_2')    #to_be_set
-index_y <- list('rx_rcd', 'rx_rci', 'rx_crci')    #to_be_set
+index_x <- list("XA_ANGLE_2", "XL_ps_imp", "XL_co_imp", "XL_ai_imp", "XL_ps_gre", "XL_pd", "XL_lsi", "XB1a_mean_1", "XT_DEM_MEA", "XT_SLOPE_M", "XT_DIS_CEN", "XN_NDVI_ME")    #to_be_set
+index_y <- list("XY_rcd", "XY_rci", "XY_crci")    #to_be_set
 
 row_1 <- length(index_x)
 col_1 <- length(index_y)
 
-cor_data_f <- function(f_year){
-  cat('Analysis Year:', f_year)
+cor_data_f <- function(f_order, f_buffer){
+  cat('order:', f_order)
+  cat('buffer:', f_buffer)
   #set empty lists
   f_model_list <- list()
   f_model_sum_list <- list()
@@ -28,18 +30,17 @@ cor_data_f <- function(f_year){
   f_res_list <- list()
   
   #input data
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
-  f_data_1 <- read.csv(paste0('2301_river_6_', f_year,'.csv')) 
-  f_data_1b = f_data_1[,c(3,4,7,12,16,18,19,20,28,29,33,34,35,44,57)]    #to_be_set
-  f_data_1c <- f_data_1b[f_data_1b$rx_rci != 0, ] #to_be_set
-  f_data_2 <- f_data_1c[-c(49,142,143), ] #to_be_set
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/outputs2')
+  f_data_1 <- read.csv(paste0('ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv')) 
+  f_data_1b = f_data_1[,c(2,5,6,8,9,17,18,21,49,51,53,56,57,58,59)]    #to_be_set
+  f_data_1c <- f_data_1b[f_data_1b$XY_rci != 0, ] #to_be_set
+  f_data_2 <- f_data_1c[-c(37,174), ] #to_be_set
+
   
   f_data_out_1 <- f_data_2[,c(1,6)]  #to_be_set
   
   #plot data
   plot(f_data_2)
-  chart.Correlation(f_data_2, method = 'pearson', pch = 19, col = 'blue', tl.cex = 1.2)
+  chart.Correlation(f_data_2, method = "pearson", pch = 19, col = "blue", tl.cex = 1.2)
   #hist(f_data_2$rx_crci)  #to_be_set
   
   #correlation analysis
@@ -47,8 +48,8 @@ cor_data_f <- function(f_year){
   
   #model analysis
   f_model_formula <- list();
-  for(kk in 1:3){
-    f_model_formula[[kk]] <- as.formula(paste0(index_y[kk], ' ~ ', paste(index_x, collapse = ' + ')));
+  for(kk in 1: col_1){
+    f_model_formula[[kk]] <- as.formula(paste0(index_y[kk], " ~ ", paste(index_x, collapse = " + ")));
     f_model_list[[kk]] <- lm(f_model_formula[[kk]], data = f_data_2) #to_be_set
   }
   
@@ -72,7 +73,7 @@ cor_data_f <- function(f_year){
     for (jj in 1: row_1){
       f_lm_cor[jj,ii] <- f_cor_1[index_y[[ii]],index_x[[jj]]]
       f_lm_slope[jj,ii] <- f_model_list[[ii]]$coefficients[index_x[[jj]]]
-      f_lm_p[jj,ii] <- f_model_sum_list[[ii]]$coefficients[index_x[[jj]],'Pr(>|t|)']
+      f_lm_p[jj,ii] <- f_model_sum_list[[ii]]$coefficients[index_x[[jj]],"Pr(>|t|)"]
     }
 
     f_lm_r2[1,ii] <- f_model_sum_list[[ii]]$r.squared
@@ -80,8 +81,8 @@ cor_data_f <- function(f_year){
     f_lm_r2[3,ii] <- f_model_sum_list[[ii]]$fstatistic[1]
     
     f_res_list[[ii]] <- list()
-    f_res_list[[ii]][['model_sum_list']] <- f_model_sum_list[[ii]]
-    f_res_list[[ii]][['model_anova_list']] <- f_model_anova_list[[ii]]
+    f_res_list[[ii]][["model_sum_list"]] <- f_model_sum_list[[ii]]
+    f_res_list[[ii]][["model_anova_list"]] <- f_model_anova_list[[ii]]
   }
   
   colnames(f_lm_cor) <- index_y
@@ -91,30 +92,23 @@ cor_data_f <- function(f_year){
   colnames(f_lm_p) <- index_y
   rownames(f_lm_p) <- index_x  
   
-  f_res_list[['lm_cor']] <- f_lm_cor
-  f_res_list[['lm_slope']] <- f_lm_slope
-  f_res_list[['lm_p']] <- f_lm_p
-  f_res_list[['lm_r']] <- f_lm_r2
-  f_res_list[['out_1']] <- f_data_out_1
-  f_res_list[['model_formula']] <- f_model_formula
-  write.csv(f_lm_cor, file = paste0('2301_lm_cor_',f_year,'.csv'), row.names = FALSE)
-  write.csv(f_lm_slope, file = paste0('2301_lm_slope_',f_year,'.csv'), row.names = FALSE)
-  write.csv(f_lm_p, file = paste0('2301_lm_p_',f_year,'.csv'), row.names = FALSE)
-  write.csv(f_lm_r2, file = paste0('2301_lm_r2_',f_year,'.csv'), row.names = FALSE)
+  f_res_list[["lm_cor"]] <- f_lm_cor
+  f_res_list[["lm_slope"]] <- f_lm_slope
+  f_res_list[["lm_p"]] <- f_lm_p
+  f_res_list[["lm_r"]] <- f_lm_r2
+  f_res_list[["out_1"]] <- f_data_out_1
+  f_res_list[["model_formula"]] <- f_model_formula
+  write.csv(f_lm_cor, file = paste0('2301_lm_cor_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
+  write.csv(f_lm_slope, file = paste0('2301_lm_slope_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
+  write.csv(f_lm_p, file = paste0('2301_lm_p_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
+  write.csv(f_lm_r2, file = paste0('2301_lm_r2_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
   
   return(f_res_list)
 }
 #==========================
 
-years <- seq(2021, 2021, by = 1) #to_be_set
-year_len <- length(years)
-res_list <- list()
-ii <- 1
-for (c_year in years){
-  res_list[[ii]] <- cor_data_f(c_year)
-  ii <- ii + 1
-}
+cor_data_res <- cor_data_f(1, 1000) #to_be_set_key
 
 #==========================
-cor_exa_1 <- res_list[[1]][['out_1']] #to_be_set
+cor_exa_1 <- cor_data_res[['out_1']] #to_be_set
 cor_exa_2 <- cor(cor_exa_1)
