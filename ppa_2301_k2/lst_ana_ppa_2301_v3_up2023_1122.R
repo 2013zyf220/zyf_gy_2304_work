@@ -214,17 +214,17 @@ breaks_2_end <- buffer_2;
 breaks_2_by <- rep(20, times = grid_end1); #to_be_set
 
 grid_end2 <- length(grid_1b)
-grid_2$rx_x2 <- rep(0, grid_end2)
-grid_2$rx_y2 <- rep(0, grid_end2)
-grid_2$rx_rcd <- rep(0, grid_end2)
-grid_2$rx_rci <- rep(0, grid_end2)
-grid_2$rx_crci <- rep(0, grid_end2)
-grid_2$rx_rcd2 <- rep(0, grid_end2)
-grid_2$rx_rci2 <- rep(0, grid_end2)
-grid_2$rx_crci2 <- rep(0, grid_end2)
-grid_2$rx_rcd3 <- rep(0, grid_end2)
-grid_2$rx_rci3 <- rep(0, grid_end2)
-grid_2$rx_crci3 <- rep(0, grid_end2)
+grid_2$XY_x2 <- rep(0, grid_end2)
+grid_2$XY_y2 <- rep(0, grid_end2)
+grid_2$XY_rcd <- rep(0, grid_end2)
+grid_2$XY_rci <- rep(0, grid_end2)
+grid_2$XY_crci <- rep(0, grid_end2)
+grid_2$XY_rcd2 <- rep(0, grid_end2)
+grid_2$XY_rci2 <- rep(0, grid_end2)
+grid_2$XY_crci2 <- rep(0, grid_end2)
+grid_2$XY_rcd3 <- rep(0, grid_end2)
+grid_2$XY_rci3 <- rep(0, grid_end2)
+grid_2$XY_crci3 <- rep(0, grid_end2)
 
 data_df_1 <- list();
 data_df_2 <- list();
@@ -255,20 +255,20 @@ for (ii in 1: grid_end1){
   data_df_4v[ii,11] <- data_df_4[[ii]][11][[1]];
   data_df_4v[ii,12] <- ii;
   
-  grid_2$rx_rcd[ii] <- data_df_4[[ii]][1][[1]];
-  grid_2$rx_rci[ii] <- data_df_4[[ii]][2][[1]];
-  grid_2$rx_crci[ii] <- data_df_4[[ii]][3][[1]];
-  grid_2$rx_rcd2[ii] <- data_df_4[[ii]][4][[1]];
-  grid_2$rx_rci2[ii] <- data_df_4[[ii]][5][[1]];
-  grid_2$rx_crci2[ii] <- data_df_4[[ii]][6][[1]];
-  grid_2$rx_rcd3[ii] <- data_df_4[[ii]][7][[1]];
-  grid_2$rx_rci3[ii] <- data_df_4[[ii]][8][[1]];
-  grid_2$rx_crci3[ii] <- data_df_4[[ii]][9][[1]];
-  grid_2$rx_x2[ii] <- data_df_4[[ii]][10][[1]];
-  grid_2$rx_y2[ii] <- data_df_4[[ii]][11][[1]];
+  grid_2$XY_rcd[ii] <- data_df_4[[ii]][1][[1]];
+  grid_2$XY_rci[ii] <- data_df_4[[ii]][2][[1]];
+  grid_2$XY_crci[ii] <- data_df_4[[ii]][3][[1]];
+  grid_2$XY_rcd2[ii] <- data_df_4[[ii]][4][[1]];
+  grid_2$XY_rci2[ii] <- data_df_4[[ii]][5][[1]];
+  grid_2$XY_crci2[ii] <- data_df_4[[ii]][6][[1]];
+  grid_2$XY_rcd3[ii] <- data_df_4[[ii]][7][[1]];
+  grid_2$XY_rci3[ii] <- data_df_4[[ii]][8][[1]];
+  grid_2$XY_crci3[ii] <- data_df_4[[ii]][9][[1]];
+  grid_2$XY_x2[ii] <- data_df_4[[ii]][10][[1]];
+  grid_2$XY_y2[ii] <- data_df_4[[ii]][11][[1]];
 }
 
-data_df_4v_col <- c('rx_rcd', 'rx_rci', 'rx_crci', 'rx_rcd2', 'rx_rci2', 'rx_crci2', 'rx_rcd3', 'rx_rci3', 'rx_crci3', 'rx_x', 'rx_y', 'NUMBER')
+data_df_4v_col <- c('XY_rcd', 'XY_rci', 'XY_crci', 'XY_rcd2', 'XY_rci2', 'XY_crci2', 'XY_rcd3', 'XY_rci3', 'XY_crci3', 'XY_x', 'XY_y', 'NUMBER')
 colnames(data_df_4v) <- data_df_4v_col
 st_write(grid_2, paste0('shp/3/ppa_2301_rce_s', order_1,'.shp'))
 write.csv(data_df_4v, file = paste0('shp/3/ppa_2301_rce_s',order_1,'.csv'), row.names = FALSE)
