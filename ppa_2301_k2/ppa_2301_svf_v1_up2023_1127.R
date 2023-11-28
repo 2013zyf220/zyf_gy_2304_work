@@ -15,7 +15,7 @@ shp_1 <- shapefile('ppa_2301_k2/shp/2/2301_cq_water_b12_buf1000_a01.shp')
 shp_2 <- spTransform(shp_1, '+init=epsg:4326');
 
 shp_sub <- list()
-shp_sub[[1]] <- 1:5 #to_be_set
+shp_sub[[1]] <- 1:2 #to_be_set
 shp_sub[[2]] <- 49:71 #to_be_set
 shp_sub[[3]] <- 72:97 #to_be_set
 shp_sub[[4]] <- 98:142 #to_be_set
@@ -39,5 +39,5 @@ for(ii in shp_sub[[shp_sub_set]]){
   plot(shp_2[ii,], add = T)
   
   c_bh_5 <- svf(c_bh_4)
-  writeRaster(c_bh_5, filename = paste0('ppa_2301_k2/raster1/svf_', data_1, '_', ii,'.tif'))
+  writeRaster(c_bh_5, filename = paste0('ppa_2301_k2/raster1/svf_', bh_set, '_', ii,'.tif'))
 }
