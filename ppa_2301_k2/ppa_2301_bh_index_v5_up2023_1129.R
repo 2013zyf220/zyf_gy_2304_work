@@ -43,6 +43,9 @@ bh_f1 <- function(f_bh_1, f_buffer){
   f_res_bh_6_std <- rep(0, f_grid_len);
   f_res_bh_7_std <- rep(0, f_grid_len);
   f_res_bh_ratio <- rep(0, f_grid_len);
+  f_res_bh_max <- rep(0, f_grid_len);
+  f_res_bh_sum <- rep(0, f_grid_len);
+  f_res_bh_ci <- rep(0, f_grid_len);
   f_res_NUMBER <- rep(0, f_grid_len);
   
   for(f_ii in 1: f_grid_len){
@@ -54,14 +57,14 @@ bh_f1 <- function(f_bh_1, f_buffer){
     
     fc_bh_5 <- getValues(fc_bh_4);
     fc_bh_6 <- na.omit(fc_bh_5);
-    fc_bh_7 <- ifelse(is.na(fc_bh_5), 0, fc_bh_5);
+    fc_bh_7 <- fc_bh_6[fc_bh_6 != 0]
     
     f_res_bh_5[[f_ii]] <- fc_bh_5;
     f_res_bh_6[[f_ii]] <- fc_bh_6;
     f_res_bh_7[[f_ii]] <- fc_bh_7;
     f_res_bh_6_len[f_ii] <- length(fc_bh_6);
     f_res_bh_7_len[f_ii] <- length(fc_bh_7);
-    f_res_bh_ratio[f_ii] <- f_res_bh_6_len[f_ii]/f_res_bh_7_len[f_ii]
+    f_res_bh_ratio[f_ii] <- f_res_bh_7_len[f_ii]/f_res_bh_6_len[f_ii]
     f_res_NUMBER[f_ii] <- f_ii
     
     c_1 <- length(fc_bh_5) - 2;
@@ -70,11 +73,17 @@ bh_f1 <- function(f_bh_1, f_buffer){
       f_res_bh_7_mean[f_ii] <- 0;
       f_res_bh_6_std[f_ii] <- 0;
       f_res_bh_7_std[f_ii] <- 0;
+      f_res_bh_max[f_ii] <- 0;
+      f_res_bh_sum[f_ii] <- 0;
+      f_res_bh_ci[f_ii] <- 0;
     }else{
       f_res_bh_6_mean[f_ii] <- mean(fc_bh_6);
       f_res_bh_7_mean[f_ii] <- mean(fc_bh_7);
       f_res_bh_6_std[f_ii] <- sd(fc_bh_6);
       f_res_bh_7_std[f_ii] <- sd(fc_bh_7);
+      f_res_bh_max[f_ii] <- max(fc_bh_7);
+      f_res_bh_sum[f_ii] <- sum(fc_bh_7);
+      f_res_bh_ci[f_ii] <- sum(fc_bh_7)/(f_res_bh_6_len[f_ii] * max(fc_bh_7))
     }
   }
   
@@ -89,6 +98,9 @@ bh_f1 <- function(f_bh_1, f_buffer){
   f_res_list[['bh_6_std']] <- f_res_bh_6_std
   f_res_list[['bh_7_std']] <- f_res_bh_7_std
   f_res_list[['bh_ratio']] <- f_res_bh_ratio
+  f_res_list[['bh_max']] <- f_res_bh_max
+  f_res_list[['bh_sum']] <- f_res_bh_sum
+  f_res_list[['bh_ci']] <- f_res_bh_ci
   f_res_list[['NUMBER']] <- f_res_NUMBER
   f_res_list[['grid_len']] <- f_grid_len
   return(f_res_list)
@@ -118,6 +130,8 @@ for(c_buf in buffers){
   c_grid_2$XB1a_std_1 <- res_1a_sum[[c_buf]][['bh_6_std']]
   c_grid_2$XB1a_std_2 <- res_1a_sum[[c_buf]][['bh_7_std']]
   c_grid_2$XB1a_ratio <- res_1a_sum[[c_buf]][['bh_ratio']]
+  c_grid_2$XB1a_ci <- res_1a_sum[[c_buf]][['bh_ci']]
+  
   c_grid_2$XB1b_len_1 <- res_1b_sum[[c_buf]][['bh_6_len']]
   c_grid_2$XB1b_len_2 <- res_1b_sum[[c_buf]][['bh_7_len']]
   c_grid_2$XB1b_mean_1 <- res_1b_sum[[c_buf]][['bh_6_mean']]
@@ -125,6 +139,7 @@ for(c_buf in buffers){
   c_grid_2$XB1b_std_1 <- res_1b_sum[[c_buf]][['bh_6_std']]
   c_grid_2$XB1b_std_2 <- res_1b_sum[[c_buf]][['bh_7_std']]
   c_grid_2$XB1b_ratio <- res_1b_sum[[c_buf]][['bh_ratio']]
+  c_grid_2$XB1b_ci <- res_1b_sum[[c_buf]][['bh_ci']]
   
   c_grid_2$XB1c_len_1 <- res_1c_sum[[c_buf]][['bh_6_len']]
   c_grid_2$XB1c_len_2 <- res_1c_sum[[c_buf]][['bh_7_len']]
@@ -133,6 +148,8 @@ for(c_buf in buffers){
   c_grid_2$XB1c_std_1 <- res_1c_sum[[c_buf]][['bh_6_std']]
   c_grid_2$XB1c_std_2 <- res_1c_sum[[c_buf]][['bh_7_std']]
   c_grid_2$XB1c_ratio <- res_1c_sum[[c_buf]][['bh_ratio']]
+  c_grid_2$XB1c_ci <- res_1c_sum[[c_buf]][['bh_ci']]
+  
   c_grid_2$XB1d_len_1 <- res_1d_sum[[c_buf]][['bh_6_len']]
   c_grid_2$XB1d_len_2 <- res_1d_sum[[c_buf]][['bh_7_len']]
   c_grid_2$XB1d_mean_1 <- res_1d_sum[[c_buf]][['bh_6_mean']]
@@ -140,14 +157,15 @@ for(c_buf in buffers){
   c_grid_2$XB1d_std_1 <- res_1d_sum[[c_buf]][['bh_6_std']]
   c_grid_2$XB1d_std_2 <- res_1d_sum[[c_buf]][['bh_7_std']]
   c_grid_2$XB1d_ratio <- res_1d_sum[[c_buf]][['bh_ratio']]
+  c_grid_2$XB1d_ci <- res_1d_sum[[c_buf]][['bh_ci']]
   st_write(c_grid_2, paste0('ppa_2301_k2/shp/3/ppa_2301_bh_1_buf', c_buf, '.shp'))
   
   c_grid_len <- res_1a_sum[[c_buf]][['grid_len']]
-  c_bh_data_export <- matrix(0, nrow = c_grid_len, ncol = 29); #to_be_set
-  colnames(c_bh_data_export) <- c("XB1a_len_1", "XB1a_len_2", "XB1a_mean_1", "XB1a_mean_2", "XB1a_std_1", "XB1a_std_2", "XB1a_ratio", 
-                                  "XB1b_len_1", "XB1b_len_2", "XB1b_mean_1", "XB1b_mean_2", "XB1b_std_1", "XB1b_std_2", "XB1b_ratio",
-                                  "XB1c_len_1", "XB1c_len_2", "XB1c_mean_1", "XB1c_mean_2", "XB1c_std_1", "XB1c_std_2", "XB1c_ratio", 
-                                  "XB1d_len_1", "XB1d_len_2", "XB1d_mean_1", "XB1d_mean_2", "XB1d_std_1", "XB1d_std_2", "XB1d_ratio", "NUMBER")
+  c_bh_data_export <- matrix(0, nrow = c_grid_len, ncol = 33); #to_be_set
+  colnames(c_bh_data_export) <- c("XB1a_len_1", "XB1a_len_2", "XB1a_mean_1", "XB1a_mean_2", "XB1a_std_1", "XB1a_std_2", "XB1a_ratio", "XB1a_ci", 
+                                  "XB1b_len_1", "XB1b_len_2", "XB1b_mean_1", "XB1b_mean_2", "XB1b_std_1", "XB1b_std_2", "XB1b_ratio", "XB1b_ci",
+                                  "XB1c_len_1", "XB1c_len_2", "XB1c_mean_1", "XB1c_mean_2", "XB1c_std_1", "XB1c_std_2", "XB1c_ratio", "XB1c_ci",
+                                  "XB1d_len_1", "XB1d_len_2", "XB1d_mean_1", "XB1d_mean_2", "XB1d_std_1", "XB1d_std_2", "XB1d_ratio", "XB1d_ci", "NUMBER")
   
   c_bh_data_export[, 1] <- res_1a_sum[[c_buf]][['bh_6_len']]
   c_bh_data_export[, 2] <- res_1a_sum[[c_buf]][['bh_7_len']]
@@ -156,29 +174,35 @@ for(c_buf in buffers){
   c_bh_data_export[, 5] <- res_1a_sum[[c_buf]][['bh_6_std']]
   c_bh_data_export[, 6] <- res_1a_sum[[c_buf]][['bh_7_std']]
   c_bh_data_export[, 7] <- res_1a_sum[[c_buf]][['bh_ratio']]
-  c_bh_data_export[, 8] <- res_1b_sum[[c_buf]][['bh_6_len']]
-  c_bh_data_export[, 9] <- res_1b_sum[[c_buf]][['bh_7_len']]
-  c_bh_data_export[, 10] <- res_1b_sum[[c_buf]][['bh_6_mean']]
-  c_bh_data_export[, 11] <- res_1b_sum[[c_buf]][['bh_7_mean']]
-  c_bh_data_export[, 12] <- res_1b_sum[[c_buf]][['bh_6_std']]
-  c_bh_data_export[, 13] <- res_1b_sum[[c_buf]][['bh_7_std']]
-  c_bh_data_export[, 14] <- res_1b_sum[[c_buf]][['bh_ratio']]
+  c_bh_data_export[, 8] <- res_1a_sum[[c_buf]][['bh_ci']]
   
-  c_bh_data_export[, 15] <- res_1c_sum[[c_buf]][['bh_6_len']]
-  c_bh_data_export[, 16] <- res_1c_sum[[c_buf]][['bh_7_len']]
-  c_bh_data_export[, 17] <- res_1c_sum[[c_buf]][['bh_6_mean']]
-  c_bh_data_export[, 18] <- res_1c_sum[[c_buf]][['bh_7_mean']]
-  c_bh_data_export[, 19] <- res_1c_sum[[c_buf]][['bh_6_std']]
-  c_bh_data_export[, 20] <- res_1c_sum[[c_buf]][['bh_7_std']]
-  c_bh_data_export[, 21] <- res_1c_sum[[c_buf]][['bh_ratio']]
-  c_bh_data_export[, 22] <- res_1d_sum[[c_buf]][['bh_6_len']]
-  c_bh_data_export[, 23] <- res_1d_sum[[c_buf]][['bh_7_len']]
-  c_bh_data_export[, 24] <- res_1d_sum[[c_buf]][['bh_6_mean']]
-  c_bh_data_export[, 25] <- res_1d_sum[[c_buf]][['bh_7_mean']]
-  c_bh_data_export[, 26] <- res_1d_sum[[c_buf]][['bh_6_std']]
-  c_bh_data_export[, 27] <- res_1d_sum[[c_buf]][['bh_7_std']]
-  c_bh_data_export[, 28] <- res_1d_sum[[c_buf]][['bh_ratio']]
-  c_bh_data_export[, 29] <- res_1a_sum[[c_buf]][['NUMBER']]
+  c_bh_data_export[, 9] <- res_1b_sum[[c_buf]][['bh_6_len']]
+  c_bh_data_export[, 10] <- res_1b_sum[[c_buf]][['bh_7_len']]
+  c_bh_data_export[, 11] <- res_1b_sum[[c_buf]][['bh_6_mean']]
+  c_bh_data_export[, 12] <- res_1b_sum[[c_buf]][['bh_7_mean']]
+  c_bh_data_export[, 13] <- res_1b_sum[[c_buf]][['bh_6_std']]
+  c_bh_data_export[, 14] <- res_1b_sum[[c_buf]][['bh_7_std']]
+  c_bh_data_export[, 15] <- res_1b_sum[[c_buf]][['bh_ratio']]
+  c_bh_data_export[, 16] <- res_1b_sum[[c_buf]][['bh_ci']]
+  
+  c_bh_data_export[, 17] <- res_1c_sum[[c_buf]][['bh_6_len']]
+  c_bh_data_export[, 18] <- res_1c_sum[[c_buf]][['bh_7_len']]
+  c_bh_data_export[, 19] <- res_1c_sum[[c_buf]][['bh_6_mean']]
+  c_bh_data_export[, 20] <- res_1c_sum[[c_buf]][['bh_7_mean']]
+  c_bh_data_export[, 21] <- res_1c_sum[[c_buf]][['bh_6_std']]
+  c_bh_data_export[, 22] <- res_1c_sum[[c_buf]][['bh_7_std']]
+  c_bh_data_export[, 23] <- res_1c_sum[[c_buf]][['bh_ratio']]
+  c_bh_data_export[, 24] <- res_1c_sum[[c_buf]][['bh_ci']]
+  
+  c_bh_data_export[, 25] <- res_1d_sum[[c_buf]][['bh_6_len']]
+  c_bh_data_export[, 26] <- res_1d_sum[[c_buf]][['bh_7_len']]
+  c_bh_data_export[, 27] <- res_1d_sum[[c_buf]][['bh_6_mean']]
+  c_bh_data_export[, 28] <- res_1d_sum[[c_buf]][['bh_7_mean']]
+  c_bh_data_export[, 29] <- res_1d_sum[[c_buf]][['bh_6_std']]
+  c_bh_data_export[, 30] <- res_1d_sum[[c_buf]][['bh_7_std']]
+  c_bh_data_export[, 31] <- res_1d_sum[[c_buf]][['bh_ratio']]
+  c_bh_data_export[, 32] <- res_1d_sum[[c_buf]][['bh_ci']]
+  c_bh_data_export[, 33] <- res_1a_sum[[c_buf]][['NUMBER']]
   
   write.csv(c_bh_data_export, file = paste0('ppa_2301_k2/shp/3/ppa_2301_bh_1_buf', c_buf, '.csv'), row.names = FALSE)
 }
