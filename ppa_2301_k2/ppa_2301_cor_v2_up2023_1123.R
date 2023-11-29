@@ -28,7 +28,8 @@ cor_data_f <- function(f_order, f_buffer){
   f_model_sum_list <- list()
   f_model_anova_list <- list()
   f_res_list <- list()
-  
+  f_model_formula <- list()
+  f_model_vif <- list()
   #input data
   f_data_1 <- read.csv(paste0('ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv')) 
   f_data_1b = f_data_1[,c(2,5,6,8,9,17,18,21,49,51,53,56,57,58,59)]    #to_be_set
@@ -47,10 +48,11 @@ cor_data_f <- function(f_order, f_buffer){
   f_cor_1 <- cor(f_data_2)
   
   #model analysis
-  f_model_formula <- list();
+  
   for(kk in 1: col_1){
     f_model_formula[[kk]] <- as.formula(paste0(index_y[kk], " ~ ", paste(index_x, collapse = " + ")));
     f_model_list[[kk]] <- lm(f_model_formula[[kk]], data = f_data_2) #to_be_set
+    f_model_vif[[kk]] <- vif(f_model_list[[kk]])
   }
   
   #set empty arrays
