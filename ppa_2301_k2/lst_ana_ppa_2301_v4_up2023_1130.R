@@ -17,19 +17,19 @@ order_1 <- 4; #to_be_set_key
 season_1 <- 2; #to_be_set_key
 lst_data <- 2; #to_be_set
 
-buffer_1 <- read.csv('shp/2/2301_cq_water_b12_buf1000_a01_buf.csv')
+buffer_1 <- read.csv('shp/2/2301_cq_water_b12_buf1000_a01_buf.csv') #to_be_set
 buffer_2 <- buffer_1$buffer
 
-grid_1a <- shapefile(paste0('shp/2/2301_cq_water_b12_buf1000_a01.shp'));
+grid_1a <- shapefile(paste0('shp/2/2301_cq_water_b12_buf1000_a01.shp')); #to_be_set
 grid_1b <- spTransform(grid_1a, '+init=epsg:4326');
-grid_2 <- st_read(paste0('shp/2/2301_cq_water_b12_buf1000_a01.shp'));
+grid_2 <- st_read(paste0('shp/2/2301_cq_water_b12_buf1000_a01.shp')); #to_be_set
 
 if(lst_data == 1){
-  lst_1 <- raster(paste0('raster/ppa_2301_lst_s', order_1,'.tif'));
-  dis_1 <- raster(paste0('raster/a2301_disr2.tif')); #land cover data
+  lst_1 <- raster(paste0('raster/ppa_2301_lst_s', order_1,'.tif')); #to_be_set
+  dis_1 <- raster(paste0('raster/a2301_disr2.tif')); #land cover data #to_be_set
 }else{
-  lst_1 <- raster(paste0('raster/ppa_2301_lstb_s', order_1,'.tif'));
-  dis_1 <- raster(paste0('raster/a2301_disr3.tif')); #land cover data
+  lst_1 <- raster(paste0('raster/ppa_2301_lstb_s', order_1,'.tif')); #to_be_set
+  dis_1 <- raster(paste0('raster/a2301_disr3.tif')); #land cover data #to_be_set
 }
 
 lst_2 <- projectRaster(lst_1, crs = '+init=epsg:4326')
@@ -65,8 +65,8 @@ rc_ana_1 <- function(f_grid_num){
   plot(f_lst_exa, col = custom_colors);
   plot(grid_1b[f_grid_num,],add = T);
   
-  f_disv_exa <- getValues(f_dis_exa);
-  f_lstv_exa <- getValues(f_lst_exa);
+  f_disv_exa <- na.omit(getValues(f_dis_exa));
+  f_lstv_exa <- na.omit(getValues(f_lst_exa));
   f_data_df_1 <- data.frame(dis = f_disv_exa, lst = f_lstv_exa);
   
   plot(f_data_df_1$dis, f_data_df_1$lst, main = 'Scatter Plot of distance vs LST', 
@@ -156,29 +156,6 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num, f_season){
   f_breaks_2_num_2 <- f_breaks_2_num - 5;  #to_be_set
   f_data_df_3_mean <- data_df_3_mean[[f_grid_num]];
   
-  if(f_season == 2){
-    for (f_ii in 1:f_breaks_2_num_2){
-      if (is.na(f_data_df_3_mean[f_ii]) || f_data_df_3_mean[f_ii] <= max(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE)) {
-      } else {
-        cat('serial number of polygon ',f_grid_num,' is: ',  f_ii, '\n');
-        f_RCD_1 <- f_ii;
-        break;
-      }
-    }    
-  }else if(f_season == 4){
-    for (f_ii in 1:f_breaks_2_num_2){
-      if (is.na(f_data_df_3_mean[f_ii]) || f_data_df_3_mean[f_ii] >= min(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE)) {
-      } else {
-        cat('serial number of polygon ',f_grid_num,' is: ',  f_ii, '\n');
-        f_RCD_1 <- f_ii;
-        break;
-      }
-    }      
-  }else{
-    print('ERROR!')
-  }
-
-  
   if (!is.na(f_data_df_3_mean[1])) {
     f_data_df_3_mean_s <- f_data_df_3_mean[1];
   } else if (!is.na(f_data_df_3_mean[2])){
@@ -187,8 +164,33 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num, f_season){
     f_data_df_3_mean_s <- f_data_df_3_mean[3];
   }
   
-  f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean_s;
-  f_CRCI_1 <- sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
+  if(f_season == 2){
+    for (f_ii in 1:f_breaks_2_num_2){
+      if (is.na(f_data_df_3_mean[f_ii]) || (f_data_df_3_mean[f_ii] <= max(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE))) {
+      } else {
+        cat('serial number of polygon ',f_grid_num,' is: ',  f_ii, '\n');
+        f_RCD_1 <- f_ii;
+        break;
+      }
+    }
+    f_RCI_1 <- f_data_df_3_mean[f_RCD_1] - f_data_df_3_mean_s
+    f_max <- f_data_df_3_mean[f_RCD_1]
+    f_CRCI_1 <- f_max * f_RCD_1 - sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
+  }else if(f_season == 4){
+    for (f_ii in 1:f_breaks_2_num_2){
+      if (is.na(f_data_df_3_mean[f_ii]) || (f_data_df_3_mean[f_ii] >= min(f_data_df_3_mean[f_ii + 1:f_ii + 5], na.rm = TRUE))) {
+      } else {
+        cat('serial number of polygon ',f_grid_num,' is: ',  f_ii, '\n');
+        f_RCD_1 <- f_ii;
+        break;
+      }
+    }
+    f_RCI_1 <- f_data_df_3_mean_s - f_data_df_3_mean[f_RCD_1]
+    f_max <- f_data_df_3_mean_s
+    f_CRCI_1 <- f_max * f_RCD_1 - sum(f_data_df_3_mean[1:f_RCD_1], na.rm = TRUE)
+  }else{
+    print('ERROR!')
+  }
   
   if(f_RCI_1 <= 0){
     f_RCI_2 <- 0;
