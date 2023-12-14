@@ -1,0 +1,6 @@
+2301_cq_water_b12_buf1500_a09e——导出——2301_cq_water_rw_1（rw文件夹）——面转线2301_cq_water_rw_2
+加载2301_cq_water_07_midp.shp——投影——2301_cq_water_rw_4
+2301_cq_water_rw_2与2301_cq_water_rw_4结合起来，画垂直于河岸段中点的线——2301_cq_water_rw_3
+补充画线：2301_cq_water_rw_5
+添加编号：2301_cq_water_rw_6
+选取线段，计算长度：2301_cq_water_rw_7

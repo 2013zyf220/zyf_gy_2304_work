@@ -17,12 +17,12 @@ order_1 <- 4; #to_be_set_key
 season_1 <- 2; #to_be_set_key
 lst_data <- 2; #to_be_set
 
-buffer_1 <- read.csv('shp/2/2301_cq_water_b12_buf1500_a06_buf.csv') #to_be_set
+buffer_1 <- read.csv('shp/2/2301_cq_water_b12_buf1500_a09e_buf.csv') #to_be_set
 buffer_2 <- buffer_1$buffer
 
-grid_1a <- shapefile(paste0('shp/2/2301_cq_water_b12_buf1500_a06.shp')); #to_be_set
+grid_1a <- shapefile(paste0('shp/2/2301_cq_water_b12_buf1500_a09e.shp')); #to_be_set
 grid_1b <- spTransform(grid_1a, '+init=epsg:4326');
-grid_2 <- st_read(paste0('shp/2/2301_cq_water_b12_buf1500_a06.shp')); #to_be_set
+grid_2 <- st_read(paste0('shp/2/2301_cq_water_b12_buf1500_a09e.shp')); #to_be_set
 
 if(lst_data == 1){
   lst_1 <- raster(paste0('raster/ppa_2301_lst_s', order_1,'.tif')); #to_be_set

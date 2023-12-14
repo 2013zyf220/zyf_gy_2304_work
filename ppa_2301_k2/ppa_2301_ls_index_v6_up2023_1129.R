@@ -68,7 +68,7 @@ ls_index_f <- function(f_year, f_buffer){
     fc_grid_x <- f_grid_1b@polygons[[ii]]@labpt[1];
     fc_grid_y <- f_grid_1b@polygons[[ii]]@labpt[2];
     
-    fc_lss_0 <- sample_lsm(f_luse, f_grid_1b[ii,], what = c('lsm_c_pland','lsm_c_cohesion', 'lsm_c_ai','lsm_c_shape_mn','lsm_c_enn_mn','lsm_c_ed','lsm_c_lsi','lsm_c_area_mn','lsm_l_lsi','lsm_l_pd','lsm_l_shdi','lsm_l_frac_mn','lsm_l_cohesion'), shape = 'square'); #to_be_set
+    fc_lss_0 <- sample_lsm(f_luse, f_grid_1b[ii,], what = c('lsm_c_pland','lsm_c_cohesion', 'lsm_c_ai','lsm_c_shape_mn','lsm_c_enn_mn','lsm_c_ed','lsm_c_lsi','lsm_c_area_mn','lsm_l_lsi','lsm_l_pd','lsm_l_shdi','lsm_l_frac_mn'), shape = 'square'); #to_be_set
     fc_lsc_0 <- sample_lsm(f_luse, f_grid_1b[ii,], what = c('lsm_c_pland'), shape = 'circle'); #to_be_set
     
     fc_class_lss <- data.frame(class = rep(c(1:8),8), metric=c(rep('pland',8),rep('cohesion',8), rep('ai',8), rep('shape_mn',8), rep('enn_mn',8), rep('ed',8), rep('lsi',8), rep('area_mn',8))) #to_be_set
@@ -130,10 +130,6 @@ ls_index_f <- function(f_year, f_buffer){
     fc_pd <- fc_lss_0 %>% filter(metric == 'pd') #patch density
     fc_pd$value <- as.numeric(round(fc_pd$value,2))
     fc_pd_v <- fc_pd$value
-    
-    fc_lsi <- fc_lss_0 %>% filter(metric == 'lsi') #patch density
-    fc_lsi$value <- as.numeric(round(fc_lsi$value,2))
-    fc_lsi_v <- fc_lsi$value
 
     fc_shdi <- fc_lss_0 %>% filter(metric == 'shdi') #patch density
     fc_shdi$value <- as.numeric(round(fc_shdi$value,2))
@@ -142,10 +138,6 @@ ls_index_f <- function(f_year, f_buffer){
     fc_frac_mn <- fc_lss_0 %>% filter(metric == 'frac_mn') #patch density
     fc_frac_mn$value <- as.numeric(round(fc_frac_mn$value,2))
     fc_frac_mn_v <- fc_frac_mn$value
-
-    fc_cohesion <- fc_lss_0 %>% filter(metric == 'fc_cohesion') #patch density
-    fc_cohesion$value <- as.numeric(round(fc_cohesion$value,2))
-    fc_cohesion_v <- fc_cohesion$value
     
     fc_pland_c <- fc_lsc %>% filter(metric == 'pland')
     fc_pland_c$value <- as.numeric(round(fc_pland_c$value,2))
@@ -160,7 +152,7 @@ ls_index_f <- function(f_year, f_buffer){
                        XL_ai_gre = fc_ai_gre, XL_shape_mn_gre = fc_shape_mn_gre, XL_enn_mn_gre = fc_enn_mn_gre, XL_ed_gre = fc_ed_gre,XL_lsi_gre = fc_lsi_gre,XL_area_mn_gre = fc_area_mn_gre,
                        XL_ps_wat = fc_pland_s_wat, XL_co_wat = fc_cohesion_wat, XL_pc_wat = fc_pland_c_wat, 
                        XL_ai_wat = fc_ai_wat, XL_shape_mn_wat = fc_shape_mn_wat, XL_enn_mn_wat = fc_enn_mn_wat, XL_ed_wat = fc_ed_wat,XL_lsi_wat = fc_lsi_wat,XL_area_mn_wat = fc_area_mn_wat,
-                       XL_pd = fc_pd_v, XL_lsi = fc_lsi_v, XL_shdi = fc_shdi_v, XL_frac_mn = fc_frac_mn_v, XL_cohesion = fc_cohesion_v) 
+                       XL_pd = fc_pd_v, XL_shdi = fc_shdi_v, XL_frac_mn = fc_frac_mn_v) 
     
     f_ls_metric <- rbind(f_ls_metric,fc_df)
   
@@ -195,23 +187,30 @@ ls_index_f <- function(f_year, f_buffer){
     f_grid_2$XL_lsi_wat[ii] <- fc_lsi_wat
     f_grid_2$XL_area_mn_wat[ii] <- fc_area_mn_wat
     f_grid_2$XL_pd[ii] <- fc_pd_v
-    f_grid_2$XL_lsi[ii] <- fc_lsi_v
     f_grid_2$XL_shdi[ii] <- fc_shdi_v
     f_grid_2$XL_frac_mn[ii] <- fc_frac_mn_v
-    f_grid_2$XL_cohesion[ii] <- fc_cohesion_v
   }
-  
-  st_write(f_grid_2, paste0('shp/3/ppa_2301_lsi_', f_year, '_buf', f_buffer, '.shp'))
   write.csv(f_ls_metric,paste0('shp/3/ppa_2301_lsi_', f_year, '_buf', f_buffer, '.csv'),row.names = FALSE)
+  
+  f_res_list <- list()
+  f_res_list[['ls_metric']] <- f_ls_metric
+  return(f_res_list)
 }
 
 #=========================================================================
 years <- c(2020,2021,2022); #to_be_set
 buffers <- c(200,400,500,600,800,1000); #to_be_set
+
+res_list <- list()
+ii <- 0
 for(c_year in years){
+  ii <- ii + 1
+  jj <- 0
+  res_list[[ii]] <- list()
   for(c_buffer in buffers){
+    jj <- jj + 1
     cat('Year:', c_year, '.  Buffer:', c_buffer)
-    ls_index_f(c_year, c_buffer)
+    res_list[[ii]][[jj]] <- ls_index_f(c_year, c_buffer)
   }
 }
 

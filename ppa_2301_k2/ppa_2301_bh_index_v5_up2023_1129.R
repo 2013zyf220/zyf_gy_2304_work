@@ -15,10 +15,10 @@ library(ggplot2)
 setwd('E:/zyf_gn/zyf_gn_2301_data');
 extent_1 <- extent(c(106.4, 106.7, 29.4, 29.75)); #to_be_set
 
-bh_1a <- raster(paste0('building_height_k2/CNBH10m_X107Y29_rep.tif')); #to_be_set
-bh_1b <- raster(paste0('chongqing_bh/cq_bh4.tif')); #to_be_set
-bh_1c <- raster(paste0('ppa_2301_k2/raster/bh_sum_3.tif')); #to_be_set
-bh_1d <- raster(paste0('ppa_2301_k2/raster/bh_sum_2.tif')); #to_be_set
+bh_1a <- raster(paste0('building_height_k2/CNBH10m_X107Y29_rep2.tif')); #to_be_set
+bh_1b <- raster(paste0('chongqing_bh/cq_bh5.tif')); #to_be_set
+bh_1c <- raster(paste0('ppa_2301_k2/raster/bh_sum_6.tif')); #to_be_set
+bh_1d <- raster(paste0('ppa_2301_k2/raster/bh_sum_7.tif')); #to_be_set
 bh_list <- list(bh_1a, bh_1b, bh_1c, bh_1d); #to_be_set
 
 #=================================================
@@ -68,6 +68,7 @@ bh_f1 <- function(f_bh_1, f_buffer){
     f_res_NUMBER[f_ii] <- f_ii
     
     c_1 <- length(fc_bh_5) - 2;
+    c_2 <- length(fc_bh_7) - 2;
     if(sum(is.na(fc_bh_5)) > c_1){
       f_res_bh_6_mean[f_ii] <- 0;
       f_res_bh_7_mean[f_ii] <- 0;
@@ -76,6 +77,14 @@ bh_f1 <- function(f_bh_1, f_buffer){
       f_res_bh_max[f_ii] <- 0;
       f_res_bh_sum[f_ii] <- 0;
       f_res_bh_ci[f_ii] <- 0;
+    }else if(sum(is.na(fc_bh_7)) > c_2){
+      f_res_bh_6_mean[f_ii] <- 0;
+      f_res_bh_7_mean[f_ii] <- 0;
+      f_res_bh_6_std[f_ii] <- 0;
+      f_res_bh_7_std[f_ii] <- 0;
+      f_res_bh_max[f_ii] <- 0;
+      f_res_bh_sum[f_ii] <- 0;
+      f_res_bh_ci[f_ii] <- 0;      
     }else{
       f_res_bh_6_mean[f_ii] <- mean(fc_bh_6);
       f_res_bh_7_mean[f_ii] <- mean(fc_bh_7);

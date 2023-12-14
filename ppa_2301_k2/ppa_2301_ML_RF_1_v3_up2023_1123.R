@@ -146,13 +146,13 @@ rf_pred2 <- function(f_train_pred, f_test_pred, f_train_data_y, f_test_data_y){
 }
 
 #==============================================================
-order_1 <- 1; #to_be_set_key
+order_1 <- 3; #to_be_set_key
 buffer_1s <- c(1000); #to_be_set_key
-col_1d2 <- c(2,5,6,8,9,17,18,21,49,51,53,56,57,58,59); #to_be_set
-col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12); #to_be_set
+col_1d2 <- c(2,5,6,12,14,15,21,46,49,69,71,72,77,78,79,88); #to_be_set
+col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12,16); #to_be_set
 
 indexes_y <- list("XY_rci"); #to_be_set
-rows_remove <- c(); #to_be_set
+rows_remove <- 41:50; #to_be_set
 len_indexes_y <- length(indexes_y)
 len_col_2d3 <- length(col_2d3);
 
@@ -180,10 +180,10 @@ for(c_buffer in buffer_1s){
     c_rf_pred_test <- rf_pred1(c_rf_f2_res, c_rf_f1_res$test_data, c_rf_f1_res$test_data_y)
     c_rf_pred_all <- rf_pred2(c_rf_pred_train$predict, c_rf_pred_test$predict, c_rf_f1_res$train_data_y, c_rf_f1_res$test_data_y)
   
-    write.csv(c_rf_pred_train[["mat"]], file = paste0("2301_rf_pred_1_train_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_rf_pred_test[["mat"]], file = paste0("2301_rf_pred_1_test_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_rf_pred_all[["mat"]], file = paste0("2301_rf_pred_2_all_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_rf_impor_res, file = paste0("2301_rf_impor_1_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_rf_pred_train[["mat"]], file = paste0("2301_rf_pred_1_train_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_pred_test[["mat"]], file = paste0("2301_rf_pred_1_test_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_pred_all[["mat"]], file = paste0("2301_rf_pred_2_all_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_impor_res, file = paste0("2301_rf_impor_1_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
   }
 }
 

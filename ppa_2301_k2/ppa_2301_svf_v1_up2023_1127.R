@@ -10,7 +10,7 @@ library(horizon)
 #rm(list = ls())
 
 setwd('E:/zyf_gn/zyf_gn_2301_data')
-shp_sub_set <- 1; #to_be_set_key
+shp_sub_set <- 5; #to_be_set_key
 bh_set <- 4 #to_be_set_key
 
 shp_1 <- shapefile('ppa_2301_k2/shp/2/2301_cq_water_b12_buf1000_a01_buf100.shp') #to_be_set

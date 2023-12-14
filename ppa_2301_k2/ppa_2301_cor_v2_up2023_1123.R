@@ -14,9 +14,8 @@ library(car)
 setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3")
 
 #initial setting
-index_x <- list("XA_ANGLE_2", "XL_ps_imp", "XL_co_imp", "XL_ai_imp", "XL_ps_gre", "XL_pd", "XL_lsi", "XB1a_mean_1", "XT_DEM_MEA", "XT_SLOPE_M", "XT_DIS_CEN", "XN_NDVI_ME")    #to_be_set
 index_y <- list("XY_rcd", "XY_rci", "XY_crci")    #to_be_set
-
+index_x <- list("XA_ANGLE_2","XL_ps_imp","XL_co_imp","XL_lsi_imp","XL_ps_gre","XL_co_gre","XL_lsi_gre","XB1b_mean_2","XB1b_ratio","XT_DEM_MEA","XT_SLOPE_M","XT_ASPECT_")
 row_1 <- length(index_x)
 col_1 <- length(index_y)
 
@@ -32,9 +31,9 @@ cor_data_f <- function(f_order, f_buffer){
   f_model_vif <- list()
   #input data
   f_data_1 <- read.csv(paste0('ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv')) 
-  f_data_1b = f_data_1[,c(2,5,6,8,9,17,18,21,49,51,53,56,57,58,59)]    #to_be_set
+  f_data_1b = f_data_1[, c(2,5,6,12,14,15,21,46,49,69,71,72,77,78,79)]  #to_be_set_key
   f_data_1c <- f_data_1b[f_data_1b$XY_rci != 0, ] #to_be_set
-  f_data_2 <- f_data_1c[-c(37,174), ] #to_be_set
+  f_data_2 <- f_data_1c #to_be_set (another option：f_data_2 <- f_data_1c[-c(37,174), ])
 
   
   f_data_out_1 <- f_data_2[,c(1,6)]  #to_be_set
@@ -75,7 +74,7 @@ cor_data_f <- function(f_order, f_buffer){
     for (jj in 1: row_1){
       f_lm_cor[jj,ii] <- f_cor_1[index_y[[ii]],index_x[[jj]]]
       f_lm_slope[jj,ii] <- f_model_list[[ii]]$coefficients[index_x[[jj]]]
-      f_lm_p[jj,ii] <- f_model_sum_list[[ii]]$coefficients[index_x[[jj]],"Pr(>|t|)"]
+      f_lm_p[jj,ii] <- f_model_sum_list[[ii]]$coefficients[index_x[[jj]], "Pr(>|t|)"]
     }
 
     f_lm_r2[1,ii] <- f_model_sum_list[[ii]]$r.squared
@@ -100,17 +99,35 @@ cor_data_f <- function(f_order, f_buffer){
   f_res_list[["lm_r"]] <- f_lm_r2
   f_res_list[["out_1"]] <- f_data_out_1
   f_res_list[["model_formula"]] <- f_model_formula
-  write.csv(f_lm_cor, file = paste0('2301_lm_cor_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
-  write.csv(f_lm_slope, file = paste0('2301_lm_slope_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
-  write.csv(f_lm_p, file = paste0('2301_lm_p_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
-  write.csv(f_lm_r2, file = paste0('2301_lm_r2_s',f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
+  f_res_list[["model_sum_list"]] <- f_model_sum_list
+  f_res_list[["model_list"]] <- f_model_list
+  write.csv(f_lm_cor, file = paste0('2301_lm_cor_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_slope, file = paste0('2301_lm_slope_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_p, file = paste0('2301_lm_p_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_r2, file = paste0('2301_lm_r2_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
   
   return(f_res_list)
 }
 #==========================
 
-cor_data_res <- cor_data_f(1, 1000) #to_be_set_key
+res_list <- list()
+orders <- c(3)  #to_be_set_key
+buffers <- c(1000)  #to_be_set_key
+
+ii <- 0
+for(c_order in orders){
+  ii <- ii + 1
+  jj <- 0
+  res_list[[c_order]] <- list()
+  for(c_buffer in buffers){
+    jj <- jj + 1
+    res_list[[c_order]][[c_buffer]] <- cor_data_f(c_order, c_buffer) #to_be_set_key
+  }
+}
+
+
 
 #==========================
-cor_exa_1 <- cor_data_res[['out_1']] #to_be_set
-cor_exa_2 <- cor(cor_exa_1)
+order_1 <- 3 #to_be_set
+buffer_1 <- 1000 #to_be_set
+cor_exa_1 <- res_list[[c_order]][[buffer_1]][['out_1']] #to_be_set

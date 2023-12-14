@@ -1,7 +1,7 @@
 library(raster)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/raster');
 
-year_s <- 2022 #to_be_set
+year_s <- 2020 #to_be_set
 year_e <- 2022 #to_be_set
 year_len <- year_e - year_s + 1
 

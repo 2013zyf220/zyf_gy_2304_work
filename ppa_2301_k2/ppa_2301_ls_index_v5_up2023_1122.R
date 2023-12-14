@@ -9,44 +9,19 @@ library(ggplot2)
 #rm(list = ls())
 #list_lsm() #show lsm indexes that can be calculated in 'landscapemetrics'
 
-#============================================================================
-
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2')
 
-year_1 <- 2021; #to_be_set
-buffer_1 <- 1000; #to_be_set
-
-if(buffer_1 == 200){
-  shp_0 <- 'shp/2/2301_cq_water_b12_buf200_a01.shp'
-}else if(buffer_1 == 400){
-  shp_0 <- 'shp/2/2301_cq_water_b12_buf400_a01.shp'
-}else if(buffer_1 == 500){
-  shp_0 <- 'shp/2/2301_cq_water_b12_buf500_a01.shp'
-}else if(buffer_1 == 600){
-  shp_0 <- 'shp/2/2301_cq_water_b12_buf600_a01.shp'
-}else if(buffer_1 == 800){
-  shp_0 <- 'shp/2/2301_cq_water_b12_buf800_a01.shp'
-}else if(buffer_1 == 1000){
-  shp_0 <- 'shp/2/2301_cq_water_b12_buf1000_a01.shp'
-}else{
-  cat('ERROR')
-}
-
 #============================================================================
 
-ls_index_f <- function(f_year){
-  
-  f_grid_1a <- shapefile(shp_0)
+ls_index_f <- function(f_year, f_buffer){
+  f_shp_0 <- paste0('shp/2/2301_cq_water_b12_buf', f_buffer, '_a01.shp')
+  f_grid_1a <- shapefile(f_shp_0)
   f_grid_1b <- spTransform(f_grid_1a, '+init=epsg:4326')
-  f_grid_2 <- st_read(shp_0)
+  f_grid_2 <- st_read(f_shp_0)
   f_luse <- raster(paste0('raster/ppa_2301_cq_luseb_', f_year,'.tif')) #land cover data
   
-  setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3')
   plot(f_luse)
   plot(f_grid_1b, add = T)
-  
-  plot(f_luse)
-  plot(f_grid_2, add = T)  
   
   f_len_grid_1 <- length(f_grid_1b) #to_be_set
   f_len_grid_2 <- length(f_grid_1b) #to_be_set
@@ -148,10 +123,17 @@ ls_index_f <- function(f_year){
     f_grid_2$XL_lsi[ii] <- fc_lsi_v
   }
   
-  st_write(f_grid_2, paste0('ppa_2301_lsi_', f_year, '_buf', buffer_1, '.shp'))
-  write.csv(f_ls_metric,paste0('ppa_2301_lsi_', f_year, '_buf', buffer_1, '.csv'),row.names = FALSE)
+  st_write(f_grid_2, paste0('shp/3/ppa_2301_lsi_', f_year, '_buf', f_buffer, '.shp'))
+  write.csv(f_ls_metric,paste0('shp/3/ppa_2301_lsi_', f_year, '_buf', f_buffer, '.csv'),row.names = FALSE)
 }
 
 #=========================================================================
+years <- c(2020,2021,2022); #to_be_set
+buffers <- c(200,400,500,600,800,1000); #to_be_set
+for(c_year in years){
+  for(c_buffer in buffers){
+    cat('Year:', c_year, '.  Buffer:', c_buffer)
+    ls_index_f(c_year, c_buffer)
+  }
+}
 
-ls_index_f(year_1)
