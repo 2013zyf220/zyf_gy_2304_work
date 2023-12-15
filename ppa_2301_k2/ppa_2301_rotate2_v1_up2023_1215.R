@@ -115,6 +115,7 @@ data_a3 <- wind_dif_f(data_a1,data_a2)
 
 #==================================
 
+grid_len <- 185 #to_be_set
 angle_dif_1 <- rep(0,185) #to_be_set
 angle_dif_2 <- rep(0,185) #to_be_set
 angle_sub0 <- c(1:185) #to_be_set
@@ -156,8 +157,16 @@ for(ii in angle_sub0){
   shp_1[shp_1$NUMBER == ii & shp_1$NUMBER2 == 1, "XA_ANDIF_2"] <- angle_dif_2[ii]
 }
 
-st_write(shp_1, "2301_cq_water_rotate_5.shp")
+#st_write(shp_1, "2301_cq_water_rotate_5.shp")
 
 shp_5$XA_ANDIF_1 <- shp_1$XA_ANDIF_1
 shp_5$XA_ANDIF_2 <- shp_1$XA_ANDIF_2
-write.csv(shp_5, "2301_cq_water_rotate_5.csv")
+write.csv(shp_5, "2301_cq_water_rotate_5a.csv")
+
+shp_6 <- matrix(0, ncol = 2, nrow = grid_len)
+shp_6[,1] <- angle_sub0
+shp_6[,2] <- angle_dif_2
+
+colnames_shp_6 <- c('NUMBER', 'XA_ANDIF_2')
+colnames(shp_6) <- colnames_shp_6
+write.csv(shp_6, "2301_cq_water_rotate_5b.csv")

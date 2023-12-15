@@ -49,8 +49,8 @@ merged_data_f <- function(f_order, f_buffer){
 }
 
 #==========================================
-orders <- c(3)  #to_be_set_key
-buffers <- c(1000)  #to_be_set_key
+orders <- c(1,2,3,4)  #to_be_set_key
+buffers <- c(200,400,500,600,800,1000)  #to_be_set_key
 
 
 merged_data_res <- list()
