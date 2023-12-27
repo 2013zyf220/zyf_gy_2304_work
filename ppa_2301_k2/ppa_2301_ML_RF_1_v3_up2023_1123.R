@@ -6,7 +6,7 @@ library(caret)
 library(pROC)
 
 #重点输出：非线性曲线&R2&重要性
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3")
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3/res")
 
 #==============================================================
 
@@ -146,13 +146,13 @@ rf_pred2 <- function(f_train_pred, f_test_pred, f_train_data_y, f_test_data_y){
 }
 
 #==============================================================
-order_1 <- 3; #to_be_set_key
+order_1 <- 5; #to_be_set_key
 buffer_1s <- c(1000); #to_be_set_key
-col_1d2 <- c(2,5,6,12,14,15,21,46,49,69,71,72,77,78,79,88); #to_be_set
-col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12,16); #to_be_set
+col_1d2 <- c(5,6,8,12,14,15,17,21,45,46,47,49,69,71,77,78,79,90); #to_be_set
+col_2d3 <- c(1,2,3,4,6,8,9,10,12,13,14,18); #to_be_set
 
-indexes_y <- list("XY_rci"); #to_be_set
-rows_remove <- 41:50; #to_be_set
+indexes_y <- list("XY_crci"); #to_be_set
+rows_remove <- c(); #to_be_set
 len_indexes_y <- length(indexes_y)
 len_col_2d3 <- length(col_2d3);
 
@@ -162,15 +162,15 @@ for(c_buffer in buffer_1s){
     c_rf_f2_res <- rf_f2(c_rf_f1_res$form_reg, c_rf_f1_res$train_data, 500, 6); #to_be_set
     c_rf_impor_res <- rf_impor_f(c_rf_f2_res)
   
-    jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, ".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-    par(mfrow = c(3, 3))
+    jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y, ".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+    par(mfrow = c(4, 4))
     for(ii in 1: len_col_2d3){
       partialPlot(x = c_rf_f2_res, pred.data = c_rf_f1_res$train_data, x.var = c_rf_f1_res$col_name_3[ii])  #to_be_set
     }
     dev.off()  # Close the jpeg device
   
-    jpeg(paste0("ppa_2301_rf_2_", order_1, "_buf", c_buffer, ".jpg"), width = 800, height = 600, quality = 100)
-    par(mfrow = c(3, 3))
+    jpeg(paste0("ppa_2301_rf_2_", order_1, "_buf", c_buffer, "_y_" , c_index_y, ".jpg"), width = 800, height = 600, quality = 100)
+    par(mfrow = c(4, 4))
     for(ii in 1: len_col_2d3){
       plot(c_rf_f1_res$train_data_y ~ col_values_f(c_rf_f1_res$train_data, c_rf_f1_res$col_name_3[ii])) #对应散点图
     }
