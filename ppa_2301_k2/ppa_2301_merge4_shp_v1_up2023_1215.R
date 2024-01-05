@@ -12,6 +12,8 @@ year_f <- function(f_order){
     f_year <- 2021
   }else if(f_order == 4|f_order == 5){
     f_year <- 2022
+  }else if(f_order == 6){
+    f_year <- 2019
   }else{
     print('ERROR')
   }
@@ -45,7 +47,7 @@ merged_data_f <- function(f_order, f_buffer){
   f_merged_data_6 <- merge(f_merged_data_5, f_data_svf, by = "NUMBER", all = TRUE)
   f_merged_data_7 <- merge(f_merged_data_6, data_rw, by = "NUMBER", all = TRUE)
   f_merged_data_8 <- merge(f_merged_data_7, data_rotate, by = "NUMBER", all = TRUE)
-  write.csv(f_merged_data_8, file = paste0('ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
+  write.csv(f_merged_data_8, file = paste0('3/res/ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
   
   f_res_list <- list()
   f_res_list[['data_rce']] <- f_data_rce
@@ -54,8 +56,8 @@ merged_data_f <- function(f_order, f_buffer){
 }
 
 #==========================================
-orders <- c(3)  #to_be_set_key
-buffers <- c(1000)  #to_be_set_key
+orders <- c(6)  #to_be_set_key
+buffers <- c(200,400,600,800,1000)  #to_be_set_key
 
 
 merged_data_res <- list()

@@ -198,7 +198,7 @@ ls_index_f <- function(f_year, f_buffer){
 }
 
 #=========================================================================
-years <- c(2020,2021,2022); #to_be_set
+years <- c(2019); #to_be_set
 buffers <- c(200,400,500,600,800,1000); #to_be_set
 
 res_list <- list()

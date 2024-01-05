@@ -144,6 +144,16 @@ rf_pred2 <- function(f_train_pred, f_test_pred, f_train_data_y, f_test_data_y){
 
   return(f_res_list)
 }
+#==============================================================
+
+mar_eff <- function(f_x, f_y){
+  len_data <- length(f_x)
+  f_me <- rep(0, len_data)
+  for(ii in 2:len_data){
+    f_me[ii] <- (f_y[ii] - f_y[ii - 1])/(f_x[ii] - f_x[ii - 1])
+  }
+  plot(f_me, type = "o")
+}
 
 #==============================================================
 order_1 <- 5; #to_be_set_key
@@ -161,14 +171,21 @@ for(c_buffer in buffer_1s){
     c_rf_f1_res <- rf_f1(order_1, c_buffer, c_index_y, col_1d2, col_2d3, rows_remove) #to_be_set
     c_rf_f2_res <- rf_f2(c_rf_f1_res$form_reg, c_rf_f1_res$train_data, 500, 6); #to_be_set
     c_rf_impor_res <- rf_impor_f(c_rf_f2_res)
-  
-    jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y, ".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+    
+    for(ii in 1: len_col_2d3){
+      jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y, "_", ii,".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+      c_pp_data <- partialPlot(x = c_rf_f2_res, pred.data = c_rf_f1_res$train_data, x.var = c_rf_f1_res$col_name_3[ii])  #to_be_set
+      mar_eff(c_pp_data$x, c_pp_data$y)
+      dev.off()  # Close the jpeg device
+    }
+    
+    jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y,".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
     par(mfrow = c(4, 4))
     for(ii in 1: len_col_2d3){
       partialPlot(x = c_rf_f2_res, pred.data = c_rf_f1_res$train_data, x.var = c_rf_f1_res$col_name_3[ii])  #to_be_set
     }
     dev.off()  # Close the jpeg device
-  
+    
     jpeg(paste0("ppa_2301_rf_2_", order_1, "_buf", c_buffer, "_y_" , c_index_y, ".jpg"), width = 800, height = 600, quality = 100)
     par(mfrow = c(4, 4))
     for(ii in 1: len_col_2d3){

@@ -9,7 +9,7 @@ library(caret)
 library(pROC)
 
 #重点输出：非线性曲线&R2&重要性
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3")
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/3/res")
 
 #==============================================================
 
@@ -108,11 +108,11 @@ brt_pred_f <- function(f_fit_1, f_data, f_perf_gbm1, f_data_y){
 
 #=================================================================
 
-order_1 <- 1; #to_be_set_key
+order_1 <- 4; #to_be_set_key
 buffer_1s <- c(1000) #to_be_set_key
-indexes_y <- list("XY_rcd") #to_be_set
-col_1d2 <- c(2,5,6,12,14,15,30,32,33,34,46,47,48,49,51,70,71,72,77,78,79,80,89);  #to_be_set
-col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23); #to_be_set
+indexes_y <- list("XY_crci") #to_be_set
+col_1d2 <- c(5,6,8,12,14,15,17,21,45,46,47,49,69,71,77,78,79,90); #to_be_set
+col_2d3 <- c(1,2,3,4,6,8,9,10,12,13,14,18); #to_be_set
 len_col_2d3 <- length(col_2d3);
 rows_remove <- c(); #to_be_set(another option: 37,174)
 
