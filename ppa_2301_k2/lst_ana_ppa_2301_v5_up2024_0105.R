@@ -152,9 +152,10 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
 
 #=====================
 #up2023_0924_10:31_s
-rc_ana_4 <- function(f_grid_num, f_breaks_2_num, f_season){
-  f_breaks_2_num_2 <- f_breaks_2_num - 5;  #to_be_set
-  f_data_df_3_mean <- data_df_3_mean[[f_grid_num]];
+rc_ana_4 <- function(f_grid_num, f_breaks_2_num, f_season, f_adj){
+  f_breaks_2_num_2 <- f_breaks_2_num - 0 - f_adj;  #to_be_set_key
+  f_len1 <- length(data_df_3_mean[[f_grid_num]])
+  f_data_df_3_mean <- data_df_3_mean[[f_grid_num]][1 + f_adj: f_len1];
   
   if (!is.na(f_data_df_3_mean[1])) {
     f_data_df_3_mean_s <- f_data_df_3_mean[1];
@@ -228,7 +229,7 @@ rc_ana_4 <- function(f_grid_num, f_breaks_2_num, f_season){
 grid_end1 <- length(grid_1b); #to_be_set
 thres_1 <- rep(2, times = grid_end1); #to_be_set
 breaks_2_end <- buffer_2;
-breaks_2_by <- rep(20, times = grid_end1); #to_be_set
+breaks_2_by <- rep(30, times = grid_end1); #to_be_set_key
 
 grid_end2 <- length(grid_1b)
 grid_2$XY_x2 <- rep(0, grid_end2)
@@ -258,7 +259,7 @@ for (ii in 1: grid_end1){
   data_df_2[[ii]] <- rc_ana_2(ii, thres_1[ii]);
   data_df_3[[ii]] <- rc_ana_3(ii, breaks_2_end[ii], breaks_2_by[ii]);
   data_df_3_mean[[ii]] <- rc_ana_3_mean(ii, breaks_2_end[ii], breaks_2_by[ii]);
-  data_df_4[[ii]] <- rc_ana_4(ii, breaks_2_num[[ii]], season_1);
+  data_df_4[[ii]] <- rc_ana_4(ii, breaks_2_num[[ii]], season_1, 0);
   data_df_4v[ii,1] <- data_df_4[[ii]][1][[1]];
   data_df_4v[ii,2] <- data_df_4[[ii]][2][[1]];
   data_df_4v[ii,3] <- data_df_4[[ii]][3][[1]];
