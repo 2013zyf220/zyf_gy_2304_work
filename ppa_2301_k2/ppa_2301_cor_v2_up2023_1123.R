@@ -113,8 +113,8 @@ cor_data_f <- function(f_order, f_buffer){
 #==========================
 
 res_list <- list()
-orders <- c(5)  #to_be_set_key
-buffers <- c(1000)  #to_be_set_key
+orders <- c(4)  #to_be_set_key
+buffers <- c(800)  #to_be_set_key
 
 ii <- 0
 for(c_order in orders){

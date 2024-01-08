@@ -17,12 +17,12 @@ order_1 <- 5; #to_be_set_key
 season_1 <- 2; #to_be_set_key
 lst_data <- 2; #to_be_set
 
-buffer_1 <- read.csv('shp/2/2301_cq_water_b12_buf1500_a09e_buf2.csv') #to_be_set
+buffer_1 <- read.csv('shp/4/2301_cq_water7_buf1.csv') #to_be_set
 buffer_2 <- buffer_1$buffer
 
-grid_1a <- shapefile(paste0('shp/2/2301_cq_water_b12_buf1500_a09e.shp')); #to_be_set
+grid_1a <- shapefile(paste0('shp/4/2301_cq_water7_a7_buf800_4.shp')); #to_be_set
 grid_1b <- spTransform(grid_1a, '+init=epsg:4326');
-grid_2 <- st_read(paste0('shp/2/2301_cq_water_b12_buf1500_a09e.shp')); #to_be_set
+grid_2 <- st_read(paste0('shp/4/2301_cq_water7_a7_buf800_4.shp')); #to_be_set
 
 if(lst_data == 1){
   lst_1 <- raster(paste0('raster/ppa_2301_lst_s', order_1,'.tif')); #to_be_set
@@ -93,7 +93,7 @@ rc_ana_2 <- function(f_grid_num, f_thres_1){
   
   f_df <- data.frame(dis = f_data_df_2$dis, lst = f_data_df_2$lst)
   f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst (water temperature excluded)',
-                   x = 'distance', y = 'LST');
+                                                                             x = 'distance', y = 'LST');
   print(f_plot)
   
   return(f_data_df_2);

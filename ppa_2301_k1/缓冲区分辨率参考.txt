@@ -1,0 +1,1 @@
+RCE计算缓冲区分辨率，可参考The roles of surrounding 2D/3D landscapes in park cooling effect: Analysis from extreme hot and normal weather perspectives
