@@ -12,6 +12,9 @@ grid_paths_1[[7]] <- '2/2301_cq_water_b11_buf1000_a16.shp';
 grid_paths_1[[8]] <- '2/2301_cq_water_b12_buf1500_a07.shp';
 grid_paths_1[[9]] <- '2301_cq_water_10_a3.shp'
 grid_paths_1[[10]] <- '2301_cq_water_07_mid3.shp'
+grid_paths_1[[11]] <- '4/2301_cq_water7_a7_buf800_5.shp';
+grid_paths_1[[12]] <- '4/2301_cq_water7_a7_buf800_7b.shp';
+grid_paths_1[[13]] <- '4/2301_cq_water7_a8_buf800_3c.shp';
 
 grid_paths_2 <- list();
 grid_paths_2[[1]] <- '1/2301_cq_water_b12_buft500_a01.shp';
@@ -24,6 +27,9 @@ grid_paths_2[[7]] <- '2/2301_cq_water_b12_buf1000_a01.shp';
 grid_paths_2[[8]] <- '2/2301_cq_water_b12_buf1500_a08.shp';
 grid_paths_2[[9]] <- '2301_cq_water_10_a4.shp'
 grid_paths_2[[10]] <- '2301_cq_water_07_mid4.shp'
+grid_paths_2[[11]] <- '4/2301_cq_water7_a7_buf800_6.shp';
+grid_paths_2[[12]] <- '4/2301_cq_water7_a7_buf800_7c.shp';
+grid_paths_2[[13]] <- '4/2301_cq_water7_a8_buf800_3d.shp';
 
 sort_f <- function(f_path){
   f_grid_1 <- st_read(f_path);
@@ -33,7 +39,7 @@ sort_f <- function(f_path){
 
 grid_res <- list();
 
-orders <- 8 #to_be_set
+orders <- 13 #to_be_set
 for(ii in orders){
   grid_res[[ii]] <- sort_f(grid_paths_1[[ii]])
   st_write(grid_res[[ii]], grid_paths_2[[ii]])
