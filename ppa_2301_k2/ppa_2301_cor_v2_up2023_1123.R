@@ -34,7 +34,7 @@ cor_data_f <- function(f_order, f_buffer){
   f_data_1 <- read.csv(paste0('ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv')) 
   f_data_1b = f_data_1[, c(5,6,8,12,14,15,17,21,45,46,47,49,69,71,76,77,78,79,90)]  #to_be_set_key
   f_data_1c <- f_data_1b[f_data_1b$XY_rci != 0, ] #to_be_set
-  f_data_2 <- f_data_1c #to_be_set (another option：f_data_2 <- f_data_1c[-c(37,174), ])
+  f_data_2 <- f_data_1c #to_be_set_key (another option：f_data_2 <- f_data_1c[-c(37,174), ])
 
   
   f_data_out_1 <- f_data_2[,c(1,6)]  #to_be_set
