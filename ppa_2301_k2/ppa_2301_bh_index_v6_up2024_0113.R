@@ -119,7 +119,7 @@ bh_f1 <- function(f_bh_1, f_buffer){
 
 
 
-buffers <- c(200) #to_be_set_key
+buffers <- c('x050s5') #to_be_set_key
 res_1a_sum <- list()
 res_1b_sum <- list()
 res_1c_sum <- list()
