@@ -22,6 +22,9 @@ year_f <- function(f_order){
 data_rw <- read.csv(paste0('rw/2301_cq_water_rw_7.csv'))
 data_rotate <- read.csv(paste0('rotate/2301_cq_water_rotate_5b.csv'))
 
+lst_data <- 2; #to_be_set
+adj_num <- 0; #to_be_set
+
 merged_data_f <- function(f_order, f_buffer){
  
   f_year <- year_f(f_order)
@@ -37,7 +40,7 @@ merged_data_f <- function(f_order, f_buffer){
   f_data_ndvi_3 <- f_data_ndvi_2[, data_ndvi_var]
   
   f_data_lines <- read.csv(paste0('3/ppa_2301_lines_1.csv')) 
-  f_data_rce <- read.csv(paste0('3/ppa_2301_rce_s', f_order, '.csv'))
+  f_data_rce <- read.csv(paste0('4/res1/ppa_2301_rce_s',f_order,'_adj', adj_num, '_data', lst_data,'.csv')) #to_be_set
   
   f_merged_data_1 <- merge(f_data_lines, f_data_lsi, by = "NUMBER", all = TRUE)
   f_merged_data_2 <- merge(f_merged_data_1, f_data_bh, by = "NUMBER", all = TRUE)
@@ -47,7 +50,7 @@ merged_data_f <- function(f_order, f_buffer){
   f_merged_data_6 <- merge(f_merged_data_5, f_data_svf, by = "NUMBER", all = TRUE)
   f_merged_data_7 <- merge(f_merged_data_6, data_rw, by = "NUMBER", all = TRUE)
   f_merged_data_8 <- merge(f_merged_data_7, data_rotate, by = "NUMBER", all = TRUE)
-  write.csv(f_merged_data_8, file = paste0('3/res/ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
+  write.csv(f_merged_data_8, file = paste0('4/res2/ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv'), row.names = FALSE)
   
   f_res_list <- list()
   f_res_list[['data_rce']] <- f_data_rce
@@ -56,8 +59,8 @@ merged_data_f <- function(f_order, f_buffer){
 }
 
 #==========================================
-orders <- c(6)  #to_be_set_key
-buffers <- c(200,400,600,800,1000)  #to_be_set_key
+orders <- c(4)  #to_be_set_key
+buffers <- c(200)  #to_be_set_key
 
 
 merged_data_res <- list()
