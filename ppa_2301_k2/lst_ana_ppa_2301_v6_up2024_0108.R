@@ -13,15 +13,17 @@ library(ggplot2)
 #load and plot data
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2')
-order_1 <- 4; #to_be_set_key
+order_1 <- 5; #to_be_set_key
 season_1 <- 2; #to_be_set_key
-lst_data <- 2; #to_be_set
+lst_data <- 3; #to_be_set
 
 buffer_loc1 <- 'shp/4/2301_cq_water7_buf2.csv' #to_be_set
 buffer_loc2 <- 'shp/2/2301_cq_water_b12_buf1500_a09e_buf2.csv'
+buffer_loc3 <- 'shp/6/arcgis/cq_water_buf1.csv'
 
 grid_data_1 <- 'shp/4/2301_cq_water7_a8_buf800_3e.shp'
 grid_data_2 <- 'shp/2/2301_cq_water_b12_buf1500_a09g.shp'
+grid_data_3 <- 'shp/6/arcgis/cq_water_b06f.shp'
 
 
 if(lst_data == 1){
@@ -36,6 +38,12 @@ if(lst_data == 1){
   grid_1a <- shapefile(grid_data_2); #to_be_set
   grid_2 <- st_read(grid_data_2); #to_be_set
   buffer_1 <- read.csv(buffer_loc2) #to_be_set
+}else if(lst_data == 3){
+  lst_1 <- raster(paste0('raster/ppa_2301_lstb_s', order_1,'p.tif')); #to_be_set
+  dis_1 <- raster('shp/6/arcgis/raster/cq_water_dis1p.tif'); #land cover data #to_be_set
+  grid_1a <- shapefile(grid_data_3); #to_be_set
+  grid_2 <- st_read(grid_data_3); #to_be_set
+  buffer_1 <- read.csv(buffer_loc3) #to_be_set
 }else{
   lst_1 <- raster(paste0('raster/ppa_2301_lstb_s', order_1,'p.tif')); #to_be_set
   dis_1 <- raster('raster/a2301_disr3c.tif'); #land cover data #to_be_set  
@@ -51,15 +59,15 @@ dis_2 <- dis_1
 
 custom_colors <- colorRampPalette(c('white', 'red'))(256)
 
-jpeg(paste0('shp/4/res1/ppa_2301_rce_lst_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-plot(lst_2, main = 'Land surface temperature', col = custom_colors);
-plot(grid_1b, add = T);
-dev.off()  # Close the jpeg device
+#jpeg(paste0('shp/6/res1/ppa_2301_rce_lst_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+#plot(lst_2, main = 'Land surface temperature', col = custom_colors);
+#plot(grid_1b, add = T);
+#dev.off()  # Close the jpeg device
 
-jpeg(paste0('shp/4/res1/ppa_2301_rce_dis_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-plot(dis_2, main = 'Distance to river', col = custom_colors);
-plot(grid_1b, add = T);
-dev.off()  
+#jpeg(paste0('shp/6/res1/ppa_2301_rce_dis_v1_', order_1,'.jpg'), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+#plot(dis_2, main = 'Distance to river', col = custom_colors);
+#plot(grid_1b, add = T);
+#dev.off()  
 
 #up2023_0924_10:31_e
 
@@ -151,14 +159,14 @@ rc_ana_3_mean <- function(f_grid_num, f_breaks_2_end, f_breaks_2_by){
     }
   }
   
-  f_file_name1 <- paste('shp/5/res1/ppa_2301_rce_3_mean_', order_1, '_', f_grid_num, '.jpg', sep = '');
-  jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
-  f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
-  f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals', x = 'distance', y = 'LST')
-  print(f_plot)
-  dev.off()  # Close the jpeg device
+  #f_file_name1 <- paste('shp/6/res1/ppa_2301_rce_3_mean_', order_1, '_', f_grid_num, '.jpg', sep = '');
+  #jpeg(f_file_name1, width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+  #f_df <- data.frame(dis = f_breaks_2b, lst = f_data_df_3_mean)
+  #f_plot <- ggplot(data = f_df, aes(x = dis, y = lst)) + geom_point() + labs(title = 'Scatter Plot of distance vs lst by intervals', x = 'distance', y = 'LST')
+  #print(f_plot)
+  #dev.off()  # Close the jpeg device
   
-  f_file_name2 <- paste('shp/5/res1/ppa_2301_rce_3_mean_', order_1, '_', f_grid_num, '.csv', sep = '');
+  f_file_name2 <- paste('shp/6/res1/ppa_2301_rce_3_mean_', order_1, '_', f_grid_num, '.csv', sep = '');
   write.table(f_data_df_3_mean, file = f_file_name2, row.names = FALSE);
   
   return(f_data_df_3_mean)
@@ -277,8 +285,8 @@ data_df_3_mean <- list();
 data_df_4 <- list();
 data_df_4v <- matrix(0, nrow = grid_end1, ncol = 12);
 breaks_2_num <- list();
-cir_s <- 1  #to_be_set
-cir_e <- grid_end2 #to_be_set
+cir_s <- 64  #to_be_set
+cir_e <- 67 #to_be_set
 data_df_3_mean_all <- matrix(0, nrow = grid_end1, ncol = 50)
 for (ii in cir_s: cir_e){
   breaks_2_num[[ii]] <- round(breaks_2_end[ii] / breaks_2_by[ii]);
@@ -316,15 +324,15 @@ for (ii in cir_s: cir_e){
 
 data_df_4v_col <- c('XY_rcd', 'XY_rci', 'XY_crci', 'XY_rcd2', 'XY_rci2', 'XY_crci2', 'XY_rcd3', 'XY_rci3', 'XY_crci3', 'XY_x', 'XY_y', 'NUMBER')
 colnames(data_df_4v) <- data_df_4v_col
-#st_write(grid_2, paste0('shp/4/res1/ppa_2301_rce_s', order_1,'_adj',adj_num, '_data', lst_data,'.shp'))
-write.csv(data_df_4v, file = paste0('shp/5/res1/ppa_2301_rce_s',order_1,'_adj', adj_num, '_data', lst_data,'.csv'), row.names = FALSE)
-write.csv(data_df_3_mean_all, file = paste0('shp/5/res1/ppa_2301_rce_mean_s',order_1,'_adj',adj_num, '_data', lst_data, '.csv'), row.names = FALSE)
+#st_write(grid_2, paste0('shp/6/res1/ppa_2301_rce_s', order_1,'_adj',adj_num, '_data', lst_data,'.shp'))
+write.csv(data_df_4v, file = paste0('shp/6/res1/ppa_2301_rce_s',order_1,'_adj', adj_num, '_data', lst_data,'.csv'), row.names = FALSE)
+write.csv(data_df_3_mean_all, file = paste0('shp/6/res1/ppa_2301_rce_mean_s',order_1,'_adj',adj_num, '_data', lst_data, '.csv'), row.names = FALSE)
 #up2023_0924_10:31_e
 
 #====================================
 #check
 
-check_num <- 2
+check_num <- 67 #to_be_set
 check_s1_0 <- data_df_1[[check_num]]
 check_s1_1 <- crop(dis_2, extent(grid_1b[check_num,]))
 check_s1_2 <- mask(check_s1_1,grid_1b[check_num,])
@@ -333,34 +341,34 @@ check_s1_1v <- getValues(check_s1_1)
 check_s1_1_nrow <- check_s1_1@nrows
 check_s1_1_ncol <- check_s1_1@ncols
 check_s1_1vm <- matrix(check_s1_1v, nrow = check_s1_1_nrow, ncol = check_s1_1_ncol, byrow = TRUE)
-#write.table(check_s1_1vm,'shp/4/check1/check_s1_1vm.csv', row.names = FALSE, sep = ',')
+#write.table(check_s1_1vm,'shp/6/check1/check_s1_1vm.csv', row.names = FALSE, sep = ',')
 check_s1_2v <- getValues(check_s1_2)
 check_s1_2_nrow <- check_s1_2@nrows
 check_s1_2_ncol <- check_s1_2@ncols
 check_s1_2vm <- matrix(check_s1_2v, nrow = check_s1_2_nrow, ncol = check_s1_2_ncol,  byrow = TRUE)
-#write.table(check_s1_2vm,'shp/4/check1/check_s1_2vm.csv', row.names = FALSE, sep = ',')
+#write.table(check_s1_2vm,'shp/6/check1/check_s1_2vm.csv', row.names = FALSE, sep = ',')
 check_s1_1va <- na.omit(check_s1_1v)
-#write.table(check_s1_1va,'shp/4/check1/check_s1_1va.csv', row.names = FALSE)
+#write.table(check_s1_1va,'shp/6/check1/check_s1_1va.csv', row.names = FALSE)
 check_s1_2va <- na.omit(check_s1_2v)
-#write.table(check_s1_2va,'shp/4/check1/check_s1_2va.csv', row.names = FALSE)
+#write.table(check_s1_2va,'shp/6/check1/check_s1_2va.csv', row.names = FALSE)
 
 check_s1_3 <- crop(lst_2, extent(grid_1b[check_num,]))
 check_s1_3v <- getValues(check_s1_3)
 check_s1_3_nrow <- check_s1_3@nrows
 check_s1_3_ncol <- check_s1_3@ncols
 check_s1_3vm <- matrix(check_s1_3v, nrow = check_s1_3_nrow, ncol = check_s1_3_ncol, byrow = TRUE)
-write.table(check_s1_3vm,'shp/4/check1/check_s1_3vm.csv', row.names = FALSE, sep = ',')
+write.table(check_s1_3vm,'shp/6/check1/check_s1_3vm.csv', row.names = FALSE, sep = ',')
 check_s1_3va <- na.omit(check_s1_3v)
-write.table(check_s1_3va,'shp/4/check1/check_s1_3va.csv', row.names = FALSE)
+write.table(check_s1_3va,'shp/6/check1/check_s1_3va.csv', row.names = FALSE)
 
 check_s1_4 <- mask(check_s1_3,grid_1b[check_num,])
 check_s1_4v <- getValues(check_s1_4)
 check_s1_4_nrow <- check_s1_4@nrows
 check_s1_4_ncol <- check_s1_4@ncols
 check_s1_4vm <- matrix(check_s1_4v, nrow = check_s1_4_nrow, ncol = check_s1_4_ncol, byrow = TRUE)
-#write.table(check_s1_4vm,'shp/4/check1/check_s1_4vm.csv', row.names = FALSE, sep = ',')
+#write.table(check_s1_4vm,'shp/6/check1/check_s1_4vm.csv', row.names = FALSE, sep = ',')
 check_s1_4va <- na.omit(check_s1_4v)
-#write.table(check_s1_4va,'shp/4/check1/check_s1_4va.csv', row.names = FALSE)
+#write.table(check_s1_4va,'shp/6/check1/check_s1_4va.csv', row.names = FALSE)
 
 check_s2_thres <- 20
 check_s2_break_1 <- c(-20, check_s2_thres, 80);
