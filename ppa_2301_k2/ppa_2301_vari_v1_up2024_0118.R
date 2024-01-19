@@ -12,13 +12,17 @@ library(horizon)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/6')
 
 vari_1 <- 'ndvi' #to_be_set_key
-buffer_set <- 'd01s5' #to_be_set_key
-buffer_set2 <- 5  #to_be_set_key
+buffer_set <- 'd01s4' #to_be_set_key
+buffer_set2 <- 4  #to_be_set_key
 
 if(vari_1 == 'ndvi'){
   img_1 <- raster(paste0('res2/ppa_2301_ndvi_img_s', buffer_set2, 'p.tif'))
 }else if(vari_1 == 'terrain'){
   img_1 <- raster('res2/ppa_2301_dem_gee.tif')
+}else if(vari_1 == 'slope'){
+  img_1 <- raster('res2/ppa_2301_slope_gee.tif')
+}else if(vari_1 == 'aspect'){
+  img_1 <- raster('res2/ppa_2301_aspect_gee.tif')
 }else{
   print('ERROR')
 }
