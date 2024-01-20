@@ -11,11 +11,11 @@ library(car)
 #rm(list = ls())
 
 #============================================================
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/4/res2")
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/6")
 
 #initial setting
 #index_x <- list("XL_ps_imp","XL_co_imp","XL_ai_imp","XL_lsi_imp","XL_ps_gre","XL_co_gre","XL_ai_gre","XL_lsi_gre", "XB1b_mean_1","XB1b_mean_2","XB1b_std_1","XB1b_ratio","XT_DEM_MEA","XT_SLOPE_M","XN_NDVI_ME", "XA_RIVERW")
-index_x <- list("XL_ps_imp","XL_co_imp","XL_ai_imp","XL_lsi_imp","XL_co_gre","XL_lsi_gre", "XB1b_mean_1","XB1b_mean_2","XB1b_ratio","XT_DEM_MEA","XT_SLOPE_M","XN_NDVI_ME", "XA_RIVERW")
+index_x <- list("XL_ps_imp","XL_ai_imp","XL_ed_imp","XL_lsi_imp","XL_ai_gre","XL_ed_gre","XL_lsi_gre","XB1b_mean_1","XB1b_mean_2","XB1b_ratio","terrain","slope","ndvi", "XA_RIVERW")
 index_y <- list("XY_rcd", "XY_rci", "XY_crci")    #to_be_set
 row_1 <- length(index_x)
 col_1 <- length(index_y)
@@ -31,10 +31,10 @@ cor_data_f <- function(f_order, f_buffer){
   f_model_formula <- list()
   f_model_vif <- list()
   #input data
-  f_data_1 <- read.csv(paste0('ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv')) 
-  f_data_1b = f_data_1[, c(5,6,8,12,14,15,17,21,45,46,47,49,69,71,76,77,78,79,90)]  #to_be_set_key
+  f_data_1 <- read.csv(paste0('res2/ppa_2301_ana_s', f_order, '_buf', f_buffer, '.csv')) 
+  f_data_1b = f_data_1[, c(5,6,8,11,12,14,15,17,20,21,45,46,49,67,68,70,71,72,73,83)]  #to_be_set_key
   f_data_1c <- f_data_1b[f_data_1b$XY_rci != 0, ] #to_be_set
-  f_data_2 <- f_data_1c #to_be_set_key (another option：f_data_2 <- f_data_1c[-c(37,174), ])
+  f_data_2 <- f_data_1c[-c(31,32,33), ] #to_be_set_key (another option：f_data_2 <- f_data_1c[-c(37,174), ])
 
   
   f_data_out_1 <- f_data_2[,c(1,6)]  #to_be_set
@@ -85,6 +85,7 @@ cor_data_f <- function(f_order, f_buffer){
     f_res_list[[ii]] <- list()
     f_res_list[[ii]][["model_sum_list"]] <- f_model_sum_list[[ii]]
     f_res_list[[ii]][["model_anova_list"]] <- f_model_anova_list[[ii]]
+    write.csv(f_model_vif[[ii]], file = paste0('res3/2301_lm_vif_s',f_order, '_buf', f_buffer, '_', ii,'.csv'), row.names = TRUE)
   }
   
   colnames(f_lm_cor) <- index_y
@@ -103,18 +104,18 @@ cor_data_f <- function(f_order, f_buffer){
   f_res_list[["model_sum_list"]] <- f_model_sum_list
   f_res_list[["model_list"]] <- f_model_list
   f_res_list[["model_vif"]] <- f_model_vif
-  write.csv(f_lm_cor, file = paste0('2301_lm_cor_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
-  write.csv(f_lm_slope, file = paste0('2301_lm_slope_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
-  write.csv(f_lm_p, file = paste0('2301_lm_p_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
-  write.csv(f_lm_r2, file = paste0('2301_lm_r2_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_cor, file = paste0('res3/2301_lm_cor_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_slope, file = paste0('res3/2301_lm_slope_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_p, file = paste0('res3/2301_lm_p_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
+  write.csv(f_lm_r2, file = paste0('res3/2301_lm_r2_s',f_order, '_buf', f_buffer, '.csv'), row.names = TRUE)
   
   return(f_res_list)
 }
 #==========================
 
 res_list <- list()
-orders <- c(4,5)  #to_be_set_key
-buffers <- c(200,400,600,800,1000)  #to_be_set_key
+orders <- c(4)  #to_be_set_key
+buffers <- c('d01s4')  #to_be_set_key
 
 ii <- 0
 for(c_order in orders){
@@ -130,6 +131,6 @@ for(c_order in orders){
 
 
 #==========================
-order_1 <- 4 #to_be_set
-buffer_1 <- 800 #to_be_set
+order_1 <- 5 #to_be_set
+buffer_1 <- 'd01s5' #to_be_set
 cor_exa_1 <- res_list[[c_order]][[buffer_1]][['out_1']] #to_be_set

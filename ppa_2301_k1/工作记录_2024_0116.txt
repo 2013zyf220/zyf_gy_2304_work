@@ -1,0 +1,8 @@
+2301_cq_water_b13_bufx050s5-投影-cq_water_1-面转线-cq_water_2-提取河岸段-cq_water_3-合并为4段-cq_water_4-合并为1段-cq_water_5-欧氏距离-cq_water_5dis1-投影-cq_water_5dis1p
+
+cq_water_4-分割河岸段-cq_water_6-设置NUMBER属性-cq_water_7-调整-cq_water_b1（检查）-合并-cq_water_b2- 再分段-cq_water_b3-加垂直线-cq_water_b4-
+加缓冲区（画线1）-cq_water_b5-加缓冲区（画线2）-cq_water_b5b-线转面-cq_water_b6-计算面积并移除多余面矢量-cq_water_b6b-添加NUMBER属性-cq_water_b6c-移除面矢量67,142,167,168-cq_water_b6c_a1
+cq_water_b5b-重新做面矢量67,142,167,168（调整buffer大小）-cq_water_b6_a1-与cq_water_b6c_a1合并-cq_water_b6d
+-调整面矢量顺序-cq_water_b6e-投影-cq_water_b6f
+
+注：从cq_water_b5到cq_water_b6f，有必要重做

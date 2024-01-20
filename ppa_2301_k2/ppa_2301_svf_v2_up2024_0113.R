@@ -10,10 +10,12 @@ library(horizon)
 #rm(list = ls())
 
 setwd('E:/zyf_gn/zyf_gn_2301_data')
-shp_sub_set <- 5; #to_be_set_key
+shp_sub_set <- 4; #to_be_set_key
 bh_set <- 4 #to_be_set_key
 
-shp_1 <- shapefile('ppa_2301_k2/shp/2/2301_cq_water_b12_buf1000_a01_buf100.shp') #to_be_set
+c_buf <- 'x050s5' #to_be_set
+buf_1 <- 100 #to_be_set
+shp_1 <- shapefile(paste0('ppa_2301_k2/shp/5/res1/2301_cq_water_b13_buf', c_buf, '_buf', buf_1,'.shp')) #to_be_set
 shp_2 <- shp_1;
 
 shp_sub <- list()
@@ -39,5 +41,5 @@ for(ii in shp_sub[[shp_sub_set]]){
   plot(shp_2[ii,], add = T)
   
   c_bh_5 <- svf(c_bh_4)
-  writeRaster(c_bh_5, filename = paste0('ppa_2301_k2/raster1/svf_bh_', bh_set, '_grid_', ii,'.tif'))
+  writeRaster(c_bh_5, filename = paste0('ppa_2301_k2/shp/5/res1/svf/svf_bh_', bh_set, '_grid_', ii, '_', c_buf, '.tif'))  #to_be_set
 }

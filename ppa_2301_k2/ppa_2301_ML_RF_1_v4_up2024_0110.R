@@ -6,7 +6,7 @@ library(caret)
 library(pROC)
 
 #重点输出：非线性曲线&R2&重要性
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/4/res2")
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/6") #to_be_set
 
 #==============================================================
 
@@ -25,7 +25,7 @@ col_values_f <- function(f_mat, f_col_name){
 #==============================================================
 
 rf_f1 <- function(f_order, f_buffer, f_index_y, f_col_1d2, f_col_2d3, f_rows_remove){
-  f_data_1 <- read.csv(paste0("ppa_2301_ana_s", f_order, '_buf', f_buffer,".csv"));
+  f_data_1 <- read.csv(paste0("res2/ppa_2301_ana_s", f_order, '_buf', f_buffer,".csv"));
   f_data_1b <- f_data_1[, f_col_1d2];
   if(length(f_rows_remove) == 0){
     f_data_2 <- f_data_1b
@@ -157,11 +157,11 @@ mar_eff <- function(f_x, f_y){
 
 #==============================================================
 order_1 <- 4; #to_be_set_key
-buffer_1s <- c(200,400,600,800,1000); #to_be_set_key
-col_1d2 <- c(5,6,8,12,14,15,17,21,45,46,47,49,69,71,77,78,79,90); #to_be_set
-col_2d3 <- c(1,2,3,4,6,8,9,10,12,13,14,18); #to_be_set
+buffer_1s <- c('d01s4'); #to_be_set_key
+col_1d2 <- c(5,6,8,11,12,14,15,17,20,21,45,46,49,67,68,70,71,72,73,83); #to_be_set
+col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20); #to_be_set
 
-indexes_y <- list("XY_rci"); #to_be_set
+indexes_y <- list("XY_crci"); #to_be_set
 rows_remove <- c(); #to_be_set
 len_indexes_y <- length(indexes_y)
 len_col_2d3 <- length(col_2d3);
@@ -173,20 +173,20 @@ for(c_buffer in buffer_1s){
     c_rf_impor_res <- rf_impor_f(c_rf_f2_res)
     
     for(ii in 1: len_col_2d3){
-      jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y, "_", ii,".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+      jpeg(paste0("res3/ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y, "_", ii,".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
       c_pp_data <- partialPlot(x = c_rf_f2_res, pred.data = c_rf_f1_res$train_data, x.var = c_rf_f1_res$col_name_3[ii])  #to_be_set
       mar_eff(c_pp_data$x, c_pp_data$y)
       dev.off()  # Close the jpeg device
     }
     
-    jpeg(paste0("ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y,".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
+    jpeg(paste0("res3/ppa_2301_rf_1_s", order_1, "_buf", c_buffer, "_y_" , c_index_y,".jpg"), width = 800, height = 600, quality = 100)  # Adjust width, height, and quality as needed
     par(mfrow = c(4, 4))
     for(ii in 1: len_col_2d3){
       partialPlot(x = c_rf_f2_res, pred.data = c_rf_f1_res$train_data, x.var = c_rf_f1_res$col_name_3[ii])  #to_be_set
     }
     dev.off()  # Close the jpeg device
     
-    jpeg(paste0("ppa_2301_rf_2_", order_1, "_buf", c_buffer, "_y_" , c_index_y, ".jpg"), width = 800, height = 600, quality = 100)
+    jpeg(paste0("res3/ppa_2301_rf_2_", order_1, "_buf", c_buffer, "_y_" , c_index_y, ".jpg"), width = 800, height = 600, quality = 100)
     par(mfrow = c(4, 4))
     for(ii in 1: len_col_2d3){
       plot(c_rf_f1_res$train_data_y ~ col_values_f(c_rf_f1_res$train_data, c_rf_f1_res$col_name_3[ii])) #对应散点图
@@ -197,10 +197,10 @@ for(c_buffer in buffer_1s){
     c_rf_pred_test <- rf_pred1(c_rf_f2_res, c_rf_f1_res$test_data, c_rf_f1_res$test_data_y)
     c_rf_pred_all <- rf_pred2(c_rf_pred_train$predict, c_rf_pred_test$predict, c_rf_f1_res$train_data_y, c_rf_f1_res$test_data_y)
   
-    write.csv(c_rf_pred_train[["mat"]], file = paste0("2301_rf_pred_1_train_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
-    write.csv(c_rf_pred_test[["mat"]], file = paste0("2301_rf_pred_1_test_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
-    write.csv(c_rf_pred_all[["mat"]], file = paste0("2301_rf_pred_2_all_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
-    write.csv(c_rf_impor_res, file = paste0("2301_rf_impor_1_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_pred_train[["mat"]], file = paste0("res3/2301_rf_pred_1_train_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_pred_test[["mat"]], file = paste0("res3/2301_rf_pred_1_test_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_pred_all[["mat"]], file = paste0("res3/2301_rf_pred_2_all_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
+    write.csv(c_rf_impor_res, file = paste0("res3/2301_rf_impor_1_s", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = TRUE)
   }
 }
 

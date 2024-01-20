@@ -13,7 +13,7 @@ library(ggplot2)
 #load and plot data
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2')
-order_1 <- 5; #to_be_set_key
+order_1 <- 4; #to_be_set_key
 season_1 <- 2; #to_be_set_key
 lst_data <- 3; #to_be_set
 
@@ -285,8 +285,8 @@ data_df_3_mean <- list();
 data_df_4 <- list();
 data_df_4v <- matrix(0, nrow = grid_end1, ncol = 12);
 breaks_2_num <- list();
-cir_s <- 64  #to_be_set
-cir_e <- 67 #to_be_set
+cir_s <- 1  #to_be_set
+cir_e <- grid_end2 #to_be_set
 data_df_3_mean_all <- matrix(0, nrow = grid_end1, ncol = 50)
 for (ii in cir_s: cir_e){
   breaks_2_num[[ii]] <- round(breaks_2_end[ii] / breaks_2_by[ii]);
@@ -324,7 +324,7 @@ for (ii in cir_s: cir_e){
 
 data_df_4v_col <- c('XY_rcd', 'XY_rci', 'XY_crci', 'XY_rcd2', 'XY_rci2', 'XY_crci2', 'XY_rcd3', 'XY_rci3', 'XY_crci3', 'XY_x', 'XY_y', 'NUMBER')
 colnames(data_df_4v) <- data_df_4v_col
-#st_write(grid_2, paste0('shp/6/res1/ppa_2301_rce_s', order_1,'_adj',adj_num, '_data', lst_data,'.shp'))
+st_write(grid_2, paste0('shp/6/res1/ppa_2301_rce_s', order_1,'_adj',adj_num, '_data', lst_data,'.shp'))
 write.csv(data_df_4v, file = paste0('shp/6/res1/ppa_2301_rce_s',order_1,'_adj', adj_num, '_data', lst_data,'.csv'), row.names = FALSE)
 write.csv(data_df_3_mean_all, file = paste0('shp/6/res1/ppa_2301_rce_mean_s',order_1,'_adj',adj_num, '_data', lst_data, '.csv'), row.names = FALSE)
 #up2023_0924_10:31_e
@@ -332,70 +332,70 @@ write.csv(data_df_3_mean_all, file = paste0('shp/6/res1/ppa_2301_rce_mean_s',ord
 #====================================
 #check
 
-check_num <- 67 #to_be_set
-check_s1_0 <- data_df_1[[check_num]]
-check_s1_1 <- crop(dis_2, extent(grid_1b[check_num,]))
-check_s1_2 <- mask(check_s1_1,grid_1b[check_num,])
+#check_num <- 168 #to_be_set
+#check_s1_0 <- data_df_1[[check_num]]
+#check_s1_1 <- crop(dis_2, extent(grid_1b[check_num,]))
+#check_s1_2 <- mask(check_s1_1,grid_1b[check_num,])
 #plot(check_s1_2)
-check_s1_1v <- getValues(check_s1_1)
-check_s1_1_nrow <- check_s1_1@nrows
-check_s1_1_ncol <- check_s1_1@ncols
-check_s1_1vm <- matrix(check_s1_1v, nrow = check_s1_1_nrow, ncol = check_s1_1_ncol, byrow = TRUE)
+#check_s1_1v <- getValues(check_s1_1)
+#check_s1_1_nrow <- check_s1_1@nrows
+#check_s1_1_ncol <- check_s1_1@ncols
+#check_s1_1vm <- matrix(check_s1_1v, nrow = check_s1_1_nrow, ncol = check_s1_1_ncol, byrow = TRUE)
 #write.table(check_s1_1vm,'shp/6/check1/check_s1_1vm.csv', row.names = FALSE, sep = ',')
-check_s1_2v <- getValues(check_s1_2)
-check_s1_2_nrow <- check_s1_2@nrows
-check_s1_2_ncol <- check_s1_2@ncols
-check_s1_2vm <- matrix(check_s1_2v, nrow = check_s1_2_nrow, ncol = check_s1_2_ncol,  byrow = TRUE)
+#check_s1_2v <- getValues(check_s1_2)
+#check_s1_2_nrow <- check_s1_2@nrows
+#check_s1_2_ncol <- check_s1_2@ncols
+#check_s1_2vm <- matrix(check_s1_2v, nrow = check_s1_2_nrow, ncol = check_s1_2_ncol,  byrow = TRUE)
 #write.table(check_s1_2vm,'shp/6/check1/check_s1_2vm.csv', row.names = FALSE, sep = ',')
-check_s1_1va <- na.omit(check_s1_1v)
+#check_s1_1va <- na.omit(check_s1_1v)
 #write.table(check_s1_1va,'shp/6/check1/check_s1_1va.csv', row.names = FALSE)
-check_s1_2va <- na.omit(check_s1_2v)
+#check_s1_2va <- na.omit(check_s1_2v)
 #write.table(check_s1_2va,'shp/6/check1/check_s1_2va.csv', row.names = FALSE)
 
-check_s1_3 <- crop(lst_2, extent(grid_1b[check_num,]))
-check_s1_3v <- getValues(check_s1_3)
-check_s1_3_nrow <- check_s1_3@nrows
-check_s1_3_ncol <- check_s1_3@ncols
-check_s1_3vm <- matrix(check_s1_3v, nrow = check_s1_3_nrow, ncol = check_s1_3_ncol, byrow = TRUE)
-write.table(check_s1_3vm,'shp/6/check1/check_s1_3vm.csv', row.names = FALSE, sep = ',')
-check_s1_3va <- na.omit(check_s1_3v)
-write.table(check_s1_3va,'shp/6/check1/check_s1_3va.csv', row.names = FALSE)
+#check_s1_3 <- crop(lst_2, extent(grid_1b[check_num,]))
+#check_s1_3v <- getValues(check_s1_3)
+#check_s1_3_nrow <- check_s1_3@nrows
+#check_s1_3_ncol <- check_s1_3@ncols
+#check_s1_3vm <- matrix(check_s1_3v, nrow = check_s1_3_nrow, ncol = check_s1_3_ncol, byrow = TRUE)
+#write.table(check_s1_3vm,'shp/6/check1/check_s1_3vm.csv', row.names = FALSE, sep = ',')
+#check_s1_3va <- na.omit(check_s1_3v)
+#write.table(check_s1_3va,'shp/6/check1/check_s1_3va.csv', row.names = FALSE)
 
-check_s1_4 <- mask(check_s1_3,grid_1b[check_num,])
-check_s1_4v <- getValues(check_s1_4)
-check_s1_4_nrow <- check_s1_4@nrows
-check_s1_4_ncol <- check_s1_4@ncols
-check_s1_4vm <- matrix(check_s1_4v, nrow = check_s1_4_nrow, ncol = check_s1_4_ncol, byrow = TRUE)
+#check_s1_4 <- mask(check_s1_3,grid_1b[check_num,])
+#check_s1_4v <- getValues(check_s1_4)
+#check_s1_4_nrow <- check_s1_4@nrows
+#check_s1_4_ncol <- check_s1_4@ncols
+#check_s1_4vm <- matrix(check_s1_4v, nrow = check_s1_4_nrow, ncol = check_s1_4_ncol, byrow = TRUE)
 #write.table(check_s1_4vm,'shp/6/check1/check_s1_4vm.csv', row.names = FALSE, sep = ',')
-check_s1_4va <- na.omit(check_s1_4v)
+#check_s1_4va <- na.omit(check_s1_4v)
 #write.table(check_s1_4va,'shp/6/check1/check_s1_4va.csv', row.names = FALSE)
 
-check_s2_thres <- 20
-check_s2_break_1 <- c(-20, check_s2_thres, 80);
-check_s2_label <- list()
-check_s2_label[1] <- paste('-20 - ', check_s2_thres);
-check_s2_label[2] <- paste(check_s2_thres,' - 80');
-check_s2_input <- data_df_1[[check_num]]
-check_s2_input$bin <- cut(check_s2_input$lst, breaks = check_s2_break_1, labels = c(check_s2_label[1], check_s2_label[2]), include.lowest = TRUE);
-check_s2_input_2 <- split(check_s2_input, check_s2_input$bin)
-check_s2_input_sp1 <- check_s2_input_2[[1]]
-check_s2_input_sp2 <- check_s2_input_2[[2]]
-check_s2_input_sp1b <- check_s2_input_2[['1']]
-check_s2_input_sp1b <- check_s2_input_2[['2']]
-is.null(check_s2_input_sp1b)
+#check_s2_thres <- 20
+#check_s2_break_1 <- c(-20, check_s2_thres, 80);
+#check_s2_label <- list()
+#check_s2_label[1] <- paste('-20 - ', check_s2_thres);
+#check_s2_label[2] <- paste(check_s2_thres,' - 80');
+#check_s2_input <- data_df_1[[check_num]]
+#check_s2_input$bin <- cut(check_s2_input$lst, breaks = check_s2_break_1, labels = c(check_s2_label[1], check_s2_label[2]), include.lowest = TRUE);
+#check_s2_input_2 <- split(check_s2_input, check_s2_input$bin)
+#check_s2_input_sp1 <- check_s2_input_2[[1]]
+#check_s2_input_sp2 <- check_s2_input_2[[2]]
+#check_s2_input_sp1b <- check_s2_input_2[['1']]
+#check_s2_input_sp1b <- check_s2_input_2[['2']]
+#is.null(check_s2_input_sp1b)
 
-check_s3_break <- seq(0, 990, by = 30)
-check_s3_input <- data_df_2[[check_num]]
-check_s3_input$bin <- cut(check_s3_input$dis, breaks = check_s3_break, labels = FALSE, include.lowest = TRUE)
-check_s3_output <- split(check_s3_input, check_s3_input$bin)
+#check_s3_break <- seq(0, 990, by = 30)
+#check_s3_input <- data_df_2[[check_num]]
+#check_s3_input$bin <- cut(check_s3_input$dis, breaks = check_s3_break, labels = FALSE, include.lowest = TRUE)
+#check_s3_output <- split(check_s3_input, check_s3_input$bin)
 
-check_s3m_para1 <- 1
-check_s3m_para2 <- toString(check_s3m_para1)
-check_s3m_input <- data_df_3[[check_num]]
-check_s3m_v1 <- check_s3m_input[[check_s3m_para1]]
-check_s3m_v2 <- check_s3m_input[[check_s3m_para2]]
-check_s3m_v2lst <- check_s3m_input[[check_s3m_para2]]$lst
+#check_s3m_para1 <- 1
+#check_s3m_para2 <- toString(check_s3m_para1)
+#check_s3m_input <- data_df_3[[check_num]]
+#check_s3m_v1 <- check_s3m_input[[check_s3m_para1]]
+#check_s3m_v2 <- check_s3m_input[[check_s3m_para2]]
+#check_s3m_v2lst <- check_s3m_input[[check_s3m_para2]]$lst
 
-check_s4_len <- length(data_df_3_mean[[check_num]])
-check_s4_input <- data_df_3_mean[[check_num]]
-check_s4_input2 <- check_s4_input[2:check_s4_len]
+#check_s4_len <- length(data_df_3_mean[[check_num]])
+#check_s4_input <- data_df_3_mean[[check_num]]
+#check_s4_input2 <- check_s4_input[2:check_s4_len]

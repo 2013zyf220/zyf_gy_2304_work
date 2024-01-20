@@ -15,6 +15,10 @@ grid_paths_1[[10]] <- '2301_cq_water_07_mid3.shp'
 grid_paths_1[[11]] <- '4/2301_cq_water7_a7_buf800_5.shp';
 grid_paths_1[[12]] <- '4/2301_cq_water7_a7_buf800_7b.shp';
 grid_paths_1[[13]] <- '2/2301_cq_water_b12_buf1500_a09f.shp';
+grid_paths_1[[14]] <- '5/res1/2301_cq_water_b13_bufx050s4c.shp';
+grid_paths_1[[15]] <- '6/arcgis/cq_water_b06d.shp';
+grid_paths_1[[16]] <- '6/arcgis/cq_water_c01s4_a03.shp';
+grid_paths_1[[17]] <- '6/arcgis/cq_water_c01s5_a03.shp';
 
 grid_paths_2 <- list();
 grid_paths_2[[1]] <- '1/2301_cq_water_b12_buft500_a01.shp';
@@ -30,6 +34,10 @@ grid_paths_2[[10]] <- '2301_cq_water_07_mid4.shp'
 grid_paths_2[[11]] <- '4/2301_cq_water7_a7_buf800_6.shp';
 grid_paths_2[[12]] <- '4/2301_cq_water7_a7_buf800_7c.shp';
 grid_paths_2[[13]] <- '2/2301_cq_water_b12_buf1500_a09g.shp';
+grid_paths_2[[14]] <- '5/res1/2301_cq_water_b13_bufx050s4d.shp';
+grid_paths_2[[15]] <- '6/arcgis/cq_water_b06e.shp';
+grid_paths_2[[16]] <- '6/arcgis/cq_water_c01s4_a04.shp';
+grid_paths_2[[17]] <- '6/arcgis/cq_water_c01s5_a04.shp';
 
 sort_f <- function(f_path){
   f_grid_1 <- st_read(f_path);
@@ -39,7 +47,7 @@ sort_f <- function(f_path){
 
 grid_res <- list();
 
-orders <- 13 #to_be_set
+orders <- 17 #to_be_set
 for(ii in orders){
   grid_res[[ii]] <- sort_f(grid_paths_1[[ii]])
   st_write(grid_res[[ii]], grid_paths_2[[ii]])

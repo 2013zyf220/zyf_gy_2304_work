@@ -14,11 +14,11 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2')
 #============================================================================
 
 ls_index_f <- function(f_year, f_buffer){
-  f_shp_0 <- paste0('shp/2/2301_cq_water_b12_buf', f_buffer, '_a01.shp')
+  f_shp_0 <- paste0('shp/6/arcgis/cq_water_', f_buffer, '.shp') #to_be_set
   f_grid_1a <- shapefile(f_shp_0)
-  f_grid_1b <- spTransform(f_grid_1a, '+init=epsg:4326')
+  f_grid_1b <- f_grid_1a
   f_grid_2 <- st_read(f_shp_0)
-  f_luse <- raster(paste0('raster/ppa_2301_cq_luseb_', f_year,'.tif')) #land cover data
+  f_luse <- raster(paste0('raster/ppa_2301_cq_lusebp_', f_year,'.tif')) #land cover data #to_be_set
   
   plot(f_luse)
   plot(f_grid_1b, add = T)
@@ -190,7 +190,7 @@ ls_index_f <- function(f_year, f_buffer){
     f_grid_2$XL_shdi[ii] <- fc_shdi_v
     f_grid_2$XL_frac_mn[ii] <- fc_frac_mn_v
   }
-  write.csv(f_ls_metric,paste0('shp/3/ppa_2301_lsi_', f_year, '_buf', f_buffer, '.csv'),row.names = FALSE)
+  write.csv(f_ls_metric,paste0('shp/6/res2/ppa_2301_lsi_', f_year, '_buf', f_buffer, '.csv'),row.names = FALSE)
   
   f_res_list <- list()
   f_res_list[['ls_metric']] <- f_ls_metric
@@ -198,8 +198,8 @@ ls_index_f <- function(f_year, f_buffer){
 }
 
 #=========================================================================
-years <- c(2019); #to_be_set
-buffers <- c(200,400,500,600,800,1000); #to_be_set
+years <- c(2022); #to_be_set
+buffers <- c('d01s5'); #to_be_set
 
 res_list <- list()
 ii <- 0

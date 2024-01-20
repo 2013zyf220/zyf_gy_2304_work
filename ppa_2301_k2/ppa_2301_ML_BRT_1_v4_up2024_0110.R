@@ -7,9 +7,11 @@ library(DataExplorer)
 library(tidyverse)
 library(caret)
 library(pROC)
+library(ggplot2)
+library(pdp)
 
 #重点输出：非线性曲线&R2&重要性
-setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/4/res2")
+setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/shp/6")
 
 #==============================================================
 
@@ -28,7 +30,7 @@ col_values_f <- function(f_mat, f_col_name){
 #==============================================================
 
 brt_f1 <- function(f_order, f_buffer, f_index_y, f_col_1d2, f_col_2d3, f_rows_remove){
-  f_data_1 <- read.csv(paste0("ppa_2301_ana_s", f_order, '_buf', f_buffer,".csv")); 
+  f_data_1 <- read.csv(paste0("res2/ppa_2301_ana_s", f_order, '_buf', f_buffer,".csv")); 
   f_data_1b <- f_data_1[, f_col_1d2];
   if(length(f_rows_remove) == 0){
     f_data_2 <- f_data_1b
@@ -109,42 +111,55 @@ brt_pred_f <- function(f_fit_1, f_data, f_perf_gbm1, f_data_y){
 #=================================================================
 
 order_1 <- 5; #to_be_set_key
-buffer_1s <- c(200,400,600,800,1000) #to_be_set_key
-indexes_y <- list("XY_rci") #to_be_set
-col_1d2 <- c(5,6,8,12,14,15,17,21,45,46,47,49,69,71,77,78,79,90); #to_be_set
-col_2d3 <- c(1,2,3,4,6,8,9,10,12,13,14,18); #to_be_set
-len_col_2d3 <- length(col_2d3);
-rows_remove <- c(); #to_be_set(another option: 37,174)
+buffer_1s <- c('d01s5') #to_be_set_key
+indexes_y <- list("XY_rci") #to_be_set_key
 
+col_1d2 <- c(5,8,12,14,17,21,45,46,49,67,68,70,71,72,73,83); #to_be_set
+col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12,16); #to_be_set
+len_col_2d3 <- length(col_2d3);
+rows_remove <- c(31,32,33); #to_be_set(another option: 37,174)
+brt_f1_res <- list()
 brt_f2_res_2 <- list();
 ii <- 1;
 for(c_buffer in buffer_1s){
+  brt_f1_res[[ii]] <- list()
   brt_f2_res_2[[ii]] <- list();
   for(c_index_y in indexes_y){
     c_brt_f1_res <- brt_f1(order_1, c_buffer, c_index_y, col_1d2, col_2d3, rows_remove)
     c_1 <- brt_f2(c_brt_f1_res$form_reg, c_brt_f1_res$train_data)
+    brt_f1_res[[ii]][[c_index_y]] <- c_brt_f1_res
     brt_f2_res_2[[ii]][[c_index_y]] <- c_1
     c_brt_f2_res_sum <- c_1$sum_fit_1
     
     c_brt_pred_train <- brt_pred_f(c_1$fit_1, c_brt_f1_res$train_data, c_1$perf_gbm,  c_brt_f1_res$train_data_y)
     c_brt_pred_test <- brt_pred_f(c_1$fit_1, c_brt_f1_res$test_data, c_1$perf_gbm,  c_brt_f1_res$test_data_y)
     
-    write.csv(c_brt_pred_train$mat, file = paste0("2301_brt_pred_1_train_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_brt_pred_test$mat, file = paste0("2301_brt_pred_1_test_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
-    write.csv(c_brt_f2_res_sum, file = paste0("2301_brt_impor_1_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_pred_train$mat, file = paste0("res3/2301_brt_pred_1_train_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_pred_test$mat, file = paste0("res3/2301_brt_pred_1_test_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_f2_res_sum, file = paste0("res3/2301_brt_impor_1_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
   }
   ii <- ii + 1;
 }
 
 #=================================================================
 
-buffer_1e <- 1000 #to_be_set
+buffer_1e <- 'd01s5' #to_be_set
 ii_1 <- 1; #to_be_set
 index_y_1 <- indexes_y[[1]]; #to_be_set
+pred_var <- "XL_ps_imp" #to_be_set
+order_var <- 1 #to_be_set
 
-jpeg(paste0("ppa_2301_brt_1b_", order_1,'_buf', buffer_1e, "_", index_y_1,".jpg"))
-plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = 1)
+jpeg(paste0("res3/ppa_2301_brt_1b_", order_1,'_buf', buffer_1e, "_", index_y_1,".jpg"))
+plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = order_var)
 dev.off()  
 
 #plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = c(1,5)) #生成第1个和第5个变量的偏依赖图
 
+partial_data <- partial(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], pred.var = pred_var, n.trees = 5000,train = brt_f1_res[[ii_1]][[index_y_1]]$train_data) #to_be_set
+plot(partial_data)
+write.csv(partial_data, file = paste0("res3/2301_brt_partial_", order_1,'_buf', buffer_1e, index_y_1, '_', pred_var, ".csv"), row.names = FALSE)
+
+jpeg(paste0("res3/ppa_2301_brt_2b_", order_1,'_buf', buffer_1e, "_", index_y_1, "_", pred_var,".jpg"))
+ggplot(partial_data, aes(x= XB1b_mean_1, y= yhat)) + geom_line() + 
+  labs(x = "building height", y = "rci") + theme_bw() + theme(panel.grid=element_blank()) #to_be_set
+dev.off()  

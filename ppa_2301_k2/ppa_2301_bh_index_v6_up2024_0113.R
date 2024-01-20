@@ -25,9 +25,9 @@ bh_list <- list(bh_1a, bh_1b, bh_1c, bh_1d); #to_be_set
 bh_f1 <- function(f_bh_1, f_buffer){
   f_bh_2 <- crop(f_bh_1, extent_1) #to_be_set
   
-  f_buffer_2 <- paste0('2301_cq_water_b12_buf', f_buffer, '_a01.shp')
-  f_grid_0 <- shapefile(paste0('ppa_2301_k2/shp/2/', f_buffer_2)); #to_be_set
-  f_grid_1 <- spTransform(f_grid_0, '+init=epsg:4326')
+  f_buffer_2 <- paste0('ppa_2301_k2/shp/6/arcgis/cq_water_', f_buffer, '.shp') #to_be_set
+  f_grid_0 <- shapefile(f_buffer_2); #to_be_set
+  f_grid_1 <- f_grid_0
   f_grid_len <- length(f_grid_1);
   
   plot(f_bh_2)
@@ -119,7 +119,7 @@ bh_f1 <- function(f_bh_1, f_buffer){
 
 
 
-buffers <- c('x050s5') #to_be_set_key
+buffers <- c('d01s5') #to_be_set_key
 res_1a_sum <- list()
 res_1b_sum <- list()
 res_1c_sum <- list()
@@ -131,7 +131,7 @@ for(c_buf in buffers){
   res_1c_sum[[c_buf]] <- bh_f1(bh_1c, c_buf);
   res_1d_sum[[c_buf]] <- bh_f1(bh_1d, c_buf);
   
-  c_grid_2 <- st_read(paste0('ppa_2301_k2/shp/2/2301_cq_water_b12_buf', c_buf, '_a01.shp'))
+  c_grid_2 <- st_read(paste0('ppa_2301_k2/shp/6/arcgis/cq_water_', c_buf, '.shp')) #to_be_set
   c_grid_2$XB1a_len_1 <- res_1a_sum[[c_buf]][['bh_6_len']]
   c_grid_2$XB1a_len_2 <- res_1a_sum[[c_buf]][['bh_7_len']]
   c_grid_2$XB1a_mean_1 <- res_1a_sum[[c_buf]][['bh_6_mean']]
@@ -167,7 +167,7 @@ for(c_buf in buffers){
   c_grid_2$XB1d_std_2 <- res_1d_sum[[c_buf]][['bh_7_std']]
   c_grid_2$XB1d_ratio <- res_1d_sum[[c_buf]][['bh_ratio']]
   c_grid_2$XB1d_ci <- res_1d_sum[[c_buf]][['bh_ci']]
-  st_write(c_grid_2, paste0('ppa_2301_k2/shp/5/res1/ppa_2301_bh_1_buf', c_buf, '.shp'))
+  #st_write(c_grid_2, paste0('ppa_2301_k2/shp/5/res1/ppa_2301_bh_1_buf', c_buf, '.shp'))
   
   c_grid_len <- res_1a_sum[[c_buf]][['grid_len']]
   c_bh_data_export <- matrix(0, nrow = c_grid_len, ncol = 33); #to_be_set
@@ -213,6 +213,6 @@ for(c_buf in buffers){
   c_bh_data_export[, 32] <- res_1d_sum[[c_buf]][['bh_ci']]
   c_bh_data_export[, 33] <- res_1a_sum[[c_buf]][['NUMBER']]
   
-  write.csv(c_bh_data_export, file = paste0('ppa_2301_k2/shp/5/res1/ppa_2301_bh_1_buf', c_buf, '.csv'), row.names = FALSE)
+  write.csv(c_bh_data_export, file = paste0('ppa_2301_k2/shp/6/res2/ppa_2301_bh_1_buf', c_buf, '.csv'), row.names = FALSE)
 }
 
