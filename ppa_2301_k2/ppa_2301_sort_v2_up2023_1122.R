@@ -19,6 +19,7 @@ grid_paths_1[[14]] <- '5/res1/2301_cq_water_b13_bufx050s4c.shp';
 grid_paths_1[[15]] <- '6/arcgis/cq_water_b06d.shp';
 grid_paths_1[[16]] <- '6/arcgis/cq_water_c01s4_a03.shp';
 grid_paths_1[[17]] <- '6/arcgis/cq_water_c01s5_a03.shp';
+grid_paths_1[[18]] <- '6/arcgis/cq_water_rw3.shp';
 
 grid_paths_2 <- list();
 grid_paths_2[[1]] <- '1/2301_cq_water_b12_buft500_a01.shp';
@@ -38,6 +39,7 @@ grid_paths_2[[14]] <- '5/res1/2301_cq_water_b13_bufx050s4d.shp';
 grid_paths_2[[15]] <- '6/arcgis/cq_water_b06e.shp';
 grid_paths_2[[16]] <- '6/arcgis/cq_water_c01s4_a04.shp';
 grid_paths_2[[17]] <- '6/arcgis/cq_water_c01s5_a04.shp';
+grid_paths_2[[18]] <- '6/arcgis/cq_water_rw4.shp';
 
 sort_f <- function(f_path){
   f_grid_1 <- st_read(f_path);
@@ -47,7 +49,7 @@ sort_f <- function(f_path){
 
 grid_res <- list();
 
-orders <- 17 #to_be_set
+orders <- 18 #to_be_set
 for(ii in orders){
   grid_res[[ii]] <- sort_f(grid_paths_1[[ii]])
   st_write(grid_res[[ii]], grid_paths_2[[ii]])

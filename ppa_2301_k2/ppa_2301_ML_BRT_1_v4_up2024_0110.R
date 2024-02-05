@@ -110,12 +110,12 @@ brt_pred_f <- function(f_fit_1, f_data, f_perf_gbm1, f_data_y){
 
 #=================================================================
 
-order_1 <- 5; #to_be_set_key
-buffer_1s <- c('d01s5') #to_be_set_key
-indexes_y <- list("XY_rci") #to_be_set_key
+order_1 <- 4; #to_be_set_key
+buffer_1s <- c('d01s4') #to_be_set_key
+indexes_y <- list("XY_crci") #to_be_set_key
 
-col_1d2 <- c(5,8,12,14,17,21,45,46,49,67,68,70,71,72,73,83); #to_be_set
-col_2d3 <- c(1,2,3,4,5,6,7,8,9,10,11,12,16); #to_be_set
+col_1d2 <- c(5,8,12,14,17,21,32,45,46,49,67,68,70,71,72,73,83); #to_be_set
+col_2d3 <- c(1,2,4,5,7,8,9,10,11,12,17); #to_be_set
 len_col_2d3 <- length(col_2d3);
 rows_remove <- c(31,32,33); #to_be_set(another option: 37,174)
 brt_f1_res <- list()
@@ -142,14 +142,16 @@ for(c_buffer in buffer_1s){
 }
 
 #=================================================================
-
-buffer_1e <- 'd01s5' #to_be_set
+buffer_1e <- 'd01s4' #to_be_set
 ii_1 <- 1; #to_be_set
 index_y_1 <- indexes_y[[1]]; #to_be_set
-pred_var <- "XL_ps_imp" #to_be_set
-order_var <- 1 #to_be_set
 
-jpeg(paste0("res3/ppa_2301_brt_1b_", order_1,'_buf', buffer_1e, "_", index_y_1,".jpg"))
+#pred_var_list <- c("XL_ps_imp", "XL_ai_imp", "XL_lsi_imp", "XL_ps_gre", "XL_ai_gre", "XL_lsi_gre", "XB1b_mean_1", "XB1b_mean_2", "XB1b_ratio", "terrain", "slope", "ndvi", "XA_RIVERW")
+pred_var_list <- c("XL_ps_imp", "XL_ai_imp",  "XL_ps_gre", "XL_ai_gre", "XL_pd", "XB1b_mean_1", "XB1b_mean_2", "XB1b_ratio", "terrain", "slope", "XA_RIVERW")
+order_var <- 11 #to_be_set
+pred_var <- pred_var_list[order_var]
+
+jpeg(paste0("res3/ppa_2301_brt_1b_", order_1,'_buf', buffer_1e, "_", index_y_1,'_', order_var, ".jpg"))
 plot.gbm(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], i.var = order_var)
 dev.off()  
 
@@ -158,8 +160,3 @@ dev.off()
 partial_data <- partial(brt_f2_res_2[[ii_1]][[index_y_1]][["fit_1"]], pred.var = pred_var, n.trees = 5000,train = brt_f1_res[[ii_1]][[index_y_1]]$train_data) #to_be_set
 plot(partial_data)
 write.csv(partial_data, file = paste0("res3/2301_brt_partial_", order_1,'_buf', buffer_1e, index_y_1, '_', pred_var, ".csv"), row.names = FALSE)
-
-jpeg(paste0("res3/ppa_2301_brt_2b_", order_1,'_buf', buffer_1e, "_", index_y_1, "_", pred_var,".jpg"))
-ggplot(partial_data, aes(x= XB1b_mean_1, y= yhat)) + geom_line() + 
-  labs(x = "building height", y = "rci") + theme_bw() + theme(panel.grid=element_blank()) #to_be_set
-dev.off()  

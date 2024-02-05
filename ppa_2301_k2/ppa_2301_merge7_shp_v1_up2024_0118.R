@@ -16,7 +16,7 @@ year_f <- function(f_order){
   }
 }
 
-data_rw <- read.csv(paste0('rw/2301_cq_water_rw_7.csv'))
+data_rw <- read.csv(paste0('6/res2/ppa_2301_rw_1.csv'))
 data_rotate <- read.csv(paste0('rotate/2301_cq_water_rotate_5b.csv'))
 data_lines <- read.csv(paste0('3/ppa_2301_lines_1.csv')) 
 

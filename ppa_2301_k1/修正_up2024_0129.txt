@@ -1,0 +1,58 @@
+修正：
+land cover改为land use【完成】
+简写括号整理如（RCI）【完成】
+公式及其解释中的变量简写为斜体【完成】
+铜锣山的标注【完成】
+结果部分的第1、2部分的RCI与CRCI图片合并【放弃】
+利用Landsat和MNDWI计算河面【暂时放弃】
+
+变量单位（方法部分）【快】
+河岸计算相关【中快】
+参考文献标注【快】
+TP TC TR 图3【快】
+RCD介绍【中】
+河宽影响RCE的线性分析【快】
+
+
+R2解释【中】
+FAR与MBH解释\BR
+
+加建筑密度作为参考变量【快】
+
+解释移除了特定的buffer【快】
+3.1（包括）之前结果中关于移除buffer的调整【快】
+加建筑密度指标【快】
+
+可能：移除65后调整数据【较慢】
+
+
+关注高温日和正常日的差异
+
+相对贡献结果：不同类型
+咨询关于marginal effect的标准化
+
+
+检查各指标幅度
+
+marginal effect不是前5个变量了
+变量单位
+PD的X轴差异的差异性
+
+ top four contributing factors 而非 top four most contributing factors 
+AI_I影响的解释
+contributing factors改influencial factor
+
+检查边缘效应的叙述语法
+
+时态总结
+
+讨论：2个指标的差异
+讨论：极端夏日RCI分析中考虑北京的BRT，公园降温研究
+
+PD影响讨论*
+坡度影响讨论案例分析（贵阳）*
+
+waterfront 变为riverside
+简写括号相关及大写
+标题
+
