@@ -99,12 +99,16 @@ brt_pred_f <- function(f_fit_1, f_data, f_perf_gbm1, f_data_y){
   f_lm <- lm(f_pred_1 ~ f_data_y)
   f_lm_sum <- summary(f_lm)
   
-  f_r2_mat <- matrix(0, nrow = 1, ncol = 2)
+  f_r2_mat <- matrix(0, nrow = 1, ncol = 3)
   f_r2_mat[1,1] <- f_lm_sum$r.squared
   f_r2_mat[1,2] <- f_lm_sum$adj.r.squared
-  
+  f_residuals <- residuals(f_lm)
+  f_r2_mat[1,3] <- sqrt(mean(f_residuals^2))
   f_res_list <- list();
   f_res_list[["mat"]] <- f_r2_mat
+  f_res_list[["resi"]] <- f_residuals
+  f_res_list[['pred']] <- f_pred_1
+  f_res_list[['data']] <- f_data_y
   return(f_res_list)
 }
 
@@ -137,6 +141,8 @@ for(c_buffer in buffer_1s){
     write.csv(c_brt_pred_train$mat, file = paste0("res3/2301_brt_pred_1_train_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
     write.csv(c_brt_pred_test$mat, file = paste0("res3/2301_brt_pred_1_test_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
     write.csv(c_brt_f2_res_sum, file = paste0("res3/2301_brt_impor_1_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_pred_test$pred, file = paste0("res3/2301_brt_pred_1_test_data1_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
+    write.csv(c_brt_pred_test$data, file = paste0("res3/2301_brt_pred_1_test_data0_", order_1,'_buf', c_buffer, c_index_y, ".csv"), row.names = FALSE)
   }
   ii <- ii + 1;
 }
@@ -148,7 +154,7 @@ index_y_1 <- indexes_y[[1]]; #to_be_set
 
 #pred_var_list <- c("XL_ps_imp", "XL_ai_imp", "XL_lsi_imp", "XL_ps_gre", "XL_ai_gre", "XL_lsi_gre", "XB1b_mean_1", "XB1b_mean_2", "XB1b_ratio", "terrain", "slope", "ndvi", "XA_RIVERW")
 pred_var_list <- c("XL_ps_imp", "XL_ai_imp",  "XL_ps_gre", "XL_ai_gre", "XL_pd", "XB1b_mean_1", "XB1b_mean_2", "XB1b_ratio", "terrain", "slope", "XA_RIVERW")
-order_var <- 11 #to_be_set
+order_var <- 5 #to_be_set
 pred_var <- pred_var_list[order_var]
 
 jpeg(paste0("res3/ppa_2301_brt_1b_", order_1,'_buf', buffer_1e, "_", index_y_1,'_', order_var, ".jpg"))
