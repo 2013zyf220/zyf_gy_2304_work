@@ -4,9 +4,9 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/V2/DATA_SHP_1')
 
 #===============================
 loc_1 <- c("cq_water_b02c.shp", "cq_water_b02d.shp")
-loc_2 <- c("cq_water_b07b.shp", "cq_water_b07c.shp")
+loc_2 <- c("cq_water_b07c.shp", "cq_water_b07d.shp")
 
-loc_set <- loc_1  #to_be_set_key
+loc_set <- loc_2  #to_be_set_key
 input <- loc_set[1]
 output <- loc_set[2] 
   
