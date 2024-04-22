@@ -1,12 +1,15 @@
 
 library(sf)
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/V2/DATA_SHP_1')
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2301_k2/V2')
 
 #===============================
-loc_1 <- c("cq_water_b02c.shp", "cq_water_b02d.shp")
-loc_2 <- c("cq_water_b07c.shp", "cq_water_b07d.shp")
+loc_1 <- c("DATA_SHP_1/cq_water_b02c.shp", "DATA_SHP_1/cq_water_b02d.shp")
+loc_2 <- c("DATA_SHP_1/cq_water_b07c.shp", "DATA_SHP_1/cq_water_b07d.shp")
+loc_3 <- c("DATA_RIVER_1/cq_water_rw06.shp", "DATA_RIVER_1/cq_water_rw07.shp")
+loc_4 <- c("DATA_SHP_1/BUF/cq_water_bs4h.shp", "DATA_SHP_1/BUF/cq_water_bs4i.shp")
+loc_5 <- c("DATA_SHP_1/BUF/cq_water_bs5h.shp", "DATA_SHP_1/BUF/cq_water_bs5i.shp")
 
-loc_set <- loc_2  #to_be_set_key
+loc_set <- loc_5  #to_be_set_key
 input <- loc_set[1]
 output <- loc_set[2] 
   
