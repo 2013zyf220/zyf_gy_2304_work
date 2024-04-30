@@ -119,12 +119,12 @@ for(c_buf in buffers){
   
   c_grid_2 <- st_read(paste0('DATA_SHP_1/BUF/cq_water_bs', c_buf, 'ip.shp'))
   
-  c_grid_2$XB1_len_1 <- res_1_sum[[c_buf]][['bh_6_len']]
   c_grid_2$XB1_len_2 <- res_1_sum[[c_buf]][['bh_7_len']]
-  c_grid_2$XB1_mean_1 <- res_1_sum[[c_buf]][['bh_6_mean']]/3
+  c_grid_2$XB1_len_1 <- res_1_sum[[c_buf]][['bh_6_len']]
   c_grid_2$XB1_mean_2 <- res_1_sum[[c_buf]][['bh_7_mean']]
-  c_grid_2$XB1_std_1 <- res_1_sum[[c_buf]][['bh_6_std']]/3
+  c_grid_2$XB1_mean_1 <- res_1_sum[[c_buf]][['bh_6_mean']]/3
   c_grid_2$XB1_std_2 <- res_1_sum[[c_buf]][['bh_7_std']]
+  c_grid_2$XB1_std_1 <- res_1_sum[[c_buf]][['bh_6_std']]/3
   c_grid_2$XB1_ratio <- res_1_sum[[c_buf]][['bh_ratio']]*100
   c_grid_2$XB1_ci <- res_1_sum[[c_buf]][['bh_ci']]
   

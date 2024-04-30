@@ -9,6 +9,7 @@ library(caret)
 library(pROC)
 library(ggplot2)
 library(pdp)
+library(readxl)
 
 #重点输出：非线性曲线&R2&重要性
 setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/DATA_PRO_1")
