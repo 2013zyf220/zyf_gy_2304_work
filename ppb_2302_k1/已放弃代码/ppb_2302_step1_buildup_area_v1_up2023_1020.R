@@ -6,18 +6,20 @@ library(rgdal)
 library(ggplot2)
 
 #==================================================================================
+#up2024_0430_12:02_s
 
-cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')  #to_be_set
+#cor_crs <- CRS('+ proj=aea + lat_0=0 + lon_0=105 + lat_1=25 + lat_2=47 + x_0=0 + y_0=0 + datum=WGS84 + units=m + no_defs')  #to_be_set
 
 year_s <- 2020  #to_be_set
 year_e <- 2022  #to_be_set
 prov_1 <- 'jiangxi' #to_be_set
 shp_data_1 <- 'ganzhou_a1' #to_be_set
 
-year_len <- year_e - year_s + 1;
-years <- seq(year_s, year_e);
-setwd('E:/zyf_gn/zyf_gn_2301_data');
+year_len <- year_e - year_s + 1
+years <- seq(year_s, year_e)
+setwd('D:/zyf_gn')
 
+#up2024_0430_12:02_e
 #==================================================================================
 
 bu_area <- function(f_year, f_prov, f_shp_data){
