@@ -10,14 +10,14 @@ library(ggplot2)
 
 cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')  #to_be_set
 
-year_s <- 2016  #to_be_set
+year_s <- 1995  #to_be_set
 year_e <- 2022  #to_be_set
 year_gap <- 3  #to_be_set
 years <- seq(year_s, year_e, year_gap)
 len_years <- length(years)
 
-prov_1 <- 'chongqing' #to_be_set
-shp_data_1 <- 'chongqing1' #to_be_set
+prov_1 <- 'beijing' #to_be_set
+shp_data_1 <- 'beijing1' #to_be_set
 shp_data_2 <- paste0(shp_data_1, '_sum')
 
 setwd('D:/zyf_gn/zyf_gn_2301_data')
@@ -34,7 +34,7 @@ bu_area_sub <- function(f_year, f_prov, f_shp_data, f_type){
   f_shp_p <- f_shp_2$ENG_NAME   #to_be_set
   
   f_luse_3 <- list()
-  f_luse_3b <- list()
+  #f_luse_3b <- list()
   f_luse_4 <- list()
   f_luse_5 <- rep(0, f_shp_size)
   
@@ -45,8 +45,8 @@ bu_area_sub <- function(f_year, f_prov, f_shp_data, f_type){
     f_luse_4[[ii]] <- na.omit(getValues(f_luse_3[[ii]]));
     f_luse_5[ii] <- sum(f_luse_4[[ii]] == f_type) * 900/(1000 * 1000) #to_be_set
     
-    f_luse_3b[[ii]] <- projectRaster(f_luse_3[[ii]], crs = '+init=epsg:4326')
-    writeRaster(f_luse_3b[[ii]], filename = paste0('ppb_2302_k1/outputs/ppb_2302_luse_', f_shp_data, '_', f_year, '_sub', f_shp_p[ii], '.tif'), overwrite=TRUE)
+    #f_luse_3b[[ii]] <- projectRaster(f_luse_3[[ii]], crs = '+init=epsg:4326')
+    #writeRaster(f_luse_3b[[ii]], filename = paste0('ppb_2302_k1/outputs/ppb_2302_luse_', f_shp_data, '_', f_year, '_sub', f_shp_p[ii], '.tif'), overwrite=TRUE)
   }
   f_luse_5b <- cbind(f_shp_p, f_luse_5)
   f_luse_6 <- as.data.frame(f_luse_5b)
@@ -64,8 +64,8 @@ bu_area_sub <- function(f_year, f_prov, f_shp_data, f_type){
 #==================================================================================
 #up2024_0430_17:27_s
 
-shp_loc <- paste0('ppb_2302_k1/admini/', shp_data_1, '.shp')[ ,14]  #to_be_set
-shp_size <- nrow(st_read(shp_loc))
+shp_loc <- paste0('ppb_2302_k1/admini/', shp_data_1, '.shp')  #to_be_set
+shp_size <- nrow(st_read(shp_loc)[ ,14])
 shp_name <- st_read(shp_loc)[ ,14]$ENG_NAME   #to_be_set
 
 area_res <- matrix(0, nrow = len_years, ncol = shp_size, byrow = TRUE)

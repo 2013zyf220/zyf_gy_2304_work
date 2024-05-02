@@ -1,23 +1,25 @@
 
-library(MASS)
-library(gbm)
-library(randomForest)
-library(skimr)
-library(DataExplorer)
-library(tidyverse)
-library(caret)
-library(pROC)
-library(ggplot2)
-library(pdp)
+#library(MASS)
+#library(gbm)
+#library(randomForest)
+#library(skimr)
+#library(DataExplorer)
+#library(tidyverse)
+#library(caret)
+#library(pROC)
+#library(ggplot2)
+#library(pdp)
 library(readxl)
 
 #重点输出：非线性曲线&R2&重要性
+
 setwd("E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/DATA_PRO_1")
 
+#============================================================
 data_1 <- read_excel(paste0('RH_TP_NO3_1.xlsx'));
-adj_1 <- 13347
 
-adj_2 <- adj_1 + 720 - 1
+adj_1 <- 13347  #to_be_set
+adj_2 <- adj_1 + 720 - 1  #to_be_set
 data_2 <- data_1[adj_1: adj_2,]
 data_2
 

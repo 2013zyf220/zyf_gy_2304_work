@@ -12,9 +12,9 @@ setwd('D:/zyf_gn/zyf_gn_2301_data')
 cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')  #to_be_set
 
 year_s <- 2010  #to_be_set
-year_e <- 2022  #to_be_set
-prov_1 <- 'chongqing' #to_be_set
-shp_data_1 <- 'chongqing1' #to_be_set
+year_e <- 2016  #to_be_set
+prov_1 <- 'sichuang' #to_be_set
+shp_data_1 <- 'chengdu1' #to_be_set
 type_set <- 8  #to_be_set
 
 #up2024_0430_17:31_e
