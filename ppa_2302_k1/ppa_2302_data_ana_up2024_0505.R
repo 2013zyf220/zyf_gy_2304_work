@@ -97,8 +97,10 @@ len_strs_mo <- length(strs_mo)
 
 days_set <- c(1,2,3)  #to_be_set_key
 days_nor <- c(1,2)  #to_be_set_key(number inside days_set)
+days_hot <- c(2,3)  #to_be_set_key(number inside days_set)
 len_days <- length(days_set)
 len_days_nor <- length(days_nor)
+len_days_hot <- length(days_hot)
 
 data_1_paras <- list()
 data_1_paras[['times_set']] <- times_set
@@ -106,6 +108,7 @@ data_1_paras[['strs_co']] <- strs_co
 data_1_paras[['strs_mo']] <- strs_mo
 data_1_paras[['days_set']] <- days_set
 data_1_paras[['days_nor']] <- days_nor
+data_1_paras[['days_hot']] <- days_hot
 
 #up2024_0505_09:55_e
 cat('=========================step1!=========================\n')
@@ -151,6 +154,8 @@ data_2_TP_MAT <- list()
 data_2_RH_MAT <- list()
 data_2_TP_NOR_MAT <- list()
 data_2_RH_NOR_MAT <- list()
+data_2_TP_HOT_MAT <- list()
+data_2_RH_HOT_MAT <- list()
 for(ii in times_set){
   data_2_TP[[ii]] <- list()
   data_2_RH[[ii]] <- list()
@@ -158,6 +163,8 @@ for(ii in times_set){
   data_2_RH_MAT[[ii]] <- list()
   data_2_TP_NOR_MAT[[ii]] <- list()
   data_2_RH_NOR_MAT[[ii]] <- list()
+  data_2_TP_HOT_MAT[[ii]] <- list()
+  data_2_RH_HOT_MAT[[ii]] <- list()
   for(jj in strs_mo){
     data_2_TP[[ii]][[jj]] <- list()
     data_2_RH[[ii]][[jj]] <- list()
@@ -174,11 +181,12 @@ for(ii in times_set){
       data_2_TP[[ii]][[jj]][[kk]] <- data_1_TP[[ii]][[jj]][[kk]] - c_ref_TP
       data_2_RH[[ii]][[jj]][[kk]] <- data_1_RH[[ii]][[jj]][[kk]] - c_ref_RH
       data_2_TP_MAT[[ii]][[jj]][,kk] <- data_2_TP[[ii]][[jj]][[kk]]
-      data_2_RH_MAT[[ii]][[jj]][,kk] <- data_2_RH[[ii]][[jj]][[kk]]     
+      data_2_RH_MAT[[ii]][[jj]][,kk] <- data_2_RH[[ii]][[jj]][[kk]] 
     }
-
     data_2_TP_NOR_MAT[[ii]][[jj]] <- data_2_TP_MAT[[ii]][[jj]][, days_nor]
     data_2_RH_NOR_MAT[[ii]][[jj]] <- data_2_RH_MAT[[ii]][[jj]][, days_nor]
+    data_2_TP_HOT_MAT[[ii]][[jj]] <- data_2_TP_MAT[[ii]][[jj]][, days_hot]
+    data_2_RH_HOT_MAT[[ii]][[jj]] <- data_2_RH_MAT[[ii]][[jj]][, days_hot]
   }
 }
 
@@ -195,6 +203,8 @@ save(data_2_TP_MAT, file = 'ARCGIS/ANA1_data_2_TP_MAT.RData')
 save(data_2_RH_MAT, file = 'ARCGIS/ANA1_data_2_RH_MAT.RData')
 save(data_2_TP_NOR_MAT, file = 'ARCGIS/ANA1_data_2_TP_NOR_MAT.RData')
 save(data_2_RH_NOR_MAT, file = 'ARCGIS/ANA1_data_2_RH_NOR_MAT.RData')
+save(data_2_TP_HOT_MAT, file = 'ARCGIS/ANA1_data_2_TP_HOT_MAT.RData')
+save(data_2_RH_HOT_MAT, file = 'ARCGIS/ANA1_data_2_RH_HOT_MAT.RData')
 save(data_1_paras, file = 'ARCGIS/ANA1_data_1_paras.RData')
 
 #up2024_0505_09:55_e
