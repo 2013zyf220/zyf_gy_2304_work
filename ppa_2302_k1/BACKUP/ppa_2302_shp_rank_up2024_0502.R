@@ -1,8 +1,9 @@
-
 library(sf)
+
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/LINES')
 
 #===============================
+
 loc_1 <- c('streets_4.shp', 'streets_5.shp')
 
 loc_set <- loc_1  #to_be_set_key

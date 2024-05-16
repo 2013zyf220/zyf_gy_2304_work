@@ -6,7 +6,7 @@ library(rgdal)
 library(ggplot2)
 
 #==================================================================================
-#up2024_0430_17:31_s
+#up2024_0511_10:42_s
 
 cor_crs <- CRS('+proj=aea +lat_0=0 +lon_0=105 +lat_1=25 +lat_2=47 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')  #to_be_set
 
@@ -22,13 +22,13 @@ for(ii in 1: len_years_2){
 }
 
 prov_1 <- c('chongqing') #to_be_set
-shp_data_1 <- c('chongqing_2') #to_be_set
+shp_data_1 <- c('chongqing_1') #to_be_set
 len_shp_data_1 <- length(shp_data_1)
 type_set <- 8  #to_be_set
 
-#up2024_0430_17:31_e
+#up2024_0511_10:42_e
 #==================================================================================
-#up2024_0430_17:33_s
+#up2024_0511_10:42_s
 
 map_trans_f <- function(f_year_s, f_year_e, f_prov, f_shp_data, f_type){
   f_luse_s1 <- raster(paste0('D:/zyf_gn/zyf_gn_2301_data/landuse_k2/CLCD_v01_',f_year_s,'_albert_province/CLCD_v01_',f_year_s,'_albert_', f_prov,'.tif')); 
@@ -54,9 +54,10 @@ map_trans_f <- function(f_year_s, f_year_e, f_prov, f_shp_data, f_type){
   return(f_res)
 }
 
-#up2024_0430_17:33_e
+#up2024_0511_10:42_e
 #==================================================================================
-#up2024_0504_14:23_s
+#up2024_0511_10:55_s
+
 map_trans_res_0 <- list()
 map_trans_res_1 <- list()
 output_names <- list()
@@ -78,5 +79,5 @@ for(ii in 1: len_shp_data_1){
   writeRaster(map_trans_res_0[[ii]][[1]][['luse_s']], filename = output_name_start[[ii]], format = 'GTiff', overwrite = TRUE)
 } 
 
-#up2024_0504_14:23_e
+#up2024_0511_10:55_e
 #==================================================================================

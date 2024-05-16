@@ -12,6 +12,8 @@ library(sf)
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
+#============================================================
+
 ele_1 <- raster(paste0('DEM/DEM_ELE_2.tif'))
 site_1 <- st_read('LINES/streets_5.shp')[ ,1]
 

@@ -1,3 +1,12 @@
+
+
+
+library(raster)
+library(sp)
+library(sf)
+library(rgdal)
+library(ggplot2)
+
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppb_2302_k1/outputs')
 
 #=====================================
@@ -17,7 +26,7 @@ for(ii in 1: len_years_2){
 years_start_all <- years_start[1]
 years_end_all <- years_end[len_years_2]
 
-shp_data_1 <- c('nanjing_1','chongqing_1','chengdu_1','hangzhou_1','wuhan_1') #to_be_set
+shp_data_1 <- c('chongqing_1')  #to_be_set
 len_shp_data_1 <- length(shp_data_1)
 
 type_set <- 8  #to_be_set
