@@ -47,7 +47,7 @@ bu_area_sub <- function(f_year, f_prov, f_shp_data, f_type){
     f_luse_5[ii] <- sum(f_luse_4[[ii]] == f_type) * 900/(1000 * 1000) #to_be_set
     
     f_luse_3b[[ii]] <- projectRaster(f_luse_3[[ii]], crs = '+init=epsg:4326')
-    writeRaster(f_luse_3b[[ii]], filename = paste0('E:/zyf_gn/zyf_gn_2301_data/ppb_2302_k1/outputs/ppb_2302_luse_', f_shp_data, '_', f_year, '_sub', f_shp_p[ii], '.tif'), overwrite=TRUE)
+    #writeRaster(f_luse_3b[[ii]], filename = paste0('E:/zyf_gn/zyf_gn_2301_data/ppb_2302_k1/outputs/ppb_2302_luse_', f_shp_data, '_', f_year, '_sub', f_shp_p[ii], '.tif'), overwrite=TRUE)
   }
   f_luse_5b <- cbind(f_shp_p, f_luse_5)
   f_luse_6 <- as.data.frame(f_luse_5b)

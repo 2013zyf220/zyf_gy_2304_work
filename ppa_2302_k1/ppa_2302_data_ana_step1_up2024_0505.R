@@ -9,8 +9,8 @@ library(readxl)
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2')
 
-#========================================
-#up2024_0520_10:30
+cat('==============step 1: preparation================\n')
+#up2024_0528_15:00
 #initial setting and input data
 
 len_sites <- 50  #to_be_set
@@ -19,7 +19,7 @@ adj_para_1 <- read_csv('DATA_PRO_1/adj_para_1.csv', skip = 0)
 TP_adj_2 <- read_csv('ARCGIS/TP_adj_2.csv', skip = 0)
 
 #========================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #set temperature adjustment based on elevation
 
 TP_adj_ref <- TP_adj_2$str4[1] #to_be_set
@@ -28,7 +28,7 @@ TP_adj_2$str7 <- TP_adj_ref_2
 TP_adj_2$str8 <- TP_adj_ref_2
 
 #====================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #define function: from street to route(8s4r)
 
 str2rou_f <- function(f_str){
@@ -37,7 +37,7 @@ str2rou_f <- function(f_str){
 }
 
 #====================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #define function: set start time order of each data set
 
 adj_para_f <- function(f_rou, f_time_2){
@@ -47,7 +47,7 @@ adj_para_f <- function(f_rou, f_time_2){
 }
 
 #====================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #set parameters
 
 times_set <- c(1,2,3) #to_be_set_key
@@ -69,9 +69,10 @@ subs1 <- list(NOR = days_nor, HOT = days_hot)  #to_be_set
 subs1_name <- c('NOR','HOT')  #to_be_set
 len_varis <- length(varis)
 len_subs1 <- length(subs1)
+
 strs_mo_name <- c('str1','str2','str3','str4','str5','str6')  #to_be_set
 strs_co_name <- c('str1','str2','str3','str4','str5','str6','str7','str8')  #to_be_set
-days_ori_name <- c('day1','day2','day3','day4','day5','day6')
+days_ori_name <- c('day1','day2','day3','day4','day5','day6') #to_be_set
 
 data_1_paras <- list()
 data_1_paras[['times_set']] <- times_set
@@ -85,7 +86,7 @@ data_1_paras[['subs1']] <- subs1
 data_1_paras[['subs1_name']] <- subs1_name
 
 #==============================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #get data of air pressure
 
 WEA_STA_PR_1 <- read.csv('ARCGIS/WEA_STA_1.csv')$PRESSURE
@@ -110,8 +111,8 @@ for(ii in times_set){
   }
 }
 
-cat('==============step1: get basic data================\n')
-#up2024_0520_10:30
+cat('==============step 2: get basic data================\n')
+#up2024_0528_10:30
 #define function: get basic data(TP/RH)
 
 data_1_f <- function(f_time_1, f_str, f_day){
@@ -137,7 +138,7 @@ data_1_f <- function(f_time_1, f_str, f_day){
 }
 
 #==================================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #get basic data(all variables together)
 
 data_1_ori <- list()
@@ -153,7 +154,7 @@ for(ii in times_set){
 }
 
 #========================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #define function: get basic data(for selected variable)
 
 d1_vari_f <- function(f_vari){
@@ -171,7 +172,7 @@ d1_vari_f <- function(f_vari){
 }
 
 #=============================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #get basic data(for TIME/TP(unadjusted)/RH)
 
 data_1_TIME <- d1_vari_f('TIME')
@@ -179,7 +180,7 @@ data_1_TP1 <- d1_vari_f('TP')
 data_1_RH <- d1_vari_f('RH')
 
 #=============================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #get basic data(for TP(adjusted)) and choose TP data
 
 data_1_TP2 <- list()
@@ -197,7 +198,7 @@ for(ii in times_set){
 data_1_TP <- data_1_TP2 #to_be_set(data_1_TP1/data_1_TP2)
 
 cat('==============step2: calculate heat indexes================\n')
-#up2024_0520_10:30
+#up2024_0528_10:30
 #define function: calculate DI,HI and HR
 
 #for DI, refer to: Yin, Zhengtong, Zhixin Liu, Xuan Liu, Wenfeng Zheng, and Lirong Yin. 
@@ -230,7 +231,7 @@ HR_f <- function(f_TP,f_RH,f_pa){
 }
 
 #==============================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #calculate heat indexes
 
 data_1_DI <- list()
@@ -260,7 +261,7 @@ for(ii in times_set){
 }
 
 #==============================================
-#up2024_0520_10:30
+#up2024_0528_10:30
 #sumary of all data sets into data_1
 
 data_1 <- list()
@@ -271,7 +272,7 @@ data_1[['HI']] <- data_1_HI
 data_1[['HR']] <- data_1_HR
 
 cat('==============step3.1: change relative to the reference(all days)================\n')
-#up2024_0520_14:30
+#up2024_0528_10:30
 #define function: calculate change relative to the reference
 
 d2_vari_f <- function(f_vari){
@@ -295,7 +296,7 @@ d2_vari_f <- function(f_vari){
 }
 
 #=============================================
-#up2024_0520_14:30
+#up2024_0528_10:30
 #calculate change relative to the reference(all days)
 
 data_2_ori <- list()
@@ -304,10 +305,10 @@ for(c_vari in varis){
 }
 
 cat('==============step3.2: change relative to the reference(selected days)================\n')
-#up2024_0520_14:30
+#up2024_0528_10:30
 #define function: change relative to the reference(selected days)
 
-d2_vari_sub_f <- function(f_vari, f_sub){
+d2_vari_sub_f <- function(f_sub, f_vari){
   f_data_1 <- data_2_ori[[f_vari]]
   f_data_2 <- list()
   for(ii in times_set){
@@ -320,7 +321,7 @@ d2_vari_sub_f <- function(f_vari, f_sub){
 }
 
 #=============================================
-#up2024_0520_14:30
+#up2024_0528_10:30
 #change relative to the reference(selected days)
 
 data_2 <- list() 
@@ -330,12 +331,12 @@ for(ii in 1:len_subs1){
   c_subs1 <- subs1[[c_subs1_name]]
   data_2[[c_subs1_name]] <- list()
   for(c_vari in varis){
-    data_2[[c_subs1_name]][[c_vari]] <- d2_vari_sub_f(c_vari, c_subs1)
+    data_2[[c_subs1_name]][[c_vari]] <- d2_vari_sub_f(c_subs1, c_vari)
   }
 }
 
 cat('==============step4: export files================\n')
-#up2024_0520_14:30
+#up2024_0528_10:30
 
 data_1_csv <- list()
 data_1_csv_df <- list()
@@ -358,7 +359,7 @@ for(c_vari in varis){
 }
 
 #=======================================================
-#up2024_0520_14:30
+#up2024_0528_10:30
 
 data_2_csv <- list()
 data_2_csv_df <- list()
@@ -381,9 +382,7 @@ for(c_vari in varis){
 }
 
 #=======================================================
-#up2024_0520_14:30
+#up2024_0528_10:30
 #save data
 
 save(data_1_paras, file = 'ARCGIS/RES1/ANA1_data_1_paras.RData')
-save(data_1, file = 'ARCGIS/RES1/ANA1_data_1.RData')
-save(data_2, file = 'ARCGIS/RES1/ANA1_data_2.RData')
