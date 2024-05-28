@@ -85,11 +85,14 @@ dis_3[['HOT']] <- rep(dis_1, len_days_hot)
 #==============================step 1: basic data(data2_2)========================
 #up2024_0527_17:00
 
+data_input <- read.csv(paste0('RES1/datac_2_', c_vari, '_', ii,'_df.csv')) #to_be_set
+data_no <- 'data' #to_be_set
+
 data2_2_ori <- list()
 for(c_vari in varis){
   data2_2_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES1/datac_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
+    data2_2_ori[[c_vari]][[ii]] <- as.matrix(data_input) #to_be_set
   } 
 }
 

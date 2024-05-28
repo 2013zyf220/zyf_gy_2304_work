@@ -10,7 +10,7 @@ library(readxl)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2')
 
 cat('==============step 1: preparation================\n')
-#up2024_0528_15:00
+#up2024_0528_16:00
 #initial setting and input data
 
 len_sites <- 50  #to_be_set
@@ -19,7 +19,7 @@ adj_para_1 <- read_csv('DATA_PRO_1/adj_para_1.csv', skip = 0)
 TP_adj_2 <- read_csv('ARCGIS/TP_adj_2.csv', skip = 0)
 
 #========================================
-#up2024_0528_10:30
+#up2024_0528_15:30
 #set temperature adjustment based on elevation
 
 TP_adj_ref <- TP_adj_2$str4[1] #to_be_set
@@ -28,7 +28,7 @@ TP_adj_2$str7 <- TP_adj_ref_2
 TP_adj_2$str8 <- TP_adj_ref_2
 
 #====================
-#up2024_0528_10:30
+#up2024_0528_15:30
 #define function: from street to route(8s4r)
 
 str2rou_f <- function(f_str){
@@ -37,7 +37,7 @@ str2rou_f <- function(f_str){
 }
 
 #====================
-#up2024_0528_10:30
+#up2024_0528_15:30
 #define function: set start time order of each data set
 
 adj_para_f <- function(f_rou, f_time_2){
@@ -47,7 +47,7 @@ adj_para_f <- function(f_rou, f_time_2){
 }
 
 #====================
-#up2024_0528_10:30
+#up2024_0528_15:30
 #set parameters
 
 times_set <- c(1,2,3) #to_be_set_key
@@ -86,7 +86,7 @@ data_1_paras[['subs1']] <- subs1
 data_1_paras[['subs1_name']] <- subs1_name
 
 #==============================================
-#up2024_0528_10:30
+#up2024_0528_15:30
 #get data of air pressure
 
 WEA_STA_PR_1 <- read.csv('ARCGIS/WEA_STA_1.csv')$PRESSURE
@@ -112,7 +112,7 @@ for(ii in times_set){
 }
 
 cat('==============step 2: get basic data================\n')
-#up2024_0528_10:30
+#up2024_0528_15:30
 #define function: get basic data(TP/RH)
 
 data_1_f <- function(f_time_1, f_str, f_day){
@@ -138,7 +138,7 @@ data_1_f <- function(f_time_1, f_str, f_day){
 }
 
 #==================================================
-#up2024_0528_10:30
+#up2024_0528_15:30
 #get basic data(all variables together)
 
 data_1_ori <- list()
