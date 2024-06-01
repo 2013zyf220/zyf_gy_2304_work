@@ -142,12 +142,22 @@ dem_index_f <- function(f_dem, f_buf){
 #==================================
 #up2024_0503_19:41_s
 
+dis_1 <- seq(10,500,10) #to_be_set
+dis_2 <- rep(dis_1, 6) #to_be_set
+dis_3 <- rep(0, strs_1_size)
+dis_3[1:300] <- dis_2  #to_be_set
+dis_3[301:306] <- 510  #to_be_set
+
+#up2024_0503_19:39_e
+#==================================
+#up2024_0503_19:41_s
+
 index_bh_1 <- bh_index_f(strs_1)
 index_ele_1 <- dem_index_f(ele_1, strs_1)
 index_slp_1 <- dem_index_f(slp_1, strs_1)
 index_asp_1 <- dem_index_f(asp_1, strs_1)
 
-index_1m <- matrix(0, nrow = strs_1_size, ncol = 11)
+index_1m <- matrix(0, nrow = strs_1_size, ncol = 12)
 index_1m[ ,1] <- index_bh_1$bh_3_mean
 index_1m[ ,2] <- index_bh_1$bh_4_mean
 index_1m[ ,3] <- index_bh_1$bh_3_std
@@ -159,8 +169,9 @@ index_1m[ ,8] <- index_bh_1$bh_ci
 index_1m[ ,9] <- index_ele_1$mean
 index_1m[ ,10] <- index_ele_1$std
 index_1m[ ,11] <- index_slp_1$mean
+index_1m[ ,12] <- dis_3
 
-index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio', 'bh_max', 'bh_sum', 'bh_ci', 'ele_mean', 'ele_std', 'slp_mean') #to_be_set
+index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio', 'bh_max', 'bh_sum', 'bh_ci', 'ele_mean', 'ele_std', 'slp_mean', 'dis') #to_be_set
 
 index_1m_df <- as.data.frame(index_1m)
 colnames(index_1m_df) <- index_col_names

@@ -58,11 +58,20 @@ index_1$ele_2 <- ele_2c
 index_2 <- index_1
 
 #=================================================================
+#up2024_0531_17:00
+
+reg_se_sum <- list()
+reg_se_sum[[1]] <- c(1,3,4)
+reg_se_sum[[2]] <- c(12)
+
+reg_set <- 1 #to_be_set_key
+reg_se <- reg_se_sum[[reg_set]]
+#=================================================================
 #up2024_0528_17:00
 #set independent variables for regression
 
 cname_index_1 <- colnames(index_1)
-cname_index_2 <- cname_index_1[c(1,3,4)] #to_be_set_key
+cname_index_2 <- cname_index_1[reg_se] #to_be_set_key
 cname_index_3 <- paste(cname_index_2, collapse = ' + ')
 
 #============================define functions=====================================
@@ -90,16 +99,14 @@ dis_3[['ORI']] <- rep(dis_1, len_days_ori)
 dis_3[['NOR']] <- rep(dis_1, len_days_nor)
 dis_3[['HOT']] <- rep(dis_1, len_days_hot)
 
-#==============================step 1: basic data(data2_2)========================
+cat('========================step 1: basic data(data2_2)==========================\n')
 #up2024_0528_17:00
-
-data_no <- 'data' #to_be_set_key
 
 data2_2_ori <- list()
 for(c_vari in varis){
   data2_2_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES1/datac_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set_key
+    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES2/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set_key
   } 
 }
 
@@ -122,7 +129,8 @@ data2_2[['ORI']] <- data2_2_ori
 data2_2[['NOR']] <- data2_2_nor
 data2_2[['HOT']] <- data2_2_hot
 
-#=========================step 2: calculate mean=============================
+cat('========================step 2: calculate mean==========================\n')
+
 #up2024_0528_18:00
 #function: input weather data(mean)
 
@@ -298,7 +306,16 @@ regre_1f <- function(f_vari, f_time, f_str, f_day){
   f_name <- paste0('ORI_', f_vari, '_time', f_time,'_day',f_day)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = index_2s[[f_str]])
-  return(f_model_res)
+  f_model_sum <- summary(f_model_res)
+  f_r2 <- f_model_sum$r.squared
+  f_r2_adj <- f_model_sum$adj.r.squared
+  f_coe <- f_model_res$coefficients
+  
+  f_res <- list()
+  f_res[['r2']] <- f_r2
+  f_res[['r2_adj']] <- f_r2_adj
+  f_res[['coe']] <- f_coe
+  return(f_res)
 }
 
 #==============================================
@@ -327,7 +344,16 @@ regre_2f <- function(f_vari, f_time, f_day){
   f_name <- paste0('ORI_', f_vari, '_time', f_time,'_day',f_day)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = index_2)
-  return(f_model_res)
+  f_model_sum <- summary(f_model_res)
+  f_r2 <- f_model_sum$r.squared
+  f_r2_adj <- f_model_sum$adj.r.squared
+  f_coe <- f_model_res$coefficients
+  
+  f_res <- list()
+  f_res[['r2']] <- f_r2
+  f_res[['r2_adj']] <- f_r2_adj
+  f_res[['coe']] <- f_coe
+  return(f_res)
 }
 
 #==============================================
@@ -353,7 +379,16 @@ regre_3f <- function(f_sub_name, f_vari, f_time, f_str){
   f_name <- paste0('mean1_', f_sub_name, '_', f_vari, '_times_', f_time)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = index_1s[[f_str]])
-  return(f_model_res)
+  f_model_sum <- summary(f_model_res)
+  f_r2 <- f_model_sum$r.squared
+  f_r2_adj <- f_model_sum$adj.r.squared
+  f_coe <- f_model_res$coefficients
+  
+  f_res <- list()
+  f_res[['r2']] <- f_r2
+  f_res[['r2_adj']] <- f_r2_adj
+  f_res[['coe']] <- f_coe
+  return(f_res)
 }
 
 #==============================================
@@ -382,7 +417,16 @@ regre_4f <- function(f_sub_name, f_vari, f_time){
   f_name <- paste0('mean1_', f_sub_name, '_', f_vari, '_times_', f_time)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = index_1)
-  return(f_model_res)
+  f_model_sum <- summary(f_model_res)
+  f_r2 <- f_model_sum$r.squared
+  f_r2_adj <- f_model_sum$adj.r.squared
+  f_coe <- f_model_res$coefficients
+  
+  f_res <- list()
+  f_res[['r2']] <- f_r2
+  f_res[['r2_adj']] <- f_r2_adj
+  f_res[['coe']] <- f_coe
+  return(f_res)
 }
 
 #==============================================
@@ -411,14 +455,27 @@ regre_5f <- function(f_sub_name, f_vari, f_time, f_str){
     f_name <- paste0('ORI_', f_vari, '_time', f_time,'_day',f_day)
     f_y_1 <- c(f_y_1, index_2s[[f_str]][[f_name]])
   }
-  f_x_1 <- index_2s[[f_str]][, c(1,3,4)] #to_be_set
-  f_x_2 <- do.call(rbind, rep(list(f_x_1), length(f_days)))
-  f_z <- cbind(f_x_2, f_y_1)
+  f_x_1 <- index_2s[[f_str]][, reg_se]
+  if(length(reg_se) == 1){
+    f_x_2 <- rep(f_x_1, length(f_days))
+    f_z <- as.data.frame(cbind(f_x_2, f_y_1))
+    colnames(f_z) <- c(colnames(index_2s[[f_str]])[reg_se], 'f_y_1')
+  }else{
+    f_x_2 <- do.call(rbind, rep(list(f_x_1), length(f_days)))
+    f_z <- as.data.frame(cbind(f_x_2, f_y_1))     
+  }
   f_model_for <- as.formula(paste0('f_y_1 ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = f_z)
-  return(f_model_res)
+  f_model_sum <- summary(f_model_res)
+  f_r2 <- f_model_sum$r.squared
+  f_r2_adj <- f_model_sum$adj.r.squared
+  f_coe <- f_model_res$coefficients
   
-  return(f_model_res)
+  f_res <- list()
+  f_res[['r2']] <- f_r2
+  f_res[['r2_adj']] <- f_r2_adj
+  f_res[['coe']] <- f_coe
+  return(f_res)
 }
 
 #==============================================
@@ -450,16 +507,28 @@ regre_6f <- function(f_sub_name, f_vari, f_time){
     f_name <- paste0('ORI_', f_vari, '_time', f_time,'_day',f_day)
     f_y_1 <- c(f_y_1, index_2[[f_name]])
   }
-  f_x_1 <- index_2[, c(1,3,4)] #to_be_set
-  f_x_2 <- do.call(rbind, rep(list(f_x_1), length(f_days)))
-  f_z <- cbind(f_x_2, f_y_1)
+  f_x_1 <- index_2[, reg_se]
+  if(length(reg_se) == 1){
+    f_x_2 <- rep(f_x_1, length(f_days))
+    f_z <- as.data.frame(cbind(f_x_2, f_y_1))
+    colnames(f_z) <- c(colnames(index_2)[reg_se], 'f_y_1')
+  }else{
+    f_x_2 <- do.call(rbind, rep(list(f_x_1), length(f_days)))
+    f_z <- as.data.frame(cbind(f_x_2, f_y_1))     
+  }
   f_model_for <- as.formula(paste0('f_y_1 ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = f_z)
-  return(f_model_res)
-
-  return(f_model_res)
+  f_model_sum <- summary(f_model_res)
+  f_r2 <- f_model_sum$r.squared
+  f_r2_adj <- f_model_sum$adj.r.squared
+  f_coe <- f_model_res$coefficients
+  
+  f_res <- list()
+  f_res[['r2']] <- f_r2
+  f_res[['r2_adj']] <- f_r2_adj
+  f_res[['coe']] <- f_coe
+  return(f_res)
 }
-
 
 #====================
 #up2024_0531_08:00
@@ -480,7 +549,7 @@ cat('========================step 6: figures==========================\n')
 #define function: fig(each variable, each time, each street, each day)
 
 fig_1f <- function(f_vari, f_time){
-  jpeg(paste0('FIG1/fig1_', f_vari, '_', f_time,'.jpg'), width = 1800, height = 1200)
+  jpeg(paste0('FIG2/fig1_', f_vari, '_', f_time,'.jpg'), width = 1800, height = 1200)
   par(mfrow = c(len_strs_mo, len_days_ori)) 
   for(jj in strs_mo){
     for(kk in days_ori){
@@ -492,7 +561,7 @@ fig_1f <- function(f_vari, f_time){
       f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
       curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
+      #curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
     }
   }
   dev.off() 
@@ -519,7 +588,7 @@ for(c_vari in varis){
 #fig(each variable, each time, streets together, each day)
 
 fig_2f <- function(f_vari){
-  jpeg(paste0('FIG1/fig2_', f_vari, '.jpg'), width = 1800, height = 1200)
+  jpeg(paste0('FIG2/fig2_', f_vari, '.jpg'), width = 1800, height = 1200)
   par(mfrow = c(len_times_set, len_days_ori)) 
   for(ii in times_set){
     for(kk in days_ori){
@@ -553,7 +622,7 @@ for(c_vari in varis){
 #each sub, each variable, each time, each street, days merged
 
 fig_3f <- function(f_sub, f_vari){
-  jpeg(paste0('FIG1/fig3_', f_sub, '_', f_vari,'.jpg'), width = 1800, height = 1200)
+  jpeg(paste0('FIG2/fig3_', f_sub, '_', f_vari,'.jpg'), width = 1800, height = 1200)
   par(mfrow = c(len_times_set, len_strs_mo)) 
   for(ii in times_set){
     for(jj in strs_mo){
@@ -628,7 +697,7 @@ for(c_vari in varis){
 #each sub, each variable, each time, each street, days together
 
 fig_5f <- function(f_sub, f_vari){
-  jpeg(paste0('FIG1/fig5_', f_sub, '_', f_vari,'.jpg'), width = 1800, height = 1200)
+  jpeg(paste0('FIG2/fig5_', f_sub, '_', f_vari,'.jpg'), width = 1800, height = 1200)
   par(mfrow = c(len_times_set, len_strs_mo)) 
   for(ii in times_set){
     for(jj in strs_mo){
@@ -668,7 +737,7 @@ for(c_sub_name in subs_name){
 #each sub, each variable, each time, streets together, days together
 
 fig_6f <- function(f_vari){
-  jpeg(paste0('FIG1/fig6_', f_vari,'.jpg'), width = 1800, height = 1200)
+  jpeg(paste0('FIG2/fig6_', f_vari,'.jpg'), width = 1800, height = 1200)
   par(mfrow = c(len_subs, len_varis)) 
   for(c_sub_name in subs_name){
     for(ii in times_set){
@@ -696,3 +765,12 @@ fig_6_fit <- list()
 for(c_vari in varis){
   fig_6_fit[[c_vari]] <- fig_6f(c_vari)
 }
+
+#==============================================
+#up2024_0531_21:00
+
+time_set <- 1 #to_be_set
+str_set <- 1 #to_be_set
+day_set <- 1 #to_be_set
+check_1 <- regre_r1$TP[[time_set]][[str_set]][[day_set]]$coe
+check_2 <- regre_r4$ORI$TP[[time_set]]$coe
