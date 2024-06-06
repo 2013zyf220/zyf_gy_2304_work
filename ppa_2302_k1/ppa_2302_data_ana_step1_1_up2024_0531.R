@@ -129,6 +129,7 @@ for(ii in times_set){
 
 d1_vari_f <- function(f_vari){
   f_d1_vari <- list()
+  f_d1_vari_df <- list()
   for(ii in times_set){
     f_d1_vari[[ii]] <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
     for(jj in strs_co){
@@ -138,9 +139,13 @@ d1_vari_f <- function(f_vari){
         f_d1_vari[[ii]][f_s:f_e,kk] <- data_1s[[ii]][[jj]][[kk]][[f_vari]]
       }
     }
-    write.csv(f_d1_vari[[ii]], paste0('ARCGIS/RES1/data_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    f_d1_vari_df[[ii]] <- as.data.frame(f_d1_vari[[ii]])
+    colnames(f_d1_vari_df[[ii]]) <- days_ori_name
+    write.csv(f_d1_vari_df[[ii]], paste0('ARCGIS/RES1/data_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
-  return(f_d1_vari)
+  
+
+  return(f_d1_vari_df)
 }
 
 #=============================================

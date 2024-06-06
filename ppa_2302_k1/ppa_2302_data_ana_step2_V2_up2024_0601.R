@@ -6,6 +6,7 @@ library(caret)
 library(pROC)
 library(ggplot2)
 library(readxl)
+library(gridExtra)
 
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
@@ -38,6 +39,7 @@ subs_name <- c('ORI', subs1_name)
 days_ori_name <- c('day1','day2','day3','day4','day5','day6')  #to_be_set
 days_nor_name <- c('day1','day2','day3','day5')  #to_be_set
 days_hot_name <- c('day4','day6')  #to_be_set
+times_set_name <- c('time1','time2','time3')
 
 len_times_set <- length(times_set)
 len_strs_co <- length(strs_co)
@@ -53,7 +55,7 @@ ele_2a <- read.csv('ele_2_table.csv')
 ele_2b <- as.matrix(ele_2a)
 ele_2c <- matrix(ele_2b, nrow = len_sites * len_strs_mo, ncol = 1)
 
-index_1 <- read.csv('index_1m_df.csv')[1:300,]
+index_1 <- read.csv('index_1m_df2.csv')[1:300,]
 index_1$ele_2 <- ele_2c
 index_2 <- index_1
 
@@ -154,6 +156,10 @@ for(c_sub_name in subs_name){
   data2_2_mean[[c_sub_name]] <- list()
   for(c_vari in varis){
     data2_2_mean[[c_sub_name]][[c_vari]] <- d2_mean_1f(data2_2,c_sub_name, c_vari)$r1
+    c_data2_2_mean <- data2_2_mean[[c_sub_name]][[c_vari]]
+    c_data2_2_mean_df <- as.data.frame(c_data2_2_mean)
+    colnames(c_data2_2_mean_df) <- times_set_name
+    write.csv(c_data2_2_mean_df, paste0('RES2/data2_2_mean_', c_sub_name, '_', c_vari,'.csv'), row.names = FALSE)
   }
 }
 
@@ -169,6 +175,12 @@ for(c_sub_name in subs_name){
     }
   }
 }
+
+write.csv(index_1, paste0('RES2/index_1b.csv'), row.names = FALSE)
+
+index_1_set_1 <- c(12,15)
+index_1c <- index_1[index_1_set_1]
+write.csv(index_1c, paste0('RES2/index_1c.csv'), row.names = FALSE)
 
 #======================================================
 #up2024_0528_18:00
@@ -560,8 +572,8 @@ fig_1f <- function(f_vari, f_time){
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
       f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
-      #curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
+      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
+      #curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -597,8 +609,8 @@ fig_2f <- function(f_vari){
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
       f_fit1 <- lm(f_y ~ poly(dis_2, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(dis_2, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = "red", lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = "red", lty = 2)
+      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -633,8 +645,8 @@ fig_3f <- function(f_sub, f_vari){
            xlab = 'Distance (m)', ylab = paste0(f_sub, '_d ', f_vari), pch = 19, col = 'skyblue')
       f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = "red", lty = 2)
+      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -660,7 +672,7 @@ for(c_sub_name in subs_name){
 #up2024_0529_10:00
 #each sub, each time, each variable, streets together, days merged
 
-windowsFonts(calibri = windowsFont("Calibri"))
+windowsFonts(calibri = windowsFont('Calibri'))
 
 fig_4f <- function(f_vari){
   jpeg(paste0('FIG2/fig4_', f_vari,'.jpg'), width = 1500, height = 1500, res = 300)
@@ -672,8 +684,8 @@ fig_4f <- function(f_vari){
            col = 'skyblue', family = 'calibri', cex.main = 0.5, cex.lab = 0.6, cex.axis = 0.6, pch = 19, cex = 0.2)
       f_fit1 <- lm(f_y ~ poly(dis_2, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(dis_2, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = "red", lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = "green", lty = 2)
+      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'green', lty = 2)
       #grid(nx = NULL, ny = NULL, col = 'gray', lty = 'dotted')    
     }
   }
@@ -709,8 +721,8 @@ fig_5f <- function(f_sub, f_vari){
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
       f_fit1 <- lm(f_y ~ poly(f_x, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(f_x, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_x = x)), add = TRUE, col = "red", lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_x = x)), add = TRUE, col = "green", lty = 2)
+      curve(predict(f_fit1, newdata = data.frame(f_x = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(f_x = x)), add = TRUE, col = 'green', lty = 2)
     }
   }
   dev.off() 
@@ -747,8 +759,8 @@ fig_6f <- function(f_vari){
            xlab = 'Distance (m)', ylab = paste0('sub:', c_sub_name, '_time:', ii), pch = 19, col = 'skyblue')
       f_fit1 <- lm(f_y ~ poly(f_x, 1, raw = TRUE))
       f_fit2 <- lm(f_y ~ poly(f_x, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_x = x)), add = TRUE, col = "red", lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_x = x)), add = TRUE, col = "green", lty = 2)
+      curve(predict(f_fit1, newdata = data.frame(f_x = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(f_x = x)), add = TRUE, col = 'green', lty = 2)
     }
   }
   dev.off() 
@@ -774,3 +786,243 @@ str_set <- 1 #to_be_set
 day_set <- 1 #to_be_set
 check_1 <- regre_r1$TP[[time_set]][[str_set]][[day_set]]$coe
 check_2 <- regre_r4$ORI$TP[[time_set]]$coe
+
+
+#==============================================
+#up2024_0601_21:30
+
+fig1b_list_f <- function(f_vari, f_time){
+  f_fig1b_list <- list()
+  nn <- 0
+  for(jj in strs_mo){
+    for(kk in days_ori){
+      nn <- nn + 1
+      fc_1 <- (jj - 1) * len_sites + 1
+      fc_2 <- jj * len_sites
+      f_fig1b_list[[nn]] <- data.frame(
+        xx = dis_1,
+        yy = data2_2_ori[[f_vari]][[f_time]][fc_1:fc_2,kk]
+      )
+    }
+  }
+  return(f_fig1b_list)
+}
+
+#==============================================
+#up2024_0601_21:30
+
+fig1b_plot_f <- function(f_data, f_index){
+  f_str <- (f_index - 1)%/% len_days_ori + 1
+  f_day <- (f_index - 1)%% len_days_ori + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('str:', f_str,'_day:',f_day)) +
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#up2024_0602_11:30
+
+fig1b_res_f <- function(f_vari, f_time){
+  f_data_fig1b_list_1 <- fig1b_list_f(f_vari, f_time)
+  f_plots_fig1b_1 <- lapply(seq_along(f_data_fig1b_list_1), function(nn) fig1b_plot_f(f_data_fig1b_list_1[[nn]], nn))
+  f_comb_plots_fig1b_1 <- grid.arrange(grobs = f_plots_fig1b_1, ncol = len_days_ori, nrow = len_strs_mo)
+  ggsave(paste0('FIG2/comb_plots_fig1b_1', f_vari, '_', f_time,'.jpg'), plot = f_comb_plots_fig1b_1, width = 15, height = 15, dpi = 300)
+  return(f_comb_plots_fig1b_1)
+}
+
+#fig1b_res <- list()
+#for(c_vari in varis){
+#  fig1b_res[[c_vari]] <- list()
+#  for(ii in times_set){
+#    fig1b_res[[c_vari]][[ii]] <- fig1b_res_f(c_vari,ii)
+#  }
+#}
+
+check_1 <- fig1b_res_f('TP',2) #to_be_set
+#==============================================
+#up2024_0601_21:30
+
+fig2b_list_f <- function(f_vari){
+  f_fig2b_list <- list()
+  nn <- 0
+  for(ii in times_set){
+    for(kk in days_ori){
+      nn <- nn + 1
+      f_fig2b_list[[nn]] <- data.frame(
+        xx = dis_2,
+        yy = data2_2_ori[[f_vari]][[ii]][,kk]
+      )     
+    }
+  }
+  return(f_fig2b_list)
+}
+
+#==============================================
+#up2024_0601_21:30
+
+fig2b_plot_f <- function(f_data, f_index){
+  f_time <- (f_index - 1)%/% len_days_ori + 1
+  f_day <- (f_index - 1)%% len_days_ori + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('time:', f_time, 'day:',f_day)) +
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#up2024_0602_11:30
+
+fig2b_res_f <- function(f_vari){
+  cat(f_vari, '\n')
+  f_data_fig2b_list_1 <- fig2b_list_f(f_vari)
+  f_plots_fig2b_1 <- lapply(seq_along(f_data_fig2b_list_1), function(nn) fig2b_plot_f(f_data_fig2b_list_1[[nn]], nn))
+  f_comb_plots_fig2b_1 <- grid.arrange(grobs = f_plots_fig2b_1, ncol = len_days_ori, nrow = len_times_set)
+  ggsave(paste0('FIG2/comb_plots_fig2b_1', f_vari, '.jpg'), plot = f_comb_plots_fig2b_1, width = 15, height = 15, dpi = 300)
+  return(f_comb_plots_fig2b_1)
+}
+
+#fig2b_res <- list()
+#for(c_vari in varis){
+#  fig2b_res[[c_vari]] <- fig2b_res_f(c_vari)
+#}
+
+#==============================================
+#up2024_0601_21:30
+
+fig3b_list_f <- function(f_sub, f_vari){
+  f_fig3b_list <- list()
+  nn <- 0
+  for(ii in times_set){
+    for(jj in strs_mo){
+      nn <- nn + 1
+      fc_1 <- (jj - 1) * len_sites + 1
+      fc_2 <- jj * len_sites
+      f_fig3b_list[[nn]] <- data.frame(
+        xx = dis_1,
+        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
+      )
+    }
+  }
+  return(f_fig3b_list)
+}
+
+#==============================================
+#up2024_0601_21:30
+
+fig3b_plot_f <- function(f_data, f_index){
+  f_time <- (f_index - 1)%/% len_strs_mo + 1
+  f_str <- (f_index - 1)%% len_strs_mo + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('time:', f_time,'_str:',f_str)) +
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#up2024_0601_21:30
+
+fig3b_res_f <- function(f_sub_name, f_vari){
+  cat(f_sub_name, '_', f_vari, '\n')
+  f_data_fig3b_list_1 <- fig3b_list_f(f_sub_name, f_vari)
+  f_plots_fig3b_1 <- lapply(seq_along(f_data_fig3b_list_1), function(nn) fig3b_plot_f(f_data_fig3b_list_1[[nn]], nn))
+  f_comb_plots_fig3b_1 <- grid.arrange(grobs = f_plots_fig3b_1, ncol = len_strs_mo, nrow = len_times_set)
+  ggsave(paste0('FIG2/comb_plots_fig3b_1', f_sub_name, '_', f_vari,'.jpg'), plot = f_comb_plots_fig3b_1, width = 15, height = 15, dpi = 300)
+  return(f_comb_plots_fig3b_1)
+}
+
+#fig3b_res <- list()
+#for(c_sub_name in subs_name){
+#  fig3b_res[[c_sub_name]] <- list()
+#  for(c_vari in varis){
+#    fig3b_res[[c_sub_name]][[c_vari]] <- fig3b_res_f(c_sub_name, c_vari)
+#  }
+#}
+
+#==============================================
+#up2024_0601_21:30
+
+fig4b_list_f <- function(f_sub){
+  f_fig4b_list <- list()
+  nn <- 0
+  for(c_vari in varis){
+    for(ii in times_set){
+      nn <- nn + 1
+      f_fig4b_list[[nn]] <- data.frame(
+        xx = dis_2,
+        yy = data2_2_mean[[f_sub]][[c_vari]][,ii]
+      )
+    }
+  }
+  return(f_fig4b_list)
+}
+
+#==============================================
+#up2024_0601_21:30
+
+fig4b_plot_f <- function(f_data, f_index){
+  f_vari <- (f_index - 1) %/% len_times_set + 1
+  f_time <- (f_index - 1) %% len_times_set + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('vari:', varis[f_vari],'_time:',f_time)) +
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#up2024_0602_11:30
+
+fig4b_res_f <- function(f_sub_name){
+  cat(f_sub_name, '\n')
+  f_data_fig4b_list_1 <- fig4b_list_f(f_sub_name)
+  f_plots_fig4b_1 <- lapply(seq_along(f_data_fig4b_list_1), function(nn) fig4b_plot_f(f_data_fig4b_list_1[[nn]], nn))
+  f_comb_plots_fig4b_1 <- grid.arrange(grobs = f_plots_fig4b_1, ncol = len_times_set, nrow = len_varis)
+  ggsave(paste0('FIG2/comb_plots_fig4b_1', f_sub_name,'.jpg'), plot = f_comb_plots_fig4b_1, width = 15, height = 15, dpi = 300)  
+  return(f_comb_plots_fig4b_1)
+}
+
+#fig4b_res <- list()
+#for(c_sub_name in subs_name){
+#  fig4b_res[[c_sub_name]] <- fig4b_res_f(c_sub_name)
+#}
+
+#==============================================
+#check
+
+check_2 <- fig4b_res_f('ORI')

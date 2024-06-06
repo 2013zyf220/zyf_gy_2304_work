@@ -142,12 +142,81 @@ dem_index_f <- function(f_dem, f_buf){
 #==================================
 #up2024_0503_19:41_s
 
+dis_1 <- seq(10,500,10) #to_be_set
+dis_2 <- rep(dis_1, 6) #to_be_set
+dis_3 <- rep(0, strs_1_size)
+dis_3[1:300] <- dis_2  #to_be_set
+dis_3[301:306] <- 510  #to_be_set
+
+sw_1 <- rep(0, 306)
+sw_2 <- c(25,25,45,20,25,20)  #to_be_set
+sw_1[1:50] <- 25   #to_be_set
+sw_1[51:100] <- 25   #to_be_set
+sw_1[101:150] <- 45   #to_be_set
+sw_1[151:200] <- 20   #to_be_set
+sw_1[201:250] <- 25   #to_be_set
+sw_1[251:300] <- 20   #to_be_set
+sw_1[301:306] <- 0   #to_be_set
+
+#up2024_0503_19:39_e
+#==================================
+#up2024_0606_19:41_s
+
+lines_1 <- st_read('BH/str_lines2.shp')
+bh_1 <- rast("BH/BH_CP_4.tif")
+
+len_strs_mo <- 6 #o_be_set
+
+plot(bh_1)
+plot(lines_1[1:2,], add = T)
+
+bh_1_data <- list()
+bh_1_data_mean <- rep(0, len_strs_mo)
+for(ii in 1:len_strs_mo){
+  c_1 <- (ii - 1) * 2 + 1
+  c_2 <- (ii - 1) * 2
+  bh_1_data[[ii]] <- extract(bh_1, lines_1[c_1: c_2,], fun = NULL, na.rm = FALSE)
+  bh_1_data_mean[ii] <- mean(bh_1_data[[ii]][['BH_CP_4']], na.rm = TRUE)
+}
+
+bh_2_data <- bh_1_data
+bh_2_data_mean <- rep(0, len_strs_mo)
+for(ii in 1:len_strs_mo){
+  bh_2_data[[ii]][is.na(bh_2_data[[ii]])] <- 0
+  bh_2_data_mean[ii] <- mean(bh_2_data[[ii]][['BH_CP_4']])
+}
+
+asp_1 <- bh_1_data_mean/sw_2
+asp_2 <- bh_2_data_mean/sw_2
+
+asp_1b <- rep(0, 306)
+asp_1b[1:50] <- asp_1[1]   #to_be_set
+asp_1b[51:100] <- asp_1[2]   #to_be_set
+asp_1b[101:150] <- asp_1[3]   #to_be_set
+asp_1b[151:200] <- asp_1[4]   #to_be_set
+asp_1b[201:250] <- asp_1[5]   #to_be_set
+asp_1b[251:300] <- asp_1[6]   #to_be_set
+asp_1b[301:306] <- 0   #to_be_set
+
+asp_2b <- rep(0, 306)
+asp_2b[1:50] <- asp_2[1]   #to_be_set
+asp_2b[51:100] <- asp_2[2]   #to_be_set
+asp_2b[101:150] <- asp_2[3]   #to_be_set
+asp_2b[151:200] <- asp_2[4]   #to_be_set
+asp_2b[201:250] <- asp_2[5]   #to_be_set
+asp_2b[251:300] <- asp_2[6]   #to_be_set
+asp_2b[301:306] <- 0   #to_be_set
+
+#up2024_0606_19:41_e
+#==================================
+#up2024_0503_19:41_s
+
 index_bh_1 <- bh_index_f(strs_1)
 index_ele_1 <- dem_index_f(ele_1, strs_1)
 index_slp_1 <- dem_index_f(slp_1, strs_1)
 index_asp_1 <- dem_index_f(asp_1, strs_1)
 
-index_1m <- matrix(0, nrow = strs_1_size, ncol = 11)
+index_1m <- matrix(0, nrow = strs_1_size, ncol = 15)
 index_1m[ ,1] <- index_bh_1$bh_3_mean
 index_1m[ ,2] <- index_bh_1$bh_4_mean
 index_1m[ ,3] <- index_bh_1$bh_3_std
@@ -159,8 +228,12 @@ index_1m[ ,8] <- index_bh_1$bh_ci
 index_1m[ ,9] <- index_ele_1$mean
 index_1m[ ,10] <- index_ele_1$std
 index_1m[ ,11] <- index_slp_1$mean
+index_1m[ ,12] <- dis_3
+index_1m[ ,13] <- sw_1
+index_1m[ ,14] <- asp_1
+index_1m[ ,15] <- asp_2
 
-index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio', 'bh_max', 'bh_sum', 'bh_ci', 'ele_mean', 'ele_std', 'slp_mean') #to_be_set
+index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio', 'bh_max', 'bh_sum', 'bh_ci', 'ele_mean', 'ele_std', 'slp_mean', 'dis', 'str_wid','asp_1','asp_2') #to_be_set
 
 index_1m_df <- as.data.frame(index_1m)
 colnames(index_1m_df) <- index_col_names
