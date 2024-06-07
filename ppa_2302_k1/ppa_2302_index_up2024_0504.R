@@ -164,7 +164,7 @@ index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio
 
 index_1m_df <- as.data.frame(index_1m)
 colnames(index_1m_df) <- index_col_names
-write.csv(index_1m_df, file = 'index_1m_df.csv', row.names = FALSE)
+write.csv(index_1m_df, file = 'index_1m_df1.csv', row.names = FALSE)
 #up2024_0503_19:41_e
 #==================================
 #check
