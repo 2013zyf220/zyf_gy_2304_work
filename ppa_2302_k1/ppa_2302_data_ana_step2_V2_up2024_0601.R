@@ -55,7 +55,9 @@ ele_2a <- read.csv('ele_2_table.csv')
 ele_2b <- as.matrix(ele_2a)
 ele_2c <- matrix(ele_2b, nrow = len_sites * len_strs_mo, ncol = 1)
 
-index_1 <- read.csv('index_1m_df2.csv')[1:300,]
+buf_set <- 20 #to_be_set
+index_name1 <- paste0('index_1m_df3_buf', buf_set, '.csv')
+index_1 <- read.csv(index_name1)[1:300,]
 index_1$ele_2 <- ele_2c
 index_2 <- index_1
 
@@ -108,7 +110,7 @@ data2_2_ori <- list()
 for(c_vari in varis){
   data2_2_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES2/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set_key
+    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES2/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
   } 
 }
 

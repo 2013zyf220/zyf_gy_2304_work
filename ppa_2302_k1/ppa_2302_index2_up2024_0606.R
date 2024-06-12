@@ -73,7 +73,11 @@ asp_2 <- bh_2_data_mean2/sw_1
 #========================================
 #up2024_0606_19:49
 
-index_1 <- read.csv('index_1m_df1.csv')[1: len_all, ]
+buf_set <- 20 #to_be_set_key
+index_name1 <- paste0('index_1m_df1_buf', buf_set, '.csv')
+index_name2 <- paste0('index_1m_df2_buf', buf_set, '.csv')
+
+index_1 <- read.csv(index_name1)[1: len_all, ]
 index_1_add <- matrix(0, ncol = 5, nrow = len_all)
 index_1_add[,1] <- dis_2
 index_1_add[,2] <- sw_1
@@ -83,6 +87,6 @@ index_1_add[,4] <- asp_2
 index_1_add_df <- as.data.frame(index_1_add)
 colnames(index_1_add_df) <- c('dis','str_wid','asp_1','asp_2')
 index_2 <- cbind(index_1, index_1_add_df)
-write.csv(index_2, 'index_1m_df2.csv')
+write.csv(index_2, index_name2)
 
 #========================================

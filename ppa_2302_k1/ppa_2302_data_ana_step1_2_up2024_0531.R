@@ -91,6 +91,8 @@ for(c_vari in varis2){
 
 #======================================
 #up2024_0531_15:30
+#adjust data form of 'data_1_ori'
+#adjust TP data based on elevation 
 
 data_1_ori2 <- list()
 for(c_vari in varis2){

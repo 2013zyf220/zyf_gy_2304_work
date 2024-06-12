@@ -98,6 +98,10 @@ ls_index_f <- function(f_luse, f_buf_set){
 #up2024_0604_20:30
 
 lsi_1 <- ls_index_f(luse_1p, 20)$ls_metric
-index_1 <- read.csv('index_1m_df2.csv')[1:buf_num,]
+
+index_name2 <- paste0('index_1m_df2_buf', buf_set, '.csv')
+index_name3 <- paste0('index_1m_df3_buf', buf_set, '.csv')
+
+index_1 <- read.csv(index_name2)[1:buf_num,]
 index_2 <- cbind(lsi_1, index_1)
-write.csv(index_2,paste0('index_1m_df3.csv'), row.names = FALSE)
+write.csv(index_2,paste0(index_name3), row.names = FALSE)

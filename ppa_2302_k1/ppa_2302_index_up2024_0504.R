@@ -53,7 +53,7 @@ bh_index_f <- function(f_buf){
   f_bh_sub_4 <- list()
   for(ii in 1: f_buf_size){
     if(ii %% 50 == 0){
-      cat('buffer:', ii, '\n')
+      cat('buffer number:', ii, '\n')
     }
 
     fc_bh_sub_1 <- crop(bh_1, extent(f_buf[ii, ]))
@@ -164,7 +164,7 @@ index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio
 
 index_1m_df <- as.data.frame(index_1m)
 colnames(index_1m_df) <- index_col_names
-write.csv(index_1m_df, file = 'index_1m_df1.csv', row.names = FALSE)
+write.csv(index_1m_df, file = paste0('index_1m_df1_buf', buf_set,'.csv'), row.names = FALSE)
 #up2024_0503_19:41_e
 #==================================
 #check
