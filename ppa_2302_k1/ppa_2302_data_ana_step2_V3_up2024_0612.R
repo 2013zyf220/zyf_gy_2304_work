@@ -921,10 +921,10 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
   f_fig3b_list <- list()
   nn <- 0
   for(ii in times_set){
-    fc_1 <- (jj - 1) * len_sites + 1
-    fc_2 <- jj * len_sites
     for(jj in strs_mo){
       nn <- nn + 1
+      fc_1 <- (jj - 1) * len_sites + 1
+      fc_2 <- jj * len_sites
       f_fig3b_list[[nn]] <- data.frame(
         xx = index_1[[f_indep]][fc_1:fc_2],
         yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
