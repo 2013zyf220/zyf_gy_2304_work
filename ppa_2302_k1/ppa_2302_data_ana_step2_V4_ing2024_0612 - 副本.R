@@ -255,6 +255,23 @@ rce_1_f <- function(f_1, f_2){
 }
 
 #==============================================
+#ing 
+rce_2_f <- function(f_1){
+  f_len <- length(f_1)
+  for(mm in 1: f_len - 5){
+    if(f_1[mm] > max(f_1[mm + 1: mm + 5])){
+      f_rcd <- mm
+    }else if(mm == f_len - 5){
+      f_rcd <- -9999
+    }
+  }
+  f_rci <- f_1[f_rcd] - f_1[1]
+  f_crci <- f_1[1] * f_rcd - sum(f_1[1:f_rcd])
+}
+
+
+
+#==============================================
 #up2024_0528_22:00
 #calculate rce indexes(each each variable, each time, each street, each day)
 
@@ -921,10 +938,10 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
   f_fig3b_list <- list()
   nn <- 0
   for(ii in times_set){
-    fc_1 <- (jj - 1) * len_sites + 1
-    fc_2 <- jj * len_sites
     for(jj in strs_mo){
       nn <- nn + 1
+      fc_1 <- (jj - 1) * len_sites + 1
+      fc_2 <- jj * len_sites
       f_fig3b_list[[nn]] <- data.frame(
         xx = index_1[[f_indep]][fc_1:fc_2],
         yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
@@ -1042,4 +1059,192 @@ fig4b_res_f <- function(f_sub_name, f_indep){
 check_4 <- fig4b_res_f('ORI', indep_set)
 
 
+#=====================
+#Ing2024_0617 08:19
 
+fig5b_list_f <- function(f_sub, f_vari, f_indep){
+  f_fig5b_list <- list()
+  nn <- 0
+  for(ii in times_set){
+    fc_1 <- (jj - 1) * len_sites + 1
+    fc_2 <- jj * len_sites
+    for(jj in strs_mo){
+      nn <- nn + 1
+      f_fig5b_list[[nn]] <- data.frame(
+        xx <- dis_3[[f_sub]],
+        yy <- as.vector(data2_2_ori[[f_vari]][[ii]][f_1:f_2,days_trans_f(f_sub)])
+      )
+    }
+  }
+  return(f_fig5b_list)
+}
+
+#==============================================
+#Ing2024_0617 08:19
+
+fig5b_plot_f <- function(f_data, f_index, f_vari, f_indep){
+  f_time <- (f_index - 1)%/% len_strs_mo + 1
+  f_str <- (f_index - 1)%% len_strs_mo + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('time:', f_time,'_str:',f_str)) +
+    xlab(colnames(index_1)[f_indep]) + 
+    ylab(f_vari) + 
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#Ing2024_0617 08:19
+
+fig5b_res_f <- function(f_sub_name, f_vari, f_indep){
+  cat(f_sub_name, '_', f_vari, '\n')
+  f_data_fig5b_list_1 <- fig5b_list_f(f_sub_name, f_vari, f_indep)
+  f_plots_fig5b_1 <- lapply(seq_along(f_data_fig5b_list_1), function(nn) fig5b_plot_f(f_data_fig5b_list_1[[nn]], nn, f_vari, f_indep))
+  f_comb_plots_fig5b_1 <- grid.arrange(grobs = f_plots_fig5b_1, ncol = len_strs_mo, nrow = len_times_set)
+  ggsave(paste0('FIG2/comb_plots_fig5b_1', f_sub_name, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig5b_1, width = 15, height = 15, dpi = 300)
+  return(f_comb_plots_fig5b_1)
+}
+
+#==============================================
+#Ing2024_0617 08:19
+
+fig6b_list_f <- function(f_sub, f_indep){
+  f_fig6b_list <- list()
+  nn <- 0
+  for(c_vari in varis){
+    for(ii in times_set){
+      nn <- nn + 1
+      f_fig6b_list[[nn]] <- data.frame(
+        xx <- rep(dis_1, len_strs_mo * length(days_trans_f(f_sub))),
+        yy <- as.vector(data2_2_ori[[f_vari]][[ii]][,days_trans_f(f_sub)])
+      )
+    }
+  }
+  return(f_fig6b_list)
+}
+
+#==============================================
+#Ing2024_0617 08:19
+
+fig6b_plot_f <- function(f_data, f_index, f_indep){
+  f_vari <- (f_index - 1) %/% len_times_set + 1
+  f_time <- (f_index - 1) %% len_times_set + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('vari:', varis[f_vari],'_time:',f_time)) +
+    xlab(colnames(index_1)[f_indep]) + 
+    ylab(f_vari) + 
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#Ing2024_0617 08:19
+
+fig6b_res_f <- function(f_sub_name, f_indep){
+  cat(f_sub_name, '\n')
+  f_data_fig6b_list_1 <- fig6b_list_f(f_sub_name, f_indep)
+  f_plots_fig6b_1 <- lapply(seq_along(f_data_fig6b_list_1), function(nn) fig6b_plot_f(f_data_fig6b_list_1[[nn]], nn, f_indep))
+  f_comb_plots_fig6b_1 <- grid.arrange(grobs = f_plots_fig6b_1, ncol = len_times_set, nrow = len_varis)
+  ggsave(paste0('FIG2/comb_plots_fig6b_1', f_sub_name, '_', f_indep,'.jpg'), plot = f_comb_plots_fig6b_1, width = 15, height = 15, dpi = 300)  
+  return(f_comb_plots_fig6b_1)
+}
+
+#fig6b_res <- list()
+#for(c_sub_name in subs_name){
+#  fig6b_res[[c_sub_name]] <- fig6b_res_f(c_sub_name, indep_set)
+#}
+
+#==============================================
+#Ing2024_0617 09:20
+
+bydis <- list()
+
+
+for(mm in 1:5){
+  c_3 <- list()
+  for(nn in 1:6){
+      c_1 <- (nn - 1) * 50 + (mm - 1) * 10 + 1
+      c_2 <- (nn - 1) * 50 + (mm - 1) * 10 + 10
+      c_3[[nn]] <- c_1: c_2
+  }
+  bydis[[mm]] <- c(c_3[[1]], c_3[[2]], c_3[[3]], c_3[[4]], c_3[[5]], c_3[[6]]) #to_be_set
+}
+
+#==============================================
+#Ing2024_0617 09:05
+
+fig6c_list_f <- function(f_sub, f_vari, f_indep){
+  f_fig6c_list <- list()
+  nn <- 0
+  for(ii in times_set){
+    for(pp in 1:5){
+      nn <- nn + 1
+      c_1 <- (pp - 1) * 10 + 1
+      c_2 <- pp * 10
+      c_dis_1b <- dis_1[c_1: c2]
+      f_fig6c_list[[nn]] <- data.frame(
+        xx <- rep(c_dis_1b, len_strs_mo * length(days_trans_f(f_sub))),
+        yy <- as.vector(data2_2_ori[[f_vari]][[ii]][bydis[pp],days_trans_f('ORI')])
+      )
+    }
+  }
+  return(f_fig6c_list)
+}
+
+#==============================================
+#Ing2024_0617 09:05
+
+fig6b_plot_f <- function(f_data, f_index, f_indep){
+  f_vari <- (f_index - 1) %/% len_times_set + 1
+  f_time <- (f_index - 1) %% len_times_set + 1
+  f_model <- lm(yy ~ xx, data = f_data)
+  f_interc <- coef(f_model)[1]
+  f_slope <- coef(f_model)[2]
+  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
+  
+  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
+    geom_point() +
+    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
+    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    ggtitle(paste('vari:', varis[f_vari],'_time:',f_time)) +
+    xlab(colnames(index_1)[f_indep]) + 
+    ylab(f_vari) + 
+    theme_minimal()
+  
+  return(f_p)
+}
+
+#==============================================
+#Ing2024_0617 09:05
+
+fig6b_res_f <- function(f_sub_name, f_indep){
+  cat(f_sub_name, '\n')
+  f_data_fig6b_list_1 <- fig6b_list_f(f_sub_name, f_indep)
+  f_plots_fig6b_1 <- lapply(seq_along(f_data_fig6b_list_1), function(nn) fig6b_plot_f(f_data_fig6b_list_1[[nn]], nn, f_indep))
+  f_comb_plots_fig6b_1 <- grid.arrange(grobs = f_plots_fig6b_1, ncol = len_times_set, nrow = len_varis)
+  ggsave(paste0('FIG2/comb_plots_fig6b_1', f_sub_name, '_', f_indep,'.jpg'), plot = f_comb_plots_fig6b_1, width = 15, height = 15, dpi = 300)  
+  return(f_comb_plots_fig6b_1)
+}
+
+#fig6b_res <- list()
+#for(c_sub_name in subs_name){
+#  fig6b_res[[c_sub_name]] <- fig6b_res_f(c_sub_name, indep_set)
+#}

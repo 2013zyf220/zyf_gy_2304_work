@@ -19,7 +19,7 @@ ele_1 <- raster(paste0('DEM/DEM_ELE_2.tif'))
 slp_1 <- raster(paste0('DEM/DEM_SLP_2.tif'))
 asp_1 <- raster(paste0('DEM/DEM_ASP_2.tif'))
 
-buf_set <- 20 #to_be_set
+buf_set <- 100 #to_be_set
 strs_1 <- shapefile(paste0('LINES/streets_5_buf', buf_set, '.shp'))
 strs_1_size <- nrow(strs_1)
 

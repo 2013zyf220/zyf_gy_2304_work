@@ -73,7 +73,7 @@ asp_2 <- bh_2_data_mean2/sw_1
 #========================================
 #up2024_0606_19:49
 
-buf_set <- 20 #to_be_set_key
+buf_set <- 100 #to_be_set_key
 index_name1 <- paste0('index_1m_df1_buf', buf_set, '.csv')
 index_name2 <- paste0('index_1m_df2_buf', buf_set, '.csv')
 

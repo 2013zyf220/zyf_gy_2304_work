@@ -1041,5 +1041,22 @@ fig4b_res_f <- function(f_sub_name, f_indep){
 
 check_4 <- fig4b_res_f('ORI', indep_set)
 
+#==============================================
+#ing2024_0617_10:41
 
-
+fig5b_list_f <- function(f_sub, f_vari, f_indep){
+  f_fig5b_list <- list()
+  nn <- 0
+  for(ii in times_set){
+    for(jj in strs_mo){
+      nn <- nn + 1
+      fc_1 <- (jj - 1) * len_sites + 1
+      fc_2 <- jj * len_sites
+      f_fig5b_list[[nn]] <- data.frame(
+        xx <- dis_3[[f_sub]],
+        yy <- as.vector(data2_2_ori[[f_vari]][[ii]][fc_1:fc_2,days_trans_f(f_sub)])
+      )
+    }
+  }
+  return(f_fig5b_list)
+}

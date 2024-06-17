@@ -13,7 +13,7 @@ luse_1p <- raster('LUSE/luse_1p.tif')
 #=================================================================
 #up2024_0604_23:04
 
-buf_set <- 20 #to_be_set
+buf_set <- 100 #to_be_set
 buf_num <- 300 #to_be_set
 buf_1 <- shapefile(paste0('LINES/streets_5_buf', buf_set, '.shp'))
 buf_1p <- spTransform(buf_1, crs(luse_1p))
