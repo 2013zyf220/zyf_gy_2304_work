@@ -55,13 +55,11 @@ ele_2a <- read.csv('ele_2_table.csv')
 ele_2b <- as.matrix(ele_2a)
 ele_2c <- matrix(ele_2b, nrow = len_sites * len_strs_mo, ncol = 1)
 
-buf_set <- 100 #to_be_set
+buf_set <- 20 #to_be_set
 index_name1 <- paste0('index_1m_df3_buf', buf_set, '.csv')
 index_1 <- read.csv(index_name1)[1:300,]
 index_1$ele_2 <- ele_2c
 index_2 <- index_1
-
-indep_set <- 20 #to_be_set_key
 
 #=================================================================
 #up2024_0531_17:00
@@ -662,7 +660,7 @@ fig_3f <- function(f_sub, f_vari){
 
 #==============================================
 #up2024_0530_17:00
-#fig(each sub,each variable, each time, each street, each day)
+#fig(each variable, each time, each street, each day)
 
 fig_3_fit <- list()
 for(c_sub_name in subs_name){
@@ -795,16 +793,16 @@ check_2 <- regre_r4$ORI$TP[[time_set]]$coe
 #==============================================
 #up2024_0601_21:30
 
-fig1b_list_f <- function(f_vari, f_time, f_indep){
+fig1b_list_f <- function(f_vari, f_time){
   f_fig1b_list <- list()
   nn <- 0
   for(jj in strs_mo){
-    fc_1 <- (jj - 1) * len_sites + 1
-    fc_2 <- jj * len_sites
     for(kk in days_ori){
       nn <- nn + 1
+      fc_1 <- (jj - 1) * len_sites + 1
+      fc_2 <- jj * len_sites
       f_fig1b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][fc_1:fc_2],
+        xx = dis_1,
         yy = data2_2_ori[[f_vari]][[f_time]][fc_1:fc_2,kk]
       )
     }
@@ -815,7 +813,7 @@ fig1b_list_f <- function(f_vari, f_time, f_indep){
 #==============================================
 #up2024_0601_21:30
 
-fig1b_plot_f <- function(f_data, f_index, f_vari, f_indep){
+fig1b_plot_f <- function(f_data, f_index){
   f_str <- (f_index - 1)%/% len_days_ori + 1
   f_day <- (f_index - 1)%% len_days_ori + 1
   f_model <- lm(yy ~ xx, data = f_data)
@@ -828,8 +826,6 @@ fig1b_plot_f <- function(f_data, f_index, f_vari, f_indep){
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
     ggtitle(paste('str:', f_str,'_day:',f_day)) +
-    xlab(colnames(index_1)[f_indep]) + 
-    ylab(f_vari) + 
     theme_minimal()
   
   return(f_p)
@@ -838,11 +834,11 @@ fig1b_plot_f <- function(f_data, f_index, f_vari, f_indep){
 #==============================================
 #up2024_0602_11:30
 
-fig1b_res_f <- function(f_vari, f_time, f_indep){
-  f_data_fig1b_list_1 <- fig1b_list_f(f_vari, f_time, f_indep)
-  f_plots_fig1b_1 <- lapply(seq_along(f_data_fig1b_list_1), function(nn) fig1b_plot_f(f_data_fig1b_list_1[[nn]], nn, f_vari, f_indep))
+fig1b_res_f <- function(f_vari, f_time){
+  f_data_fig1b_list_1 <- fig1b_list_f(f_vari, f_time)
+  f_plots_fig1b_1 <- lapply(seq_along(f_data_fig1b_list_1), function(nn) fig1b_plot_f(f_data_fig1b_list_1[[nn]], nn))
   f_comb_plots_fig1b_1 <- grid.arrange(grobs = f_plots_fig1b_1, ncol = len_days_ori, nrow = len_strs_mo)
-  ggsave(paste0('FIG2/comb_plots_fig1b_1', f_vari, '_', f_time, '_', f_indep,'.jpg'), plot = f_comb_plots_fig1b_1, width = 15, height = 15, dpi = 300)
+  ggsave(paste0('FIG2/comb_plots_fig1b_1', f_vari, '_', f_time,'.jpg'), plot = f_comb_plots_fig1b_1, width = 15, height = 15, dpi = 300)
   return(f_comb_plots_fig1b_1)
 }
 
@@ -850,22 +846,22 @@ fig1b_res_f <- function(f_vari, f_time, f_indep){
 #for(c_vari in varis){
 #  fig1b_res[[c_vari]] <- list()
 #  for(ii in times_set){
-#    fig1b_res[[c_vari]][[ii]] <- fig1b_res_f(c_vari,ii, indep_set)
+#    fig1b_res[[c_vari]][[ii]] <- fig1b_res_f(c_vari,ii)
 #  }
 #}
 
-check_1 <- fig1b_res_f('TP',1, indep_set) #to_be_set
+check_1 <- fig1b_res_f('TP',2) #to_be_set
 #==============================================
 #up2024_0601_21:30
 
-fig2b_list_f <- function(f_vari, f_indep){
+fig2b_list_f <- function(f_vari){
   f_fig2b_list <- list()
   nn <- 0
   for(ii in times_set){
     for(kk in days_ori){
       nn <- nn + 1
       f_fig2b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]],
+        xx = dis_2,
         yy = data2_2_ori[[f_vari]][[ii]][,kk]
       )     
     }
@@ -876,7 +872,7 @@ fig2b_list_f <- function(f_vari, f_indep){
 #==============================================
 #up2024_0601_21:30
 
-fig2b_plot_f <- function(f_data, f_index, f_vari, f_indep){
+fig2b_plot_f <- function(f_data, f_index){
   f_time <- (f_index - 1)%/% len_days_ori + 1
   f_day <- (f_index - 1)%% len_days_ori + 1
   f_model <- lm(yy ~ xx, data = f_data)
@@ -889,8 +885,6 @@ fig2b_plot_f <- function(f_data, f_index, f_vari, f_indep){
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
     ggtitle(paste('time:', f_time, 'day:',f_day)) +
-    xlab(colnames(index_1)[f_indep]) + 
-    ylab(f_vari) + 
     theme_minimal()
   
   return(f_p)
@@ -899,25 +893,24 @@ fig2b_plot_f <- function(f_data, f_index, f_vari, f_indep){
 #==============================================
 #up2024_0602_11:30
 
-fig2b_res_f <- function(f_vari, f_indep){
+fig2b_res_f <- function(f_vari){
   cat(f_vari, '\n')
-  f_data_fig2b_list_1 <- fig2b_list_f(f_vari, f_indep)
-  f_plots_fig2b_1 <- lapply(seq_along(f_data_fig2b_list_1), function(nn) fig2b_plot_f(f_data_fig2b_list_1[[nn]], nn, f_vari, f_indep))
+  f_data_fig2b_list_1 <- fig2b_list_f(f_vari)
+  f_plots_fig2b_1 <- lapply(seq_along(f_data_fig2b_list_1), function(nn) fig2b_plot_f(f_data_fig2b_list_1[[nn]], nn))
   f_comb_plots_fig2b_1 <- grid.arrange(grobs = f_plots_fig2b_1, ncol = len_days_ori, nrow = len_times_set)
-  ggsave(paste0('FIG2/comb_plots_fig2b_1', f_vari, '_', f_indep, '.jpg'), plot = f_comb_plots_fig2b_1, width = 15, height = 15, dpi = 300)
+  ggsave(paste0('FIG2/comb_plots_fig2b_1', f_vari, '.jpg'), plot = f_comb_plots_fig2b_1, width = 15, height = 15, dpi = 300)
   return(f_comb_plots_fig2b_1)
 }
 
 #fig2b_res <- list()
 #for(c_vari in varis){
-#  fig2b_res[[c_vari]] <- fig2b_res_f(c_vari, indep_set)
+#  fig2b_res[[c_vari]] <- fig2b_res_f(c_vari)
 #}
 
-#check_2 <- fig2b_res_f('TP', 10)
 #==============================================
 #up2024_0601_21:30
 
-fig3b_list_f <- function(f_sub, f_vari, f_indep){
+fig3b_list_f <- function(f_sub, f_vari){
   f_fig3b_list <- list()
   nn <- 0
   for(ii in times_set){
@@ -926,7 +919,7 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
       fc_1 <- (jj - 1) * len_sites + 1
       fc_2 <- jj * len_sites
       f_fig3b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][fc_1:fc_2],
+        xx = dis_1,
         yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
       )
     }
@@ -937,7 +930,7 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
 #==============================================
 #up2024_0601_21:30
 
-fig3b_plot_f <- function(f_data, f_index, f_vari, f_indep){
+fig3b_plot_f <- function(f_data, f_index){
   f_time <- (f_index - 1)%/% len_strs_mo + 1
   f_str <- (f_index - 1)%% len_strs_mo + 1
   f_model <- lm(yy ~ xx, data = f_data)
@@ -950,8 +943,6 @@ fig3b_plot_f <- function(f_data, f_index, f_vari, f_indep){
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
     ggtitle(paste('time:', f_time,'_str:',f_str)) +
-    xlab(colnames(index_1)[f_indep]) + 
-    ylab(f_vari) + 
     theme_minimal()
   
   return(f_p)
@@ -960,12 +951,12 @@ fig3b_plot_f <- function(f_data, f_index, f_vari, f_indep){
 #==============================================
 #up2024_0601_21:30
 
-fig3b_res_f <- function(f_sub_name, f_vari, f_indep){
+fig3b_res_f <- function(f_sub_name, f_vari){
   cat(f_sub_name, '_', f_vari, '\n')
-  f_data_fig3b_list_1 <- fig3b_list_f(f_sub_name, f_vari, f_indep)
-  f_plots_fig3b_1 <- lapply(seq_along(f_data_fig3b_list_1), function(nn) fig3b_plot_f(f_data_fig3b_list_1[[nn]], nn, f_vari, f_indep))
+  f_data_fig3b_list_1 <- fig3b_list_f(f_sub_name, f_vari)
+  f_plots_fig3b_1 <- lapply(seq_along(f_data_fig3b_list_1), function(nn) fig3b_plot_f(f_data_fig3b_list_1[[nn]], nn))
   f_comb_plots_fig3b_1 <- grid.arrange(grobs = f_plots_fig3b_1, ncol = len_strs_mo, nrow = len_times_set)
-  ggsave(paste0('FIG2/comb_plots_fig3b_1', f_sub_name, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig3b_1, width = 15, height = 15, dpi = 300)
+  ggsave(paste0('FIG2/comb_plots_fig3b_1', f_sub_name, '_', f_vari,'.jpg'), plot = f_comb_plots_fig3b_1, width = 15, height = 15, dpi = 300)
   return(f_comb_plots_fig3b_1)
 }
 
@@ -973,22 +964,21 @@ fig3b_res_f <- function(f_sub_name, f_vari, f_indep){
 #for(c_sub_name in subs_name){
 #  fig3b_res[[c_sub_name]] <- list()
 #  for(c_vari in varis){
-#    fig3b_res[[c_sub_name]][[c_vari]] <- fig3b_res_f(c_sub_name, c_vari, indep_set)
+#    fig3b_res[[c_sub_name]][[c_vari]] <- fig3b_res_f(c_sub_name, c_vari)
 #  }
 #}
 
-#check_3 <- fig3b_res_f('ORI', 'TP', 10)
 #==============================================
 #up2024_0601_21:30
 
-fig4b_list_f <- function(f_sub, f_indep){
+fig4b_list_f <- function(f_sub){
   f_fig4b_list <- list()
   nn <- 0
   for(c_vari in varis){
     for(ii in times_set){
       nn <- nn + 1
       f_fig4b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]],
+        xx = dis_2,
         yy = data2_2_mean[[f_sub]][[c_vari]][,ii]
       )
     }
@@ -999,7 +989,7 @@ fig4b_list_f <- function(f_sub, f_indep){
 #==============================================
 #up2024_0601_21:30
 
-fig4b_plot_f <- function(f_data, f_index, f_indep){
+fig4b_plot_f <- function(f_data, f_index){
   f_vari <- (f_index - 1) %/% len_times_set + 1
   f_time <- (f_index - 1) %% len_times_set + 1
   f_model <- lm(yy ~ xx, data = f_data)
@@ -1012,8 +1002,6 @@ fig4b_plot_f <- function(f_data, f_index, f_indep){
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
     ggtitle(paste('vari:', varis[f_vari],'_time:',f_time)) +
-    xlab(colnames(index_1)[f_indep]) + 
-    ylab(f_vari) + 
     theme_minimal()
   
   return(f_p)
@@ -1022,107 +1010,21 @@ fig4b_plot_f <- function(f_data, f_index, f_indep){
 #==============================================
 #up2024_0602_11:30
 
-fig3b_res_f <- function(f_sub_name, f_vari, f_indep){
-  cat(f_sub_name, '_', f_vari, '\n')
-  f_data_fig3b_list_1 <- fig3b_list_f(f_sub_name, f_vari, f_indep)
-  f_plots_fig3b_1 <- lapply(seq_along(f_data_fig3b_list_1), function(nn) fig3b_plot_f(f_data_fig3b_list_1[[nn]], nn, f_vari, f_indep))
-  f_comb_plots_fig3b_1 <- grid.arrange(grobs = f_plots_fig3b_1, ncol = len_strs_mo, nrow = len_times_set)
-  ggsave(paste0('FIG2/comb_plots_fig3b_1', f_sub_name, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig3b_1, width = 15, height = 15, dpi = 300)
-  return(f_comb_plots_fig3b_1)
+fig4b_res_f <- function(f_sub_name){
+  cat(f_sub_name, '\n')
+  f_data_fig4b_list_1 <- fig4b_list_f(f_sub_name)
+  f_plots_fig4b_1 <- lapply(seq_along(f_data_fig4b_list_1), function(nn) fig4b_plot_f(f_data_fig4b_list_1[[nn]], nn))
+  f_comb_plots_fig4b_1 <- grid.arrange(grobs = f_plots_fig4b_1, ncol = len_times_set, nrow = len_varis)
+  ggsave(paste0('FIG2/comb_plots_fig4b_1', f_sub_name,'.jpg'), plot = f_comb_plots_fig4b_1, width = 15, height = 15, dpi = 300)  
+  return(f_comb_plots_fig4b_1)
 }
 
-#fig3b_res <- list()
+#fig4b_res <- list()
 #for(c_sub_name in subs_name){
-#  fig3b_res[[c_sub_name]] <- list()
-#  for(c_vari in varis){
-#    fig3b_res[[c_sub_name]][[c_vari]] <- fig3b_res_f(c_sub_name, c_vari, indep_set)
-#  }
+#  fig4b_res[[c_sub_name]] <- fig4b_res_f(c_sub_name)
 #}
 
-#check_3 <- fig3b_res_f('ORI', 'TP', 10)
-
-
-
-
 #==============================================
-#up2024_0617_11:01
+#check
 
-fig5b_list_f <- function(f_sub, f_vari, f_indep){
-  f_fig5b_list <- list()
-  nn <- 0
-  for(ii in times_set){
-    for(jj in strs_mo){
-      nn <- nn + 1
-      fc_1 <- (jj - 1) * len_sites + 1
-      fc_2 <- jj * len_sites
-      f_fig5b_list[[nn]] <- data.frame(
-        xx <- dis_3[[f_sub]],
-        yy <- as.vector(data2_2_ori[[f_vari]][[ii]][fc_1:fc_2,days_trans_f(f_sub)])
-      )
-    }
-  }
-  return(f_fig5b_list)
-}
-
-#==============================================
-#up2024_0617_11:01
-
-fig5b_plot_f <- function(f_data, f_index, f_vari, f_indep){
-  f_time <- (f_index - 1)%/% len_strs_mo + 1
-  f_str <- (f_index - 1)%% len_strs_mo + 1
-  f_model <- lm(yy ~ xx, data = f_data)
-  f_interc <- coef(f_model)[1]
-  f_slope <- coef(f_model)[2]
-  f_eq <- paste0('y = ', round(f_interc, 2), ' + ', round(f_slope, 2), ' * x')
-  
-  f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
-    geom_point() +
-    geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
-    annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
-    ggtitle(paste('time:', f_time,'_str:',f_str)) +
-    xlab(colnames(index_1)[f_indep]) + 
-    ylab(f_vari) + 
-    theme_minimal()
-  
-  return(f_p)
-}
-
-#==============================================
-#up2024_0617_11:01
-
-fig5b_res_f <- function(f_sub_name, f_vari, f_indep){
-  cat(f_sub_name, '_', f_vari, '\n')
-  f_data_fig5b_list_1 <- fig5b_list_f(f_sub_name, f_vari, f_indep)
-  f_plots_fig5b_1 <- lapply(seq_along(f_data_fig5b_list_1), function(nn) fig5b_plot_f(f_data_fig5b_list_1[[nn]], nn, f_vari, f_indep))
-  f_comb_plots_fig5b_1 <- grid.arrange(grobs = f_plots_fig5b_1, ncol = len_strs_mo, nrow = len_times_set)
-  ggsave(paste0('FIG2/comb_plots_fig5b_1', f_sub_name, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig5b_1, width = 15, height = 15, dpi = 300)
-  return(f_comb_plots_fig5b_1)
-}
-
-#fig5b_res <- list()
-#for(c_sub_name in subs_name){
-#  fig5b_res[[c_sub_name]] <- list()
-#  for(c_vari in varis){
-#    fig5b_res[[c_sub_name]][[c_vari]] <- fig5b_res_f(c_sub_name, c_vari, indep_set)
-#  }
-#}
-
-#check_3 <- fig5b_res_f('ORI', 'TP', 10)
-
-#==============================================
-#ing
-
-fig6b_list_f <- function(f_sub, f_indep){
-  f_fig6b_list <- list()
-  nn <- 0
-  for(c_vari in varis){
-    for(ii in times_set){
-      nn <- nn + 1
-      f_fig6b_list[[nn]] <- data.frame(
-        xx <- rep(dis_1, len_strs_mo * length(days_trans_f(c_sub_name))),
-        yy <- as.vector(data2_2_ori[[f_vari]][[ii]][,days_trans_f(c_sub_name)])
-      )
-    }
-  }
-  return(f_fig6b_list)
-}
+check_2 <- fig4b_res_f('ORI')

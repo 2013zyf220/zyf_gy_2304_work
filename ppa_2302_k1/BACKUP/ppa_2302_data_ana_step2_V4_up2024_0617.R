@@ -106,11 +106,11 @@ dis_3[['NOR']] <- rep(dis_1, len_days_nor)
 dis_3[['HOT']] <- rep(dis_1, len_days_hot)
 
 #==============================================
-#up2024_0617_20:30
+#up2024_0617_14:00
 
-days_array_f <- function(f_days){
+days_array_f <- function(f_1){
   f_array <- c()
-  for (mm in f_days){
+  for (mm in f_1) {
     f_s <- (mm - 1) * 50 + 1
     f_e <- mm * 50
     f_array <- c(f_array, f_s:f_e)
@@ -123,27 +123,30 @@ for(c_sub_name in subs_name){
   days_array_list[[c_sub_name]] <- days_array_f(days_trans_f(c_sub_name))
 }
 #==============================================
-#up2024_0617_20:30
+#up2024_0617 11:39
 
 bydis_itv <- 10 #to_be_set
 bydis_num <- len_sites/bydis_itv
 
 bydis <- list()
 for(mm in 1: bydis_num){
-  c_res <- c()
+  c_3 <- list()
   for(nn in 1: len_strs_mo){
-    c_s <- (nn - 1) * 50 + (mm - 1) * 10 + 1
-    c_e <- (nn - 1) * 50 + mm * 10
-    c_res <- c(c_res, c_s:c_e)
+    c_1 <- (nn - 1) * 50 + (mm - 1) * 10 + 1
+    c_2 <- (nn - 1) * 50 + (mm - 1) * 10 + 10
+    c_3[[nn]] <- c_1: c_2
   }
-  bydis[[mm]] <- c_res
+  bydis[[mm]] <- c(c_3[[1]], c_3[[2]], c_3[[3]], c_3[[4]], c_3[[5]], c_3[[6]]) #to_be_set
 }
+
+#=============================================
+#up2024_0617 11:39
 
 bydis2 <- list()
 for(mm in 1: bydis_num){
-  c_s <- (mm - 1) * 10 + 1
-  c_e <- mm * 10
-  bydis2[[mm]] <- c_s: c_e
+  c_1 <- (mm - 1) * 10 + 1
+  c_2 <- mm * 10
+  bydis2[[mm]] <- c_1: c_2
 }
 
 cat('========================step 1: basic data(data2_2)==========================\n')
@@ -296,7 +299,7 @@ rce_1_f <- function(f_1, f_2){
 }
 
 #==============================================
-#up2024_0617_20:30
+#up2024_0617_17:00
 
 rce_2_f <- function(f_1){
   f_1_len <- length(f_1)
@@ -310,10 +313,9 @@ rce_2_f <- function(f_1){
       f_crci <- f_1[f_rcd] * f_rcd - sum(f_1[1:f_rcd])
       break
     }else if(nn == f_1_len2){
-      f_rcd <- -9999 
-      f_rci <- -9999 
-      f_crci <- -9999
-      print('ERROR')
+      f_rcd <- 0 
+      f_rci <- 0
+      f_crci <- 0
     }else{}
   }
   
@@ -325,7 +327,7 @@ rce_2_f <- function(f_1){
 }
 
 #==============================================
-#up2024_0617_20:30
+#up2024_0617_17:00
 
 rce_rb1 <- list()
 for(c_vari in varis){
@@ -344,8 +346,7 @@ for(c_vari in varis){
 }
 
 #==============================================
-#up2024_0617_20:30
-
+#up2024_0617_17:00
 rce_rb2 <- list()
 for(c_sub_name in subs_name){
   rce_rb2[[c_sub_name]] <- list()
@@ -361,7 +362,6 @@ for(c_sub_name in subs_name){
     }
   }
 }
-
 #==============================================
 #up2024_0528_22:00
 #calculate rce indexes(each each variable, each time, each street, each day)
@@ -964,7 +964,7 @@ fig1b_res_f <- function(f_vari, f_time, f_indep){
 
 check_1 <- fig1b_res_f('TP',1, indep_set) #to_be_set
 #==============================================
-#up2024_0617_23:00
+#up2024_0617_15:00
 
 fig1c_list_f <- function(f_vari, f_time, f_str, f_indep){
   f_fig1c_list <- list()
@@ -984,7 +984,7 @@ fig1c_list_f <- function(f_vari, f_time, f_str, f_indep){
 }
 
 #==============================================
-#up2024_0617_23:00
+#up2024_0617_15:00
 
 fig1c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_day <- (f_index - 1)%/% bydis_num + 1
@@ -1007,7 +1007,7 @@ fig1c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 }
 
 #==============================================
-#up2024_0617_23:00
+#up2024_0617_15:00
 
 fig1c_res_f <- function(f_vari, f_time, f_str, f_indep){
   f_data_fig1c_list_1 <- fig1c_list_f(f_vari, f_time, f_str, f_indep)
@@ -1023,13 +1023,11 @@ fig1c_res_f <- function(f_vari, f_time, f_str, f_indep){
 #  for(ii in times_set){
 #    fig1c_res[[c_vari]][[ii]] <- list()
 #    for(jj in strs_mo){
-#      fig1c_res[[c_vari]][[ii]][[jj]] <- fig1c_res_f(c_vari,ii, jj, indep_set)
+#      fig1c_res[[c_vari]][[ii]][[jj]] <- fig1c_res_f(c_vari,ii, jj,indep_set)
 #    }
 #  }
 #}
-
 fig1c_res_f('TP',1, 1, 20) #to_be_set
-
 #==============================================
 #up2024_0601_21:30
 
@@ -1088,10 +1086,9 @@ fig2b_res_f <- function(f_vari, f_indep){
 #  fig2b_res[[c_vari]] <- fig2b_res_f(c_vari, indep_set)
 #}
 
-check_2 <- fig2b_res_f('TP', 10)
+#check_2 <- fig2b_res_f('TP', 10)
 #==============================================
-#up2024_0617_23:00
-
+#up2024_0617_16:30
 fig2c_list_f <- function(f_vari, f_time, f_indep){
   f_fig2c_list <- list()
   nn <- 0
@@ -1100,7 +1097,7 @@ fig2c_list_f <- function(f_vari, f_time, f_indep){
       nn <- nn + 1
       f_fig2c_list[[nn]] <- data.frame(
         xx = index_1[[f_indep]][bydis[[pp]]],
-        yy = data2_2_ori[[f_vari]][[f_time]][bydis[[pp]],kk]
+        yy = data2_2_ori[[f_vari]][[ii]][bydis[[pp]],kk]
       )     
     }
   }
@@ -1108,7 +1105,7 @@ fig2c_list_f <- function(f_vari, f_time, f_indep){
 }
 
 #==============================================
-#up2024_0617_23:00
+#up2024_0617_16:30
 
 fig2c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_day <- (f_index - 1)%/% bydis_num + 1
@@ -1150,8 +1147,9 @@ fig2c_res_f <- function(f_vari, f_time, f_indep){
 #  }
 #}
 
-check_2c <- fig2c_res_f('TP',1,20)
+fig2c_res_f('TP',1,20)
 #==============================================
+
 #up2024_0601_21:30
 
 fig3b_list_f <- function(f_sub, f_vari, f_indep){
@@ -1214,11 +1212,11 @@ fig3b_res_f <- function(f_sub_name, f_vari, f_indep){
 #  }
 #}
 
-check_3 <- fig3b_res_f('ORI', 'TP', 10)
+#check_3 <- fig3b_res_f('ORI', 'TP', 10)
 #==============================================
-#up2024_0618_08:00
+#up2024_0617_15:30
 
-fig3c_list_f <- function(f_sub, f_vari, f_time, f_indep){
+fig3c_list_f <- function(f_sub, f_vari, f_indep){
   f_fig3c_list <- list()
   nn <- 0
   for(jj in strs_mo){
@@ -1228,7 +1226,7 @@ fig3c_list_f <- function(f_sub, f_vari, f_time, f_indep){
       fc_2 <- (jj - 1) * len_sites + pp * bydis_itv
       f_fig3c_list[[nn]] <- data.frame(
         xx = index_1[[f_indep]][fc_1:fc_2],
-        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,f_time]
+        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
       )
     }
   }
@@ -1236,7 +1234,7 @@ fig3c_list_f <- function(f_sub, f_vari, f_time, f_indep){
 }
 
 #==============================================
-#up2024_0618_08:00
+#up2024_0617_15:30
 
 fig3c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_str <- (f_index - 1)%/% bydis_num + 1
@@ -1259,14 +1257,14 @@ fig3c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 }
 
 #==============================================
-#up2024_0618_08:00
+#up2024_0617_15:30
 
-fig3c_res_f <- function(f_sub_name, f_vari, f_time, f_indep){
+fig3c_res_f <- function(f_sub_name, f_vari, f_indep){
   cat(f_sub_name, '_', f_vari, '\n')
-  f_data_fig3c_list_1 <- fig3c_list_f(f_sub_name, f_vari, f_time, f_indep)
+  f_data_fig3c_list_1 <- fig3c_list_f(f_sub_name, f_vari, f_indep)
   f_plots_fig3c_1 <- lapply(seq_along(f_data_fig3c_list_1), function(nn) fig3c_plot_f(f_data_fig3c_list_1[[nn]], nn, f_vari, f_indep))
-  f_comb_plots_fig3c_1 <- grid.arrange(grobs = f_plots_fig3c_1, ncol = bydis_num, nrow = len_strs_mo)
-  ggsave(paste0('FIG2/comb_plots_fig3c_1', f_sub_name, '_', f_vari, '_', f_time, '_', f_indep,'.jpg'), plot = f_comb_plots_fig3c_1, width = 15, height = 15, dpi = 300)
+  f_comb_plots_fig3c_1 <- grid.arrange(grobs = f_plots_fig3c_1, ncol = len_strs_mo, nrow = bydis_num)
+  ggsave(paste0('FIG2/comb_plots_fig3c_1', f_sub_name, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig3c_1, width = 15, height = 15, dpi = 300)
   return(f_comb_plots_fig3c_1)
 }
 
@@ -1274,13 +1272,11 @@ fig3c_res_f <- function(f_sub_name, f_vari, f_time, f_indep){
 #for(c_sub_name in subs_name){
 #  fig3c_res[[c_sub_name]] <- list()
 #  for(c_vari in varis){
-#    for(ii in times_set){
-#      fig3c_res[[c_sub_name]][[c_vari]][[ii]] <- fig3c_res_f(c_sub_name, c_vari, ii, indep_set)
-#    }
+#    fig3c_res[[c_sub_name]][[c_vari]] <- fig3c_res_f(c_sub_name, c_vari, indep_set)
 #  }
 #}
 
-check_3c <- fig3c_res_f('ORI', 'TP', 1, 20)
+check_3c <- fig3c_res_f('ORI', 'TP', 20)
 
 #==============================================
 #up2024_0601_21:30
@@ -1346,8 +1342,7 @@ fig4b_res_f <- function(f_sub_name, f_indep){
 check_4 <- fig4b_res_f('ORI', indep_set)
 
 #=====================
-#up2024_0618_08:00
-
+#up2024_0617_15:30
 fig4c_list_f <- function(f_sub, f_vari, f_indep){
   f_fig4c_list <- list()
   nn <- 0
@@ -1363,7 +1358,7 @@ fig4c_list_f <- function(f_sub, f_vari, f_indep){
   return(f_fig4c_list)
 }
 #==============================================
-#up2024_0618_08:00
+#up2024_0601_21:30
 
 fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_time <- (f_index - 1) %/% bydis_num + 1
@@ -1386,14 +1381,14 @@ fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 }
 
 #==============================================
-#up2024_0618_08:00
+#up2024_0617_15:30
 
-fig4c_res_f <- function(f_sub, f_vari, f_indep){
-  cat(f_sub, '\n')
-  f_data_fig4c_list_1 <- fig4c_list_f(f_sub, f_vari, f_indep)
+fig4c_res_f <- function(f_sub_name, f_vari, f_indep){
+  cat(f_sub_name, '\n')
+  f_data_fig4c_list_1 <- fig4c_list_f(f_sub_name, f_vari, f_indep)
   f_plots_fig4c_1 <- lapply(seq_along(f_data_fig4c_list_1), function(nn) fig4c_plot_f(f_data_fig4c_list_1[[nn]], nn, f_vari, f_indep))
   f_comb_plots_fig4c_1 <- grid.arrange(grobs = f_plots_fig4c_1, ncol = bydis_num, nrow = len_times_set)
-  ggsave(paste0('FIG2/comb_plots_fig4c_1', f_sub, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig4c_1, width = 15, height = 15, dpi = 300)  
+  ggsave(paste0('FIG2/comb_plots_fig4c_1', f_sub_name, '_', f_vari, '_', f_indep,'.jpg'), plot = f_comb_plots_fig4c_1, width = 15, height = 15, dpi = 300)  
   return(f_comb_plots_fig4c_1)
 }
 
@@ -1405,8 +1400,9 @@ fig4c_res_f <- function(f_sub, f_vari, f_indep){
 #  }
 #}
 
-check_4c <- fig4c_res_f('ORI', 'TP', 20)
+fig4c_res_f('ORI', 'TP', 20)
 #=====================
+
 #up2024_0617 11:05
 
 fig5b_list_f <- function(f_sub, f_vari, f_indep){
@@ -1533,7 +1529,7 @@ fig6b_res_f <- function(f_sub_name, f_indep){
 
 check_6 <- fig6b_res_f('ORI', 10)
 #==============================================
-#up2024_0618 08:00
+#up2024_0617 13:40
 
 fig6c_list_f <- function(f_sub, f_vari, f_indep){
   f_fig6c_list <- list()
@@ -1542,9 +1538,11 @@ fig6c_list_f <- function(f_sub, f_vari, f_indep){
     for(pp in 1: bydis_num){
       nn <- nn + 1
       c_bydis <- bydis[[pp]]
+      c_bydis2 <- bydis2[[pp]]
+      dis_1b <- dis_1[c_bydis2]
       f_fig6c_list[[nn]] <- data.frame(
-        xx = rep(index_1[[f_indep]][c_bydis], length(days_trans_f(f_sub))),
-        yy = as.vector(data2_2_ori[[f_vari]][[ii]][c_bydis,days_trans_f(f_sub)])
+        xx = rep(dis_1b, len_strs_mo * length(days_trans_f(f_sub))),
+        yy = as.vector(data2_2_ori[[f_vari]][[ii]][bydis[[pp]],days_trans_f(f_sub)])
       )
     }
   }
@@ -1552,7 +1550,7 @@ fig6c_list_f <- function(f_sub, f_vari, f_indep){
 }
 
 #==============================================
-#up2024_0618 08:00
+#up2024_0617 13:45
 
 fig6c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_time <- (f_index - 1) %/% bydis_num + 1
@@ -1566,7 +1564,7 @@ fig6c_plot_f <- function(f_data, f_index, f_vari, f_indep){
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
-    ggtitle(paste('time:',f_time, '_bydis', f_bydis)) +
+    ggtitle(paste('vari:', varis[f_vari],'_time:',f_time, '_bydis', f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
     theme_minimal()
@@ -1575,23 +1573,20 @@ fig6c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 }
 
 #==============================================
-#up2024_0618 08:00
+#up2024_0617 13:45
 
-fig6c_res_f <- function(f_sub, f_vari, f_indep){
-  cat(f_sub, '\n')
-  f_data_fig6c_list_1 <- fig6c_list_f(f_sub, f_vari, f_indep)
+fig6c_res_f <- function(f_sub_name, f_vari, f_indep){
+  cat(f_sub_name, '\n')
+  f_data_fig6c_list_1 <- fig6c_list_f(f_sub_name, f_vari, f_indep)
   f_plots_fig6c_1 <- lapply(seq_along(f_data_fig6c_list_1), function(nn) fig6c_plot_f(f_data_fig6c_list_1[[nn]], nn, f_vari, f_indep))
   f_comb_plots_fig6c_1 <- grid.arrange(grobs = f_plots_fig6c_1, ncol = bydis_num, nrow = len_times_set)
-  ggsave(paste0('FIG2/comb_plots_fig6c_1', f_sub, '_', f_indep,'.jpg'), plot = f_comb_plots_fig6c_1, width = 15, height = 15, dpi = 300)  
+  ggsave(paste0('FIG2/comb_plots_fig6c_1', f_sub_name, '_', f_indep,'.jpg'), plot = f_comb_plots_fig6c_1, width = 15, height = 15, dpi = 300)  
   return(f_comb_plots_fig6c_1)
 }
 
 #fig6c_res <- list()
 #for(c_sub_name in subs_name){
-#  fig6c_res[[c_sub_name]] <- list()
-#  for(c_vari in varis){
-#    fig6c_res[[c_sub_name]][[c_vari]] <- fig6c_res_f(c_sub_name, c_vari, indep_set)
-#  }
+#  fig6c_res[[c_sub_name]] <- fig6c_res_f(c_sub_name, indep_set)
 #}
 
-check_6c <- fig6c_res_f('ORI', 'TP', 20)
+check_6 <- fig6c_res_f('ORI', 'TP', 20)
