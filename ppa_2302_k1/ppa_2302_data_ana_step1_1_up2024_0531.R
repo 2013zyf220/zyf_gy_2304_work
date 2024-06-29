@@ -98,7 +98,7 @@ data_1_f <- function(f_time_1, f_str, f_day){
   if(f_str %% 2 == 1){
     f_data_4 <- f_data_3[1:50, ]
   }else{
-    f_data_4 <- rev(f_data_3[61:110, ])
+    f_data_4 <- f_data_3[61:110, ]
   }
   f_res <- list()
   f_res[['data_2']] <- f_data_2
@@ -136,7 +136,11 @@ d1_vari_f <- function(f_vari){
       f_s <- (jj - 1) * len_sites + 1
       f_e <- jj * len_sites
       for(kk in days_ori){
-        f_d1_vari[[ii]][f_s:f_e,kk] <- data_1s[[ii]][[jj]][[kk]][[f_vari]]
+        if(jj %% 2 == 1){
+          f_d1_vari[[ii]][f_s:f_e,kk] <- data_1s[[ii]][[jj]][[kk]][[f_vari]]
+        }else{
+          f_d1_vari[[ii]][f_s:f_e,kk] <- rev(data_1s[[ii]][[jj]][[kk]][[f_vari]])
+        }
       }
     }
     f_d1_vari_df[[ii]] <- as.data.frame(f_d1_vari[[ii]])

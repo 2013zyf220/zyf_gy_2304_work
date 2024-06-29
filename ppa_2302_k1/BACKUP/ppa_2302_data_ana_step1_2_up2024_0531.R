@@ -78,6 +78,7 @@ for(ii in times_set){
 
 cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
+#get original data of meteorological variables
 
 varis2 <- c('TIME','TP','RH')
 
@@ -85,12 +86,14 @@ data_1_ori <- list()
 for(c_vari in varis2){
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES1/data_1_', c_vari, '_time', ii,'.csv'))
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/rec_1_', c_vari, '_time', ii,'.csv'))
   }
 }
 
 #======================================
 #up2024_0531_15:30
+#adjust data form of 'data_1_ori'
+#adjust TP data based on elevation 
 
 data_1_ori2 <- list()
 for(c_vari in varis2){
@@ -104,7 +107,8 @@ for(c_vari in varis2){
       c_e <- jj * len_sites
       for(kk in days_ori){
         if(c_vari == 'TP'){
-          data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk] + TP_adj_2[[c_str_name]] #to_be_set
+          #data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk] + TP_adj_2[[c_str_name]] #to_be_set
+          data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk]
         }else{
           data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk]
         }
@@ -276,7 +280,7 @@ for(c_vari in varis){
     }
     data_1_csv_df[[c_vari]][[ii]] <- as.data.frame(data_1_csv[[c_vari]][[ii]])
     colnames(data_1_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_1_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES1/datab_1_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_1_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES2/recb_1_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }
 
@@ -299,6 +303,6 @@ for(c_vari in varis){
     }
     data_2_csv_df[[c_vari]][[ii]] <- as.data.frame(data_2_csv[[c_vari]][[ii]])
     colnames(data_2_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES1/datab_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES2/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }

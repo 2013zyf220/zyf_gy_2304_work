@@ -61,13 +61,13 @@ index_1 <- read.csv(index_name1)[1:300,]
 index_1$ele_2 <- ele_2c
 index_2 <- index_1
 
-indep_set <- 23 #to_be_set_key
+indep_set <- 39 #to_be_set_key
 
 #=================================================================
 #up2024_0531_17:00
 
 reg_se_sum <- list()
-reg_se_sum[[1]] <- c(1,3,4)
+reg_se_sum[[1]] <- c(23,40,41)
 reg_se_sum[[2]] <- c(12)
 
 reg_set <- 1 #to_be_set_key
@@ -550,6 +550,8 @@ regre_4f <- function(f_sub, f_vari, f_time){
   f_res[['r2']] <- f_r2
   f_res[['r2_adj']] <- f_r2_adj
   f_res[['coe']] <- f_coe
+  f_res[['model_res']] <- f_model_res
+  f_res[['model_sum']] <- f_model_sum
   return(f_res)
 }
 
@@ -941,12 +943,15 @@ fig1b_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('str:', f_str,'_day:',f_day)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -996,12 +1001,15 @@ fig1c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('day:',f_day,'_dis', f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1064,12 +1072,15 @@ fig2b_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('time:', f_time, 'day:',f_day)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1117,12 +1128,15 @@ fig2c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('day:',f_day,'_dis',f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1187,12 +1201,15 @@ fig3b_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('time:', f_time,'_str:',f_str)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1242,12 +1259,15 @@ fig3c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('str:',f_str,'_bydis', f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1310,12 +1330,15 @@ fig4b_plot_f <- function(f_data, f_index, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('vari:', varis[f_vari],'_time:',f_time)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1341,17 +1364,31 @@ fig4b_res_f <- function(f_sub, f_indep){
 
 fig4c_list_f <- function(f_sub, f_vari, f_indep){
   f_fig4c_list <- list()
+  f_fig4c_data_colnames <- list()
   nn <- 0
   for(ii in times_set){
     for(pp in 1: bydis_num){
       nn <- nn + 1
+      f_fig4c_data_colnames <- c(f_fig4c_data_colnames, paste0('time_', ii, '_dis_', pp, '_xx'), paste0('time_', ii, '_dis_', pp, '_yy'))
       f_fig4c_list[[nn]] <- data.frame(
         xx = index_1[[f_indep]][bydis[[pp]]],
         yy = data2_2_mean[[f_sub]][[f_vari]][bydis[[pp]],ii]
       )
     }
   }
-  return(f_fig4c_list)
+  f_fig4c_data <- data.frame(matrix(ncol = len_times_set * bydis_num * 2, nrow = bydis_itv * len_strs_mo))
+  for (qq in 1:length(f_fig4c_list)){
+    f_s <- (qq - 1) * 2 + 1
+    f_e <- f_s + 1
+    f_fig4c_data[, f_s: f_e] <- f_fig4c_list[[qq]]
+  }
+  
+  colnames(f_fig4c_data) <- f_fig4c_data_colnames
+  write.csv(f_fig4c_data, paste0('FIG2/fig4c_data_', f_sub, ,'_', f_vari, '_indep_', f_indep, '.csv'), row.names = FALSE)  
+  f_res <- list()
+  f_res[['list']] <- f_fig4c_list
+  f_res[['data']] <- f_fig4c_data
+  return(f_res)
 }
 #==============================================
 #up2024_0618_08:00
@@ -1362,12 +1399,15 @@ fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('time:',f_time,'_dis', f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1433,12 +1473,15 @@ fig5b_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('time:', f_time,'_str:',f_str)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1489,12 +1532,15 @@ fig5c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('str:',f_str,'_bydis:', f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1558,12 +1604,15 @@ fig6b_plot_f <- function(f_data, f_index, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('vari:', varis[f_vari],'_time:',f_time)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1612,12 +1661,15 @@ fig6c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_model <- lm(yy ~ xx, data = f_data)
   f_interc <- coef(f_model)[1]
   f_slope <- coef(f_model)[2]
+  f_r2 <- summary(f_model)$r.squared
+  f_r2_eq <- paste0("R² = ", round(f_r2, 4), sep = "")
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
     ggtitle(paste('time:',f_time, '_bydis', f_bydis)) +
     xlab(colnames(index_1)[f_indep]) + 
     ylab(f_vari) + 
@@ -1780,16 +1832,27 @@ if(res_run[6,2] == 1){
 #up2024_0618 08:00
 
 vari_set_check <- 'TP' #to_be_set
-check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
+#check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
 #check_1c <- fig1c_res_f(vari_set_check, 3, 6, indep_set) #to_be_set
-check_2b <- fig2b_res_f(vari_set_check, indep_set)
+#check_2b <- fig2b_res_f(vari_set_check, indep_set)
 #check_2c <- fig2c_res_f(vari_set_check, 3, indep_set)
-check_3b <- fig3b_res_f('ORI', vari_set_check, indep_set)
+#check_3b <- fig3b_res_f('ORI', vari_set_check, indep_set)
 #check_3c <- fig3c_res_f('ORI', vari_set_check, 1, indep_set)
-check_4b <- fig4b_res_f('ORI', indep_set)
+#check_4b <- fig4b_res_f('ORI', indep_set)
 #check_4c <- fig4c_res_f('ORI', vari_set_check, indep_set)
 #check_5b <- fig5b_res_f('ORI', vari_set_check, indep_set)
 #check_5c <- fig5c_res_f('ORI', vari_set_check, 3, indep_set)
-check_6b <- fig6b_res_f('ORI', indep_set)
+#check_6b <- fig6b_res_f('ORI', indep_set)
 #check_6c <- fig6c_res_f('ORI', vari_set_check, indep_set)
 
+#======================================================
+#ing2024_0626
+data_a1 = data2_2_mean$ORI$TP[,1]+31.5
+data_a2 = data2_2_mean$ORI$TP[,2]+34.5
+data_a3 = data2_2_mean$ORI$TP[,3]+32.3
+
+index_a1 <- index_1
+index_a1$data_a1 <- data_a1
+index_a1$data_a2 <- data_a2
+index_a1$data_a3 <- data_a3
+write.csv(index_a1, paste0('temp_202406A/index_a1.csv'), row.names = FALSE)

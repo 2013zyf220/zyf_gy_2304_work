@@ -98,7 +98,7 @@ data_1_f <- function(f_time_1, f_str, f_day){
   if(f_str %% 2 == 1){
     f_data_4 <- f_data_3[1:50, ]
   }else{
-    f_data_4 <- rev(f_data_3[61:110, ])
+    f_data_4 <- f_data_3[61:110, ]
   }
   f_res <- list()
   f_res[['data_2']] <- f_data_2
@@ -129,19 +129,35 @@ for(ii in times_set){
 
 d1_vari_f <- function(f_vari){
   f_d1_vari <- list()
+  f_d1_vari_df <- list()
   for(ii in times_set){
     f_d1_vari[[ii]] <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
     for(jj in strs_co){
       f_s <- (jj - 1) * len_sites + 1
       f_e <- jj * len_sites
       for(kk in days_ori){
-        f_d1_vari[[ii]][f_s:f_e,kk] <- data_1s[[ii]][[jj]][[kk]][[f_vari]]
+        if(jj %% 2 == 1){
+          f_d1_vari[[ii]][f_s:f_e,kk] <- data_1s[[ii]][[jj]][[kk]][[f_vari]]
+        }else{
+          f_d1_vari[[ii]][f_s:f_e,kk] <- rev(data_1s[[ii]][[jj]][[kk]][[f_vari]])
+        }
       }
     }
-    write.csv(f_d1_vari[[ii]], paste0('ARCGIS/RES1/data_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    f_d1_vari_df[[ii]] <- as.data.frame(f_d1_vari[[ii]])
+    colnames(f_d1_vari_df[[ii]]) <- days_ori_name
+    write.csv(f_d1_vari_df[[ii]], paste0('ARCGIS/RES1/data_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
-  return(f_d1_vari)
+  
+
+  return(f_d1_vari_df)
 }
+
+#=============================================
+#up2024_0531_15:15
+
+d1_vari_TP <- d1_vari_f('TP')
+d1_vari_RH <- d1_vari_f('RH')
+d1_vari_TIME <- d1_vari_f('TIME')
 
 #=============================================
 #up2024_0531_15:15

@@ -78,14 +78,17 @@ index_name1 <- paste0('index_1m_df1_buf', buf_set, '.csv')
 index_name2 <- paste0('index_1m_df2_buf', buf_set, '.csv')
 
 index_1 <- read.csv(index_name1)[1: len_all, ]
+asp_3 <- index_1$bh_3_mean2/sw_1
+
 index_1_add <- matrix(0, ncol = 5, nrow = len_all)
 index_1_add[,1] <- dis_2
 index_1_add[,2] <- sw_1
 index_1_add[,3] <- asp_1
 index_1_add[,4] <- asp_2
+index_1_add[,5] <- asp_3
 
 index_1_add_df <- as.data.frame(index_1_add)
-colnames(index_1_add_df) <- c('dis','str_wid','asp_1','asp_2')
+colnames(index_1_add_df) <- c('dis','str_wid','asp_1','asp_2','asp_3')
 index_2 <- cbind(index_1, index_1_add_df)
 write.csv(index_2, index_name2)
 

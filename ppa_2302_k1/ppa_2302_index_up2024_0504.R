@@ -19,9 +19,11 @@ ele_1 <- raster(paste0('DEM/DEM_ELE_2.tif'))
 slp_1 <- raster(paste0('DEM/DEM_SLP_2.tif'))
 asp_1 <- raster(paste0('DEM/DEM_ASP_2.tif'))
 
-buf_set <- 100 #to_be_set
+buf_set <- 150 #to_be_set
+buf_set2 <- 50 #to_be_set
 strs_1 <- shapefile(paste0('LINES/streets_5_buf', buf_set, '.shp'))
 strs_1_size <- nrow(strs_1)
+strs_2 <- shapefile(paste0('LINES/streets_5_buf', buf_set2, '.shp'))
 
 plot(bh_1)
 #plot(ele_1)
@@ -52,7 +54,7 @@ bh_index_f <- function(f_buf){
   f_bh_sub_3 <- list()
   f_bh_sub_4 <- list()
   for(ii in 1: f_buf_size){
-    if(ii %% 50 == 0){
+    if(ii %% 100 == 0){
       cat('buffer number:', ii, '\n')
     }
 
@@ -119,6 +121,9 @@ dem_index_f <- function(f_dem, f_buf){
   f_dem_sub_2v <- list()
   f_dem_sub_3 <- list()
   for(ii in 1: f_buf_size){
+    if(ii %% 100 == 0){
+      cat('buffer number:', ii, '\n')
+    }
     fc_dem_sub_1 <- crop(f_dem, extent(f_buf[ii, ]))
     fc_dem_sub_1[is.na(fc_dem_sub_1)] <- 0
     fc_dem_sub_2 <- mask(fc_dem_sub_1, f_buf[ii, ])
@@ -143,11 +148,12 @@ dem_index_f <- function(f_dem, f_buf){
 #up2024_0503_19:41_s
 
 index_bh_1 <- bh_index_f(strs_1)
+index_bh_2 <- bh_index_f(strs_2)
 index_ele_1 <- dem_index_f(ele_1, strs_1)
 index_slp_1 <- dem_index_f(slp_1, strs_1)
 index_asp_1 <- dem_index_f(asp_1, strs_1)
 
-index_1m <- matrix(0, nrow = strs_1_size, ncol = 11)
+index_1m <- matrix(0, nrow = strs_1_size, ncol = 12) #to_be_set
 index_1m[ ,1] <- index_bh_1$bh_3_mean
 index_1m[ ,2] <- index_bh_1$bh_4_mean
 index_1m[ ,3] <- index_bh_1$bh_3_std
@@ -159,12 +165,13 @@ index_1m[ ,8] <- index_bh_1$bh_ci
 index_1m[ ,9] <- index_ele_1$mean
 index_1m[ ,10] <- index_ele_1$std
 index_1m[ ,11] <- index_slp_1$mean
-
-index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio', 'bh_max', 'bh_sum', 'bh_ci', 'ele_mean', 'ele_std', 'slp_mean') #to_be_set
+index_1m[ ,12] <- index_bh_2$bh_3_mean
+index_col_names <- c('bh_3_mean', 'bh_4_mean', 'bh_3_std', 'bh_4_std', 'bh_ratio', 'bh_max', 'bh_sum', 'bh_ci', 'ele_mean', 'ele_std', 'slp_mean', 'bh_3_mean2') #to_be_set
 
 index_1m_df <- as.data.frame(index_1m)
 colnames(index_1m_df) <- index_col_names
 write.csv(index_1m_df, file = paste0('index_1m_df1_buf', buf_set,'.csv'), row.names = FALSE)
+
 #up2024_0503_19:41_e
 #==================================
 #check
