@@ -61,7 +61,7 @@ index_1 <- read.csv(index_name1)[1:300,]
 index_1$ele_2 <- ele_2c
 index_2 <- index_1
 
-indep_set <- 39 #to_be_set_key
+indep_set <- 40 #to_be_set_key
 
 #=================================================================
 #up2024_0531_17:00
@@ -1364,17 +1364,32 @@ fig4b_res_f <- function(f_sub, f_indep){
 
 fig4c_list_f <- function(f_sub, f_vari, f_indep){
   f_fig4c_list <- list()
+  f_fig4c_data_colnames <- c()
   nn <- 0
   for(ii in times_set){
     for(pp in 1: bydis_num){
       nn <- nn + 1
+      f_fig4c_data_colnames <- c(f_fig4c_data_colnames, paste0('time_', ii, '_dis_', pp, '_xx'), paste0('time_', ii, '_dis_', pp, '_yy'))
       f_fig4c_list[[nn]] <- data.frame(
         xx = index_1[[f_indep]][bydis[[pp]]],
         yy = data2_2_mean[[f_sub]][[f_vari]][bydis[[pp]],ii]
       )
     }
   }
-  return(f_fig4c_list)
+
+  f_fig4c_data <- data.frame(matrix(ncol = len_times_set * bydis_num * 2, nrow = bydis_itv * len_strs_mo))
+  for (qq in 1:length(f_fig4c_list)){
+    f_s <- (qq - 1) * 2 + 1
+    f_e <- f_s + 1
+    f_fig4c_data[, f_s: f_e] <- f_fig4c_list[[qq]]
+  }
+  
+  colnames(f_fig4c_data) <- f_fig4c_data_colnames
+  write.csv(f_fig4c_data, paste0('FIG2/fig4c_data_', f_sub, '_', f_vari, '_indep_', f_indep, '.csv'), row.names = FALSE)  
+  f_res <- list()
+  f_res[['list']] <- f_fig4c_list
+  f_res[['data']] <- f_fig4c_data
+  return(f_res)
 }
 #==============================================
 #up2024_0618_08:00
@@ -1407,7 +1422,7 @@ fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 
 fig4c_res_f <- function(f_sub, f_vari, f_indep){
   cat('run_fig4c_', f_sub, '_', f_vari, '\n')
-  f_data_fig4c_list_1 <- fig4c_list_f(f_sub, f_vari, f_indep)
+  f_data_fig4c_list_1 <- fig4c_list_f(f_sub, f_vari, f_indep)$list
   f_plots_fig4c_1 <- lapply(seq_along(f_data_fig4c_list_1), function(nn) fig4c_plot_f(f_data_fig4c_list_1[[nn]], nn, f_vari, f_indep))
   f_comb_plots_fig4c_1 <- grid.arrange(grobs = f_plots_fig4c_1, ncol = bydis_num, nrow = len_times_set)
   ggsave(paste0('FIG2/comb_plots_fig4c_1_', f_sub, '__', f_vari, '__indep_', f_indep,'.jpg'), plot = f_comb_plots_fig4c_1, width = 15, height = 15, dpi = 300)  
@@ -1624,10 +1639,12 @@ fig6b_res_f <- function(f_sub, f_indep){
 
 fig6c_list_f <- function(f_sub, f_vari, f_indep){
   f_fig6c_list <- list()
+  f_fig6c_data_colnames <- c()
   nn <- 0
   for(ii in times_set){
     for(pp in 1: bydis_num){
       nn <- nn + 1
+      f_fig6c_data_colnames <- c(f_fig6c_data_colnames, paste0('time_', ii, '_dis_', pp, '_xx'), paste0('time_', ii, '_dis_', pp, '_yy'))
       c_bydis <- bydis[[pp]]
       f_fig6c_list[[nn]] <- data.frame(
         xx = rep(index_1[[f_indep]][c_bydis], length(days_trans_f(f_sub))),
@@ -1635,7 +1652,20 @@ fig6c_list_f <- function(f_sub, f_vari, f_indep){
       )
     }
   }
-  return(f_fig6c_list)
+  
+  f_fig6c_data <- data.frame(matrix(ncol = len_times_set * bydis_num * 2, nrow = bydis_itv * len_strs_mo * length(days_trans_f(f_sub))))
+  for (qq in 1:length(f_fig6c_list)){
+    f_s <- (qq - 1) * 2 + 1
+    f_e <- f_s + 1
+    f_fig6c_data[, f_s: f_e] <- f_fig6c_list[[qq]]
+  }
+  
+  colnames(f_fig6c_data) <- f_fig6c_data_colnames
+  write.csv(f_fig6c_data, paste0('FIG2/fig6c_data_', f_sub, '_', f_vari, '_indep_', f_indep, '.csv'), row.names = FALSE)  
+  f_res <- list()
+  f_res[['list']] <- f_fig6c_list
+  f_res[['data']] <- f_fig6c_data
+  return(f_res)
 }
 
 #==============================================
@@ -1669,7 +1699,7 @@ fig6c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 
 fig6c_res_f <- function(f_sub, f_vari, f_indep){
   cat('run_fig6c_', f_sub, '_', f_vari, '\n')
-  f_data_fig6c_list_1 <- fig6c_list_f(f_sub, f_vari, f_indep)
+  f_data_fig6c_list_1 <- fig6c_list_f(f_sub, f_vari, f_indep)$list
   f_plots_fig6c_1 <- lapply(seq_along(f_data_fig6c_list_1), function(nn) fig6c_plot_f(f_data_fig6c_list_1[[nn]], nn, f_vari, f_indep))
   f_comb_plots_fig6c_1 <- grid.arrange(grobs = f_plots_fig6c_1, ncol = bydis_num, nrow = len_times_set)
   ggsave(paste0('FIG2/comb_plots_fig6c_1_', f_sub, '__', f_vari, '__indep_', f_indep,'.jpg'), plot = f_comb_plots_fig6c_1, width = 15, height = 15, dpi = 300)  
@@ -1818,14 +1848,14 @@ if(res_run[6,2] == 1){
 #up2024_0618 08:00
 
 vari_set_check <- 'TP' #to_be_set
-#check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
+check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
 #check_1c <- fig1c_res_f(vari_set_check, 3, 6, indep_set) #to_be_set
 #check_2b <- fig2b_res_f(vari_set_check, indep_set)
 #check_2c <- fig2c_res_f(vari_set_check, 3, indep_set)
 #check_3b <- fig3b_res_f('ORI', vari_set_check, indep_set)
 #check_3c <- fig3c_res_f('ORI', vari_set_check, 1, indep_set)
 #check_4b <- fig4b_res_f('ORI', indep_set)
-check_4c <- fig4c_res_f('ORI', vari_set_check, indep_set)
+#check_4c <- fig4c_res_f('ORI', vari_set_check, indep_set)
 #check_5b <- fig5b_res_f('ORI', vari_set_check, indep_set)
 #check_5c <- fig5c_res_f('ORI', vari_set_check, 3, indep_set)
 #check_6b <- fig6b_res_f('ORI', indep_set)
