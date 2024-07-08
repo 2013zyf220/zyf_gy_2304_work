@@ -10,7 +10,7 @@ library(readxl)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #============================================
-#up2024_0706_22:10
+#up2024_0708_22:16
 
 str2rou_f <- function(f_str){
   f_rou <- ceiling(f_str/2)
@@ -18,7 +18,7 @@ str2rou_f <- function(f_str){
 }
 
 #============================================
-#up2024_0706_22:10
+#up2024_0708_22:23
 
 times_set <- c(1,2,3) #to_be_set_key
 days_ori <- c(1,2,3,4,5,6)  #to_be_set_key
@@ -40,7 +40,7 @@ len_sites <- 50 #to_be_set
 days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6')
 
 #============================================
-#up2024_0706_22:10
+#up2024_0708_22:36
 
 cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
   f_rou <- str2rou_f(f_str)
@@ -59,7 +59,7 @@ cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
 }
 
 #============================================
-#up2024_0706_22:16
+#up2024_0708_22:58
 
 cal_globe_2f <- function(f_vari){
   f_data_1 <- list()
@@ -78,10 +78,11 @@ cal_globe_2f <- function(f_vari){
     colnames(f_data_1_df[[ii]]) <- days_ori_name
     write.csv(f_data_1_df[[ii]], paste0('RES1/datag_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
+  return(f_data_1_df)
 }
 
 #=========================================
-#up2024_0706_22:16
+#up2024_0708_22:58
 
 cal_globe_res_1 <- list()
 for(c_vari in varis_1){
@@ -90,17 +91,17 @@ for(c_vari in varis_1){
 
 #======================================================================
 #======================================================================
-#up2024_0706_22:16
+#up2024_0708_23:06
 
-numw_site <- c(5,6,7,9)  #to_be_set
-days_all <- c('2023/8/15', '2023/8/16', '2023/8/17', '2023/8/20', '2023/8/22', '2023/8/28')  #to_be_set
+numw_site <- c(5,6,7,9)  #to_be_set_key
+days_all <- c('2023/8/15', '2023/8/16','2023/8/17','2023/8/20','2023/8/22','2023/8/28')  #to_be_set
 time_sa_all <- c('10:00:00', '15:00:00', '20:00:00')  #to_be_set
 time_sb_all <- c('11:00:00', '16:00:00', '21:00:00')  #to_be_set
 time_ea_all <- c('10:50:00', '15:50:00', '20:50:00')  #to_be_set
 time_eb_all <- c('11:50:00', '16:50:00', '21:50:00')  #to_be_set
 
 #======================================================================
-#up2024_0706_22:22
+#up2024_0708_23:36
 
 get_dataw_1f <- function(f_str, f_day, f_time){
   f_rou <- str2rou_f(f_str)
@@ -146,9 +147,12 @@ get_dataw_1f <- function(f_str, f_day, f_time){
   f_data_ta1 <- list()
   f_data_ta1_1 <- rep(0, f_min_seq_len)
   f_data_ta1_2 <- rep(0, f_min_seq_len)
+  f_data_rh1 <- list()
+  f_data_rh1_1 <- rep(0, f_min_seq_len)
+  f_data_rh1_2 <- rep(0, f_min_seq_len)
   for(pp in 1: f_min_seq_len){
     #cat('pp:', pp, '\n')
-    f_data_4[[pp]] <- subset(f_data_2, time_x2 >= f_min_seq_1[pp] & time_x2 <= f_min_seq_1[pp + 1])
+    f_data_4[[pp]] <- subset(f_data_2, time_x2 >= f_min_seq_1[pp] & time_x2 < f_min_seq_1[pp + 1])
     f_data_ws1[[pp]] <- as.numeric(f_data_4[[pp]]$Wind.Speed) 
     f_data_ta1[[pp]] <- as.numeric(f_data_4[[pp]]$Temperature) 
     f_data_rh1[[pp]] <- as.numeric(f_data_4[[pp]]$Relative.Humidity) 
@@ -183,7 +187,7 @@ get_dataw_1f <- function(f_str, f_day, f_time){
 }
 
 #============================================
-#up2024_0706_22:22
+#up2024_0708_23:55
 
 get_dataw_2f <- function(f_vari){
   if(f_vari == 'WS'){
@@ -218,13 +222,12 @@ get_dataw_2f <- function(f_vari){
 }
 
 #============================================
-#up2024_0706_22:22
+#up2024_0708_23:55
 
 dataw_1 <- list()
 for(c_vari in varis_2){
   dataw_1[[c_vari]] <- get_dataw_2f(c_vari)
 }
-
 
 
 
