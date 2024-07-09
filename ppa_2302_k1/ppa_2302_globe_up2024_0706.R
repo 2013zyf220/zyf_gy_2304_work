@@ -27,6 +27,7 @@ days_hot <- c(4,6)  #to_be_set_key(number inside days_ori)
 strs_co <- c(1,2,3,4,5,6,7,8)  #to_be_set_key
 strs_mo <- c(1,2,3,4,5,6)  #to_be_set_key
 varis_1 <- c('Date', 'Time', 'TA','RH','TG','WBGT')  #to_be_set_key
+#varis_2 <- c('WS','TA','RH')  #to_be_set_key
 varis_2 <- c('WS')  #to_be_set_key
 
 len_days_ori <- length(days_ori)
@@ -208,6 +209,7 @@ get_dataw_2f <- function(f_vari){
       f_s <- (jj - 1) * len_sites + 1
       f_e <- jj * len_sites
       for(kk in days_ori){
+        cat('get_dataw_2f', ii, jj, kk, '\n')
         if(jj %% 2 == 1){
           f_d2_vari[[ii]][f_s:f_e,kk] <- get_dataw_1f(jj, kk, ii)[[f_vari2]]
         }else{
@@ -217,7 +219,7 @@ get_dataw_2f <- function(f_vari){
     }
     f_d2_vari_df[[ii]] <- as.data.frame(f_d2_vari[[ii]])
     colnames(f_d2_vari_df[[ii]]) <- days_ori_name
-    write.csv(f_d2_vari_df[[ii]], paste0('ARCGIS/RES1/dataw_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    write.csv(f_d2_vari_df[[ii]], paste0('RES1/dataw_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
   return(f_d2_vari_df)
 }
