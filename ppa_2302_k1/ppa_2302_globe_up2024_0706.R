@@ -10,7 +10,7 @@ library(readxl)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #============================================
-#up2024_0708_22:16
+#up2024_0709_07:00
 
 str2rou_f <- function(f_str){
   f_rou <- ceiling(f_str/2)
@@ -18,7 +18,7 @@ str2rou_f <- function(f_str){
 }
 
 #============================================
-#up2024_0708_22:23
+#up2024_0709_07:00
 
 times_set <- c(1,2,3) #to_be_set_key
 days_ori <- c(1,2,3,4,5,6)  #to_be_set_key
@@ -40,7 +40,7 @@ len_sites <- 50 #to_be_set
 days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6')
 
 #============================================
-#up2024_0708_22:36
+#up2024_0709_07:06
 
 cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
   f_rou <- str2rou_f(f_str)
@@ -59,7 +59,7 @@ cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
 }
 
 #============================================
-#up2024_0708_22:58
+#up2024_0709_07:21
 
 cal_globe_2f <- function(f_vari){
   f_data_1 <- list()
@@ -82,7 +82,7 @@ cal_globe_2f <- function(f_vari){
 }
 
 #=========================================
-#up2024_0708_22:58
+#up2024_0709_07:21
 
 cal_globe_res_1 <- list()
 for(c_vari in varis_1){
@@ -91,7 +91,7 @@ for(c_vari in varis_1){
 
 #======================================================================
 #======================================================================
-#up2024_0708_23:06
+#up2024_0709_07:21
 
 numw_site <- c(5,6,7,9)  #to_be_set_key
 days_all <- c('2023/8/15', '2023/8/16','2023/8/17','2023/8/20','2023/8/22','2023/8/28')  #to_be_set
@@ -101,7 +101,7 @@ time_ea_all <- c('10:50:00', '15:50:00', '20:50:00')  #to_be_set
 time_eb_all <- c('11:50:00', '16:50:00', '21:50:00')  #to_be_set
 
 #======================================================================
-#up2024_0708_23:36
+#up2024_0709_08:21
 
 get_dataw_1f <- function(f_str, f_day, f_time){
   f_rou <- str2rou_f(f_str)
@@ -187,7 +187,7 @@ get_dataw_1f <- function(f_str, f_day, f_time){
 }
 
 #============================================
-#up2024_0708_23:55
+#up2024_0709_08:21
 
 get_dataw_2f <- function(f_vari){
   if(f_vari == 'WS'){
@@ -219,10 +219,11 @@ get_dataw_2f <- function(f_vari){
     colnames(f_d2_vari_df[[ii]]) <- days_ori_name
     write.csv(f_d2_vari_df[[ii]], paste0('ARCGIS/RES1/dataw_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
+  return(f_d2_vari_df)
 }
 
 #============================================
-#up2024_0708_23:55
+#up2024_0709_08:21
 
 dataw_1 <- list()
 for(c_vari in varis_2){

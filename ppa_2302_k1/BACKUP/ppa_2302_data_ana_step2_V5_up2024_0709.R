@@ -611,11 +611,12 @@ regre_5f <- function(f_sub, f_vari, f_time, f_str){
   f_x_1 <- index_2s[[f_str]][, reg_se]
   if(length(reg_se) == 1){
     f_x_2 <- rep(f_x_1, length(f_days))
+    f_z <- as.data.frame(cbind(f_x_2, f_y_1))
+    colnames(f_z) <- c(colnames(index_2s[[f_str]])[reg_se], 'f_y_1')
   }else{
     f_x_2 <- do.call(rbind, rep(list(f_x_1), length(f_days)))
+    f_z <- as.data.frame(cbind(f_x_2, f_y_1))     
   }
-  f_z <- as.data.frame(cbind(f_x_2, f_y_1))
-  colnames(f_z) <- c(colnames(index_2s[[f_str]])[reg_se], 'f_y_1')
   f_model_for <- as.formula(paste0('f_y_1 ~ ', cname_index_3)) 
   f_model_res <- lm(f_model_for, data = f_z)
   f_model_sum <- summary(f_model_res)
@@ -707,14 +708,13 @@ fig_1f <- function(f_vari, f_time){
     for(kk in days_ori){
       f_1 <- (jj - 1) * len_sites + 1
       f_2 <- jj * len_sites
-      f_y <- data2_2_ori[[f_vari]][[f_time]][f_1:f_2,kk][seq_a]
-      f_dis <- dis_1[seq_a]
-      plot(f_dis, f_y, main = paste0('str: ', jj, '_day:', kk), 
+      f_y <- data2_2_ori[[f_vari]][[f_time]][f_1:f_2,kk]
+      plot(dis_1, f_y, main = paste0('str: ', jj, '_day:', kk), 
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      #curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
+      #curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -745,14 +745,13 @@ fig_2f <- function(f_vari){
   par(mfrow = c(len_times_set, len_days_ori)) 
   for(ii in times_set){
     for(kk in days_ori){
-      f_y <- data2_2_ori[[f_vari]][[ii]][,kk][seq_b]
-      f_dis <- dis_2[seq_b]
-      plot(f_dis, f_y, main = paste0('time: ', ii, '_day:', kk), 
+      f_y <- data2_2_ori[[f_vari]][[ii]][,kk]
+      plot(dis_2, f_y, main = paste0('time: ', ii, '_day:', kk), 
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_2, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_2, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -782,14 +781,13 @@ fig_3f <- function(f_sub, f_vari){
     for(jj in strs_mo){
       f_1 <- (jj - 1) * len_sites + 1
       f_2 <- jj * len_sites
-      f_y <- data2_2_mean[[f_sub]][[f_vari]][f_1:f_2,ii][seq_a]
-      f_dis <- dis_1[seq_a]
-      plot(f_dis, f_y, main = paste0('time: ', ii, '_str:', jj), 
+      f_y <- data2_2_mean[[f_sub]][[f_vari]][f_1:f_2,ii]
+      plot(dis_1, f_y, main = paste0('time: ', ii, '_str:', jj), 
            xlab = 'Distance (m)', ylab = paste0(f_sub, '_d ', f_vari), pch = 19, col = 'skyblue')
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -822,14 +820,13 @@ fig_4f <- function(f_vari){
   par(mfrow = c(len_subs, len_times_set), oma = c(3, 3, 3, 3), mar = c(2.8,2.8,2.8,2.8),  mgp = c(2, 0.5, 0)) 
   for(c_sub_name in subs_name){
     for(ii in times_set){
-      f_y <- data2_2_mean[[c_sub_name]][[f_vari]][,ii][seq_b]
-      f_dis <- dis_2[seq_b]
-      plot(f_dis, f_y, main = paste0('sub:', c_sub_name, '__time: ', ii), xlab = 'Distance (m)', ylab = paste0('d ', f_vari), 
+      f_y <- data2_2_mean[[c_sub_name]][[f_vari]][,ii]
+      plot(dis_2, f_y, main = paste0('sub:', c_sub_name, '__time: ', ii), xlab = 'Distance (m)', ylab = paste0('d ', f_vari), 
            col = 'skyblue', family = 'calibri', cex.main = 0.5, cex.lab = 0.6, cex.axis = 0.6, pch = 19, cex = 0.2)
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'green', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_2, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_2, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'green', lty = 2)
       #grid(nx = NULL, ny = NULL, col = 'gray', lty = 'dotted')    
     }
   }
@@ -943,8 +940,8 @@ fig1b_list_f <- function(f_vari, f_time, f_indep){
       f_fig1b_data_colnames <- c(f_fig1b_data_colnames, paste0('str_', jj, '_day_', kk, '_xx'), paste0('str_', jj, '_day_', kk, '_yy'))
       nn <- nn + 1
       f_fig1b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][fc_1:fc_2][seq_a],
-        yy = data2_2_ori[[f_vari]][[f_time]][fc_1:fc_2,kk][seq_a]
+        xx = index_1[[f_indep]][fc_1:fc_2],
+        yy = data2_2_ori[[f_vari]][[f_time]][fc_1:fc_2,kk]
       )
     }
   }
@@ -1072,8 +1069,8 @@ fig2b_list_f <- function(f_vari, f_indep){
       f_fig2b_data_colnames <- c(f_fig2b_data_colnames, paste0('time_', ii, '_day_', kk, '_xx'), paste0('time_', ii, '_day_', kk, '_yy'))
       nn <- nn + 1
       f_fig2b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][seq_b],
-        yy = data2_2_ori[[f_vari]][[ii]][,kk][seq_b]
+        xx = index_1[[f_indep]],
+        yy = data2_2_ori[[f_vari]][[ii]][,kk]
       )     
     }
   }
@@ -1201,8 +1198,8 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
       fc_1 <- (jj - 1) * len_sites + 1
       fc_2 <- jj * len_sites
       f_fig3b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][fc_1:fc_2][seq_a],
-        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii][seq_a]
+        xx = index_1[[f_indep]][fc_1:fc_2],
+        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
       )
     }
   }
@@ -1330,8 +1327,8 @@ fig4b_list_f <- function(f_sub, f_indep){
       f_fig4b_data_colnames <- c(f_fig4b_data_colnames, paste0(c_vari, '_time_', ii, '_xx'), paste0(c_vari, '_time_', ii, '_yy'))
       nn <- nn + 1
       f_fig4b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][seq_b],
-        yy = data2_2_mean[[f_sub]][[c_vari]][,ii][seq_b]
+        xx = index_1[[f_indep]],
+        yy = data2_2_mean[[f_sub]][[c_vari]][,ii]
       )
     }
   }
