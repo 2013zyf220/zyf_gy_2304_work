@@ -95,16 +95,10 @@ data_1_f <- function(f_time_1, f_str, f_day){
   
   f_data_2 <- f_data_1[f_adj_1: f_adj_2,]
   f_data_3 <- f_data_2[seq(1, nrow(f_data_2), 6), ]
-  f_data_3b <- rep(0, 120)
-  for(ii in 1: 120){
-    c_1 <- (ii - 1) * 6 + 1
-    c_2 <- ii * 6
-    f_data_3b[ii] <- mean(f_data_2[c_1: c_2])
-  }
   if(f_str %% 2 == 1){
-    f_data_4 <- f_data_3b[1:50, ] #to_be_set
+    f_data_4 <- f_data_3[1:50, ]
   }else{
-    f_data_4 <- f_data_3b[61:110, ] #to_be_set
+    f_data_4 <- f_data_3[61:110, ]
   }
   f_res <- list()
   f_res[['data_2']] <- f_data_2

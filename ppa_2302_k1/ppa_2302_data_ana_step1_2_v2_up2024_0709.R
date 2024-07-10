@@ -77,10 +77,13 @@ for(ii in times_set){
 
 
 cat('==============step 2: get basic data================\n')
-#up2024_0531_15:30
+#up2024_0709_17:00
 #get original data of meteorological variables
 
-varis2 <- c('TIME','TP','RH')
+varis2 <- c('TIME','TP','RH') #to_be_set
+varis2w <- c('WS') #to_be_set
+varis2g <- c('TA', 'RH', 'TG', 'WBGT') #to_be_set
+
 
 data_1_ori <- list()
 for(c_vari in varis2){
@@ -90,6 +93,19 @@ for(c_vari in varis2){
   }
 }
 
+for(c_vari in varis2w){
+  data_1_ori[[c_vari]] <- list()
+  for(ii in times_set){
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw_1_', c_vari, '_time', ii,'.csv'))
+  }
+}
+
+for(c_vari in varis2g){
+  data_1_ori[[c_vari]] <- list()
+  for(ii in times_set){
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari, '_time', ii,'.csv'))
+  }
+}
 #======================================
 #up2024_0531_15:30
 #adjust data form of 'data_1_ori'
