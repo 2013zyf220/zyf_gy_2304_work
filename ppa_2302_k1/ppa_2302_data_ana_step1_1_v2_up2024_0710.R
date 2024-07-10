@@ -97,30 +97,25 @@ data_1_f <- function(f_time_1, f_str, f_day){
   f_data_3 <- f_data_2[seq(1, nrow(f_data_2), 6), ]
   if(f_str %% 2 == 1){
     f_data_4 <- f_data_3[1:50, ]
+    f_add <- 0
   }else{
     f_data_4 <- f_data_3[61:110, ]
+    f_add <- 360
   }
+  
+  f_data_5 <- list()
+  for(pp in 1:50){
+    fc_1 <- (pp - 1) * 6 + 1 + f_add
+    fc_2 <- pp * 6 + f_add
+    f_data_5[[pp]] <- f_data_2[fc_1: fc_2,]
+  }
+  
   f_res <- list()
   f_res[['data_2']] <- f_data_2
   f_res[['data_3']] <- f_data_3
-  f_res[['data_4']] <- f_data_4 #final data set
+  f_res[['data_4']] <- f_data_4
+  f_res[['data_5']] <- f_data_5
   return(f_res)
-}
-
-#==================================================
-#up2024_0531_15:15
-#get basic data(all variables together)
-
-data_1s <- list()
-for(ii in times_set){
-  cat('times:', ii, '\n')
-  data_1s[[ii]] <- list()
-  for(jj in strs_co){
-    data_1s[[ii]][[jj]] <- list()
-    for(kk in days_ori){
-      data_1s[[ii]][[jj]][[kk]] <- data_1_f(ii, jj, kk)$data_4
-    }
-  }
 }
 
 #========================================
@@ -129,27 +124,46 @@ for(ii in times_set){
 
 d1_vari_f <- function(f_vari){
   f_d1_vari <- list()
+  f_d2_vari <- list()
   f_d1_vari_df <- list()
+  f_d2_vari_df <- list()
   for(ii in times_set){
     f_d1_vari[[ii]] <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
+    f_d2_vari[[ii]] <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
     for(jj in strs_co){
       f_s <- (jj - 1) * len_sites + 1
       f_e <- jj * len_sites
       for(kk in days_ori){
-        if(jj %% 2 == 1){
-          f_d1_vari[[ii]][f_s:f_e,kk] <- data_1s[[ii]][[jj]][[kk]][[f_vari]]
+        cat('d1_vari_f', ii, jj, kk, '\n')
+        f_res_1 <- data_1_f(ii, jj, kk)$data_4[[f_vari]]
+        f_res_2 <- rep(0, 50)
+        if(f_vari == 'TIME'){
         }else{
-          f_d1_vari[[ii]][f_s:f_e,kk] <- rev(data_1s[[ii]][[jj]][[kk]][[f_vari]])
+          for(pp in 1: 50){
+            f_res_2[pp] <- mean(data_1_f(ii, jj, kk)$data_5[[pp]][[f_vari]])
+          }         
+        }
+        if(jj %% 2 == 1){
+          f_d1_vari[[ii]][f_s:f_e,kk] <- f_res_1
+          f_d2_vari[[ii]][f_s:f_e,kk] <- f_res_2
+        }else{
+          f_d1_vari[[ii]][f_s:f_e,kk] <- rev(f_res_1)
+          f_d2_vari[[ii]][f_s:f_e,kk] <- rev(f_res_2)
         }
       }
     }
     f_d1_vari_df[[ii]] <- as.data.frame(f_d1_vari[[ii]])
+    f_d2_vari_df[[ii]] <- as.data.frame(f_d2_vari[[ii]])
     colnames(f_d1_vari_df[[ii]]) <- days_ori_name
+    colnames(f_d2_vari_df[[ii]]) <- days_ori_name
     write.csv(f_d1_vari_df[[ii]], paste0('ARCGIS/RES1/data_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    write.csv(f_d2_vari_df[[ii]], paste0('ARCGIS/RES1/datab_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
   
-
-  return(f_d1_vari_df)
+  f_res <- list()
+  f_res[['data_1']] <- f_d1_vari_df
+  f_res[['data_2']] <- f_d2_vari_df
+  return(f_res)
 }
 
 #=============================================
