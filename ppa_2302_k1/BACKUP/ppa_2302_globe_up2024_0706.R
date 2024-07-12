@@ -27,7 +27,7 @@ days_hot <- c(4,6)  #to_be_set_key(number inside days_ori)
 strs_co <- c(1,2,3,4,5,6,7,8)  #to_be_set_key
 strs_mo <- c(1,2,3,4,5,6)  #to_be_set_key
 varis_1 <- c('Date', 'Time', 'TA','RH','TG','WBGT')  #to_be_set_key
-varis_2 <- c('WS')  #to_be_set_key
+varis_2 <- c('WS')  #to_be_set_key('WS','TA','RH')
 
 len_days_ori <- length(days_ori)
 len_days_nor <- length(days_nor)
@@ -115,7 +115,7 @@ get_dataw_1f <- function(f_str, f_day, f_time){
     if(mm %% 5000 == 0){
       cat(mm, '\n')
     }
-    f_time_x2 <- append(f_time_x2, ymd_hms(f_time_x1[mm]))
+    f_time_x2 <- append(f_time_x2, ymd_hms(paste0(f_time_x1[mm],':00')))
   }
   
   f_data_2$time_x2 <- f_time_x2
@@ -187,39 +187,50 @@ get_dataw_1f <- function(f_str, f_day, f_time){
 }
 
 #============================================
+#up2024_0711_08:03
+
+ws_vari <- c('ws1_1','ws1_2')
+ta_vari <- c('ta1_1','ta1_2')
+rh_vari <- c('rh1_1','rh1_2')
+
+#============================================
 #up2024_0709_08:21
 
 get_dataw_2f <- function(f_vari){
+  f_vari_set <- 1 #to_be_set
   if(f_vari == 'WS'){
-    f_vari2 <- 'ws1_2' #to_be_set
+    f_vari1 <- ws_vari[f_vari_set]
   }else if(f_vari == 'TA'){
-    f_vari2 <- 'ta1_2' #to_be_set
+    f_vari1 <- ta_vari[f_vari_set]
   }else if(f_vari == 'RH'){
-    f_vari2 <- 'rh1_2' #to_be_set
+    f_vari1 <- rh_vari[f_vari_set]
   }else{
     print('ERROR')
   }
   
-  f_d2_vari <- list()
-  f_d2_vari_df <- list()
+  f_d1_vari <- list()
+  f_d1_vari_df <- list()  
   for(ii in times_set){
-    f_d2_vari[[ii]] <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
+    f_d1_vari[[ii]] <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
     for(jj in strs_co){
       f_s <- (jj - 1) * len_sites + 1
       f_e <- jj * len_sites
       for(kk in days_ori){
+        print(Sys.time())
+        cat('get_dataw_2f:', ii, jj, kk, '\n')
         if(jj %% 2 == 1){
-          f_d2_vari[[ii]][f_s:f_e,kk] <- get_dataw_1f(jj, kk, ii)[[f_vari2]]
+          f_d1_vari[[ii]][f_s:f_e,kk] <- get_dataw_1f(jj, kk, ii)[[f_vari1]]
         }else{
-          f_d2_vari[[ii]][f_s:f_e,kk] <- rev(get_dataw_1f(jj, kk, ii)[[f_vari2]])
+          f_d1_vari[[ii]][f_s:f_e,kk] <- rev(get_dataw_1f(jj, kk, ii)[[f_vari1]])
         }
       }
     }
-    f_d2_vari_df[[ii]] <- as.data.frame(f_d2_vari[[ii]])
-    colnames(f_d2_vari_df[[ii]]) <- days_ori_name
-    write.csv(f_d2_vari_df[[ii]], paste0('ARCGIS/RES1/dataw_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    
+    f_d1_vari_df[[ii]] <- as.data.frame(f_d1_vari[[ii]])
+    colnames(f_d1_vari_df[[ii]]) <- days_ori_name
+    write.csv(f_d1_vari_df[[ii]], paste0('RES1/dataw_1_', f_vari_set, f_vari, '_time', ii,'.csv'), row.names = FALSE)
   }
-  return(f_d2_vari_df)
+  return(f_d1_vari_df)
 }
 
 #============================================

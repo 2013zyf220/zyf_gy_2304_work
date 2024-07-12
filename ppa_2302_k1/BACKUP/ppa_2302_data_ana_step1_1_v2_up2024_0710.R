@@ -137,8 +137,11 @@ d1_vari_f <- function(f_vari){
         cat('d1_vari_f', ii, jj, kk, '\n')
         f_res_1 <- data_1_f(ii, jj, kk)$data_4[[f_vari]]
         f_res_2 <- rep(0, 50)
-        for(pp in 1: 50){
-          f_res_2[pp] <- mean(data_1_f(ii, jj, kk)$data_5[[pp]][[f_vari]])
+        if(f_vari == 'TIME'){
+        }else{
+          for(pp in 1: 50){
+            f_res_2[pp] <- mean(data_1_f(ii, jj, kk)$data_5[[pp]][[f_vari]])
+          }         
         }
         if(jj %% 2 == 1){
           f_d1_vari[[ii]][f_s:f_e,kk] <- f_res_1
