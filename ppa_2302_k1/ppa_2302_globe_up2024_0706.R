@@ -27,7 +27,7 @@ days_hot <- c(4,6)  #to_be_set_key(number inside days_ori)
 strs_co <- c(1,2,3,4,5,6,7,8)  #to_be_set_key
 strs_mo <- c(1,2,3,4,5,6)  #to_be_set_key
 varis_1 <- c('Date', 'Time', 'TA','RH','TG','WBGT')  #to_be_set_key
-varis_2 <- c('RH')  #to_be_set_key('WS','TA','RH')
+varis_2 <- c('WS')  #to_be_set_key('WS','TA','RH')
 
 len_days_ori <- length(days_ori)
 len_days_nor <- length(days_nor)
@@ -44,7 +44,7 @@ days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6')
 
 cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
   f_rou <- str2rou_f(f_str)
-  f_data_1 <- read.csv(paste0('RES1/GLOBE_NO', f_rou, '.csv'))
+  f_data_1 <- read.csv(paste0('ORI_GLOBE/GLOBE_NO', f_rou, '.csv'))
   if(f_str%%2 == 1){
     f_s1 <- (f_day - 1) * 360 + (f_time - 1) * 120 + 1
     f_s2 <- f_s1 + len_sites - 1
@@ -106,7 +106,7 @@ time_eb_all <- c('11:50:00', '16:50:00', '21:50:00')  #to_be_set
 get_dataw_1f <- function(f_str, f_day, f_time){
   f_rou <- str2rou_f(f_str)
   f_rou2 <- numw_site[f_rou]
-  f_data_2 <- read.csv(paste0('RES1/WEATHER_285999', f_rou2, '.csv'))
+  f_data_2 <- read.csv(paste0('ORI_GLOBE/WEATHER_285999', f_rou2, '.csv'))
   
   f_time_x1 <- f_data_2$FORMATTED.DATE_TIME
   f_time_len <- length(f_time_x1)
@@ -197,7 +197,7 @@ rh_vari <- c('rh1_1','rh1_2')
 #up2024_0709_08:21
 
 get_dataw_2f <- function(f_vari){
-  f_vari_set <- 1 #to_be_set
+  f_vari_set <- 2 #to_be_set
   if(f_vari == 'WS'){
     f_vari1 <- ws_vari[f_vari_set]
   }else if(f_vari == 'TA'){

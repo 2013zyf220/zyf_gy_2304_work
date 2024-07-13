@@ -44,7 +44,7 @@ days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6')
 
 cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
   f_rou <- str2rou_f(f_str)
-  f_data_1 <- read.csv(paste0('RES1/GLOBE_NO', f_rou, '.csv'))
+  f_data_1 <- read.csv(paste0('ORI_GLOBE/GLOBE_NO', f_rou, '.csv'))
   if(f_str%%2 == 1){
     f_s1 <- (f_day - 1) * 360 + (f_time - 1) * 120 + 1
     f_s2 <- f_s1 + len_sites - 1
@@ -106,7 +106,7 @@ time_eb_all <- c('11:50:00', '16:50:00', '21:50:00')  #to_be_set
 get_dataw_1f <- function(f_str, f_day, f_time){
   f_rou <- str2rou_f(f_str)
   f_rou2 <- numw_site[f_rou]
-  f_data_2 <- read.csv(paste0('RES1/WEATHER_285999', f_rou2, '.csv'))
+  f_data_2 <- read.csv(paste0('ORI_GLOBE/WEATHER_285999', f_rou2, '.csv'))
   
   f_time_x1 <- f_data_2$FORMATTED.DATE_TIME
   f_time_len <- length(f_time_x1)
