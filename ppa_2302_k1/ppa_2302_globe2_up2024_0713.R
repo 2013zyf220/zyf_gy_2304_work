@@ -43,7 +43,7 @@ interp_f <- function(f_time){
   }
   f_data_res_df <- as.data.frame(f_data_res_2)
   colnames(f_data_res_df) <- days_ori_name
-  write.csv(f_data_res_df, paste0('RES1/dataw2_1_1', vari_1, '_time', f_time, '.csv'))
+  write.csv(f_data_res_df, paste0('RES1/dataw2_1_1', vari_1, '_time', f_time, '.csv'), row.names = FALSE)
   return(f_data_res_df)
 }
 

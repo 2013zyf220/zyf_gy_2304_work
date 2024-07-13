@@ -50,8 +50,8 @@ for(ii in times_set){
 #==================
 #up2024_0712_22:06
 
-lon_1 <- 106 + 35/60  #to_be_set
-lat_1 <- 29 + 43/60 #to_be_set
+lon_1 <- round(106 + 35/60, 2)  #to_be_set
+lat_1 <- round(29 + 43/60, 2) #to_be_set
 ele_1 <- 432  #to_be_set
 timez_1 <- 8.0 #to_be_set
 
@@ -99,7 +99,7 @@ ws_1 <- list()
 ws_2 <- list()
 for(ii in times_set){
   ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/recw2_1_1WS_time', ii, '.csv')))
-  ws_2[[ii]] <- as.vector(ws_1[[ii]])
+  ws_2[[ii]] <- round(as.vector(ws_1[[ii]]), 2)
 }
 
 #==================
@@ -111,7 +111,10 @@ could_2 <- rep(could_1, len_sites * len_strs_co * len_days_ori)
 #==================
 #up2024_0712_22:06
 
+col_names_set <- c('DATE', 'TIME', 'LON', 'LAT', 'ELE', 'TIMEZONE', 'TP', 'RH', 'WS', 'CLOUD') #to_be_set
+
 rayman_1 <- list()
+rayman_1_df <- list()
 for(ii in times_set){
   rayman_1[[ii]] <- matrix(0, nrow = len_sites * len_strs_co * len_days_ori, ncol = 10) #to_be_set
   rayman_1[[ii]][,1] <- date_3
@@ -124,6 +127,9 @@ for(ii in times_set){
   rayman_1[[ii]][,8] <- rh_2[[ii]]
   rayman_1[[ii]][,9] <- ws_2[[ii]]
   rayman_1[[ii]][,10] <- could_2
-  write.csv(rayman_1[[ii]], paste0('RES2/rayman_1_time', ii, '.csv'))
+  rayman_1_df[[ii]] <- as.data.frame(rayman_1[[ii]])
+  colnames(rayman_1_df[[ii]]) <- col_names_set
+  write.csv(rayman_1_df[[ii]], paste0('RES2/rayman_1_time', ii, '.csv'), row.names = FALSE)
+  write.table(rayman_1_df[[ii]], file = paste0('RES2/rayman_1_time', ii, '.txt'), sep = ' ', row.names = FALSE, col.names = TRUE, quote = FALSE)
 }
 
