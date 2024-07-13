@@ -213,19 +213,25 @@ for(ii in times_set){
 data_1_ray1 <- list()
 data_1_ray2 <- list()
 data_1_PET <- list()
+data_1_UTCI <- list()
 
 for(ii in times_set){
   data_1_ray1[[ii]] <- read.table(paste0('ARCGIS/RES2/rayman_out_time', ii, '.dat'), header = FALSE, skip = 5)
   data_1_ray2[[ii]] <- as.matrix(data_1_ray1[[ii]])
   c_pet_1 <- data_1_ray2[[ii]][,18] #to_be_set
+  c_utci_1 <- data_1_ray2[[ii]][,19] #to_be_set
   c_pet_2 <- matrix(c_pet_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
+  c_utci_2 <- matrix(c_utci_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
   data_1_PET[[ii]] <- list()
+  data_1_UTCI[[ii]] <- list()
   for(jj in strs_co){
     fc_1 <- (jj - 1) * len_sites + 1
     fc_2 <- jj * len_sites
     data_1_PET[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
+    data_1_UTCI[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
     for(kk in days_ori)
       data_1_PET[[ii]][[jj]][,kk] <- c_pet_2[fc_1:fc_2,kk]
+      data_1_UTCI[[ii]][[jj]][,kk] <- c_utci_2[fc_1:fc_2,kk]
   }
 }
 
@@ -240,6 +246,7 @@ data_1[['DI']] <- data_1_DI
 data_1[['HI']] <- data_1_HI
 data_1[['HR']] <- data_1_HR
 data_1[['PET']] <- data_1_PET
+data_1[['UTCI']] <- data_1_UTCI
 
 cat('==============step3.1: change relative to the reference(all days)================\n')
 #up2024_0528_16:00
