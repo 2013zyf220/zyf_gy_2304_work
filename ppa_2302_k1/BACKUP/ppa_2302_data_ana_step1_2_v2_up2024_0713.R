@@ -77,13 +77,13 @@ for(ii in times_set){
 
 
 cat('==============step 2: get basic data================\n')
-#up2024_0709_17:00
+#up2024_0713_21:00
 #get original data of meteorological variables
 
-varis2 <- c('TIME','TP','RH') #to_be_set
-varis2w <- c('WS') #to_be_set
-varis2g <- c('TA', 'RH', 'TG', 'WBGT') #to_be_set
-
+varis2 <- c('TIME','TP','RH')   #to_be_set
+varis2w <- c('WS')   #to_be_set
+varis2g <- c('TG', 'WBGT') #to_be_set
+varis3 <- c(varis2, varis2w, varis2g) #to_be_set
 
 data_1_ori <- list()
 for(c_vari in varis2){
@@ -93,26 +93,27 @@ for(c_vari in varis2){
   }
 }
 
-for(c_vari in varis2w){
-  data_1_ori[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw_1_', c_vari, '_time', ii,'.csv'))
-  }
-}
-
 for(c_vari in varis2g){
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
     data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari, '_time', ii,'.csv'))
   }
 }
+
+for(c_vari in varis2w){
+  data_1_ori[[c_vari]] <- list()
+  for(ii in times_set){
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_1', c_vari, '_time', ii,'.csv'))
+  }
+}
+
 #======================================
-#up2024_0531_15:30
+#up2024_0713_21:00
 #adjust data form of 'data_1_ori'
 #adjust TP data based on elevation 
 
 data_1_ori2 <- list()
-for(c_vari in varis2){
+for(c_vari in varis3){
   data_1_ori2[[c_vari]] <- list()
   for(ii in times_set){
     data_1_ori2[[c_vari]][[ii]] <- list()
@@ -134,10 +135,13 @@ for(c_vari in varis2){
 }
 
 #======================================
-#up2024_0531_15:30
+#up2024_0713_21:00
 
 data_1_TP <- data_1_ori2$TP
 data_1_RH <- data_1_ori2$RH
+data_1_WS <- data_1_ori2$WS
+data_1_TG <- data_1_ori2$TG
+data_1_WBGT <- data_1_ori2$WBGT
 data_1_TIME <- data_1_ori2$TIME
 
 cat('==============step2: calculate heat indexes================\n')
@@ -204,7 +208,29 @@ for(ii in times_set){
 }
 
 #==============================================
-#up2024_0531_15:30
+#up2024_0713_21:20
+
+data_1_ray1 <- list()
+data_1_ray2 <- list()
+data_1_PET <- list()
+
+for(ii in times_set){
+  data_1_ray1[[ii]] <- read.table(paste0('ARCGIS/RES2/rayman_out_time', ii, '.dat'), header = FALSE, skip = 5)
+  data_1_ray2[[ii]] <- as.matrix(data_1_ray1[[ii]])
+  c_pet_1 <- data_1_ray2[[ii]][,18] #to_be_set
+  c_pet_2 <- matrix(c_pet_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
+  data_1_PET[[ii]] <- list()
+  for(jj in strs_co){
+    fc_1 <- (jj - 1) * len_sites + 1
+    fc_2 <- jj * len_sites
+    data_1_PET[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
+    for(kk in days_ori)
+      data_1_PET[[ii]][[jj]][,kk] <- c_pet_2[fc_1:fc_2,kk]
+  }
+}
+
+#==============================================
+#up2024_0713_21:20
 #sumary of all data sets into data_1
 
 data_1 <- list()
@@ -213,6 +239,7 @@ data_1[['RH']] <- data_1_RH
 data_1[['DI']] <- data_1_DI
 data_1[['HI']] <- data_1_HI
 data_1[['HR']] <- data_1_HR
+data_1[['PET']] <- data_1_PET
 
 cat('==============step3.1: change relative to the reference(all days)================\n')
 #up2024_0528_16:00
