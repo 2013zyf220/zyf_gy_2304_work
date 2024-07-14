@@ -10,7 +10,7 @@ library(readxl)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #============================================
-#up2024_0713_08:18
+#up2024_0713_20:00
 
 vari_1 <- 'WS' #to_be_set
 times_set <- c(1,2,3) #to_be_set
@@ -20,7 +20,7 @@ len_sites <- 50 #to_be_set
 days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6') #to_be_set
 
 #============================================
-#up2024_0713_08:18
+#up2024_0713_20:00
 
 interp_f <- function(f_time){
   f_data_1 <- read.csv(paste0('RES1/dataw_1_1', vari_1, '_time', f_time, '.csv'))
@@ -48,7 +48,7 @@ interp_f <- function(f_time){
 }
 
 #============================================
-#up2024_0713_08:18
+#up2024_0713_20:00
 
 interp_res <- list()
 for(ii in times_set){

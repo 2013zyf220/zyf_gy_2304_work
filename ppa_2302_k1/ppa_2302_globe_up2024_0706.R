@@ -93,7 +93,7 @@ for(c_vari in varis_1){
 #======================================================================
 #up2024_0709_07:21
 
-numw_site <- c(5,6,7,9)  #to_be_set_key
+numw_site <- c(7,6,5,9)  #to_be_set_key
 days_all <- c('2023/8/15', '2023/8/16','2023/8/17','2023/8/20','2023/8/22','2023/8/28')  #to_be_set
 time_sa_all <- c('10:00:00', '15:00:00', '20:00:00')  #to_be_set
 time_sb_all <- c('11:00:00', '16:00:00', '21:00:00')  #to_be_set
@@ -197,7 +197,7 @@ rh_vari <- c('rh1_1','rh1_2')
 #up2024_0709_08:21
 
 get_dataw_2f <- function(f_vari){
-  f_vari_set <- 2 #to_be_set
+  f_vari_set <- 1 #to_be_set
   if(f_vari == 'WS'){
     f_vari1 <- ws_vari[f_vari_set]
   }else if(f_vari == 'TA'){
