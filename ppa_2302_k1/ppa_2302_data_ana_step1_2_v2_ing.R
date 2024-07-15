@@ -83,7 +83,8 @@ cat('==============step 2: get basic data================\n')
 varis2 <- c('TIME','TP','RH')   #to_be_set
 varis2w <- c('WS')   #to_be_set
 varis2g <- c('TG', 'WBGT') #to_be_set
-varis3 <- c(varis2, varis2w, varis2g) #to_be_set
+varis3 <- setdiff(c(varis2, varis2w, varis2g), 'TIME') #to_be_set
+varis4 <- c(varis3, 'DI','HI','HR','PET','UTCI')
 
 data_1_ori <- list()
 for(c_vari in varis2){
@@ -266,6 +267,7 @@ d2_vari_f <- function(f_vari){
     for(jj in strs_mo){
       f_d2_vari[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
       for(kk in days_ori){
+        cat('d2_vari_f',ii,jj,kk,'\n')
         if(jj %% 2 == 1){
           f_ref_1 <- f_d1_vari[[ii]][[7]][,kk]
         }else{
@@ -283,7 +285,8 @@ d2_vari_f <- function(f_vari){
 #calculate change relative to the reference(all days)
 
 data_2_ori <- list()
-for(c_vari in varis){
+for(c_vari in varis4){
+  cat(c_vari,'\n')
   data_2_ori[[c_vari]] <- d2_vari_f(c_vari)
 }
 
@@ -322,7 +325,7 @@ cat('==============step4: export files================\n')
 
 data_1_csv <- list()
 data_1_csv_df <- list()
-for(c_vari in varis){
+for(c_vari in varis3){
   data_1_csv[[c_vari]] <- list()
   data_1_csv_df[[c_vari]] <- list() 
   for(ii in times_set){
@@ -345,7 +348,8 @@ for(c_vari in varis){
 
 data_2_csv <- list()
 data_2_csv_df <- list()
-for(c_vari in varis){
+for(c_vari in varis3){
+  cat('SPET4_2', c_vari, '\n')
   data_2_csv[[c_vari]] <- list()
   data_2_csv_df[[c_vari]] <- list()
   for(ii in times_set){

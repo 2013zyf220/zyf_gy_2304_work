@@ -63,12 +63,12 @@ timez_2 <- rep(timez_1, len_sites * len_strs_co * len_days_ori)
 #==================
 #up2024_0712_22:06
 
-time_1 <- list()
-time_2 <- list()
+time2_1 <- list()
+time2_2 <- list()
 for(ii in times_set){
-  time_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TIME_time', ii, '.csv')))
-  time_2[[ii]] <- as.vector(time_1[[ii]])
-  write.csv(time_2[[ii]], paste0('RES2/rayman_time_1_time', ii, '.csv'))
+  time2_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TIME_time', ii, '.csv')))
+  time2_2[[ii]] <- as.vector(time2_1[[ii]])
+  write.csv(time2_2[[ii]], paste0('RES2/rayman_time2_1_time', ii, '.csv'))
 }
 
 #==================

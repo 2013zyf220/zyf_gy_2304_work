@@ -137,12 +137,12 @@ for(c_vari in varis3){
 #======================================
 #up2024_0713_21:00
 
+data_1_TIME <- data_1_ori2$TIME
 data_1_TP <- data_1_ori2$TP
 data_1_RH <- data_1_ori2$RH
 data_1_WS <- data_1_ori2$WS
 data_1_TG <- data_1_ori2$TG
 data_1_WBGT <- data_1_ori2$WBGT
-data_1_TIME <- data_1_ori2$TIME
 
 cat('==============step2: calculate heat indexes================\n')
 #up2024_0531_15:30
@@ -233,6 +233,9 @@ for(ii in times_set){
       data_1_PET[[ii]][[jj]][,kk] <- c_pet_2[fc_1:fc_2,kk]
       data_1_UTCI[[ii]][[jj]][,kk] <- c_utci_2[fc_1:fc_2,kk]
   }
+  write.csv(c_pet_2, paste0('ARCGIS/RES2/rayman_pet_out_', ii, '.csv'))
+  write.csv(c_utci_2, paste0('ARCGIS/RES2/rayman_utci_out_', ii, '.csv'))
+  write.csv(data_1_ray1[[ii]], paste0('ARCGIS/RES2/rayman0_out_', ii, '.csv'))
 }
 
 #==============================================
@@ -242,6 +245,9 @@ for(ii in times_set){
 data_1 <- list()
 data_1[['TP']] <- data_1_TP
 data_1[['RH']] <- data_1_RH
+data_1[['WS']] <- data_1_WS
+data_1[['TG']] <- data_1_TG
+data_1[['WBGT']] <- data_1_WBGT
 data_1[['DI']] <- data_1_DI
 data_1[['HI']] <- data_1_HI
 data_1[['HR']] <- data_1_HR
