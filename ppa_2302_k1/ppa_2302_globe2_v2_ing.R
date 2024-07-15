@@ -24,8 +24,15 @@ days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6') #to_be_set
 #============================================
 #up2024_0713_20:00
 
-interp_f <- function(f_time){
-  f_data_1 <- read.csv(paste0('RES2/recw_1_', vari_set_2, vari_1, '_time', f_time, '.csv'))
+interp_f <- function(f_time, f_vari, f_seta){
+  if(f_seta == 'recw'){
+    f_data_1 <- read.csv(paste0('RES2/recw_1_', vari_set_2, f_vari, '_time', f_time, '.csv'))
+  }else if(f_seta == 'recg'){
+    f_data_1 <- read.csv(paste0('RES2/recg_1_', f_vari, '_time', f_time, '.csv'))
+    f_data_1[f_data_1 == -9999] <- NA
+  }else{
+    print('ERROR')
+  }
   f_data_res_2 <- matrix(0, nrow = len_sites * len_strs_co, ncol = len_days_ori)
   for(kk in 1:len_days_ori){
     cat('interp_f', f_time, '_', kk, '\n') #to_be_set
@@ -46,7 +53,13 @@ interp_f <- function(f_time){
   f_data_res_2b <- round(f_data_res_2, 2) #to_be_set
   f_data_res_df <- as.data.frame(f_data_res_2b)
   colnames(f_data_res_df) <- days_ori_name
-  write.csv(f_data_res_df, paste0('RES2/recw2_1_', vari_set_2, vari_1, '_time', f_time, '.csv'), row.names = FALSE)
+  if(f_seta == 'recw'){
+    write.csv(f_data_res_df, paste0('RES2/recw2_1_', vari_set_2, f_vari, '_time', f_time, '.csv'), row.names = FALSE)
+  }else if(f_seta == 'recg'){
+    write.csv(f_data_res_df, paste0('RES2/recg2_1_', f_vari, '_time', f_time, '.csv'), row.names = FALSE)
+  }else{
+    print('ERROR')
+  }
   return(f_data_res_df)
 }
 
@@ -55,5 +68,5 @@ interp_f <- function(f_time){
 
 interp_res <- list()
 for(ii in times_set){
-  interp_res[[ii]] <- interp_f(ii)
+  interp_res[[ii]] <- interp_f(ii, vari_1, seta_1)
 }
