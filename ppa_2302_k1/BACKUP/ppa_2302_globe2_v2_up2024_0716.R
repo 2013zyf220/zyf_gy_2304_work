@@ -10,7 +10,7 @@ library(readxl)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #============================================
-#up2024_0713_20:00
+#up2024_0716_09:00
 
 vari_1 <- 'TG' #to_be_set_key
 seta_1 <- 'recg'  #to_be_set_key
@@ -22,7 +22,7 @@ len_sites <- 50 #to_be_set
 days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6') #to_be_set
 
 #============================================
-#up2024_0713_20:00
+#up2024_0716_09:00
 
 interp_f <- function(f_time, f_vari, f_seta){
   if(f_seta == 'recw'){
@@ -64,7 +64,7 @@ interp_f <- function(f_time, f_vari, f_seta){
 }
 
 #============================================
-#up2024_0713_20:00
+#up2024_0716_09:00
 
 interp_res <- list()
 for(ii in times_set){
