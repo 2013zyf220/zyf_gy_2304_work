@@ -77,15 +77,10 @@ for(ii in times_set){
 
 
 cat('==============step 2: get basic data================\n')
-#up2024_0716_08:20
+#up2024_0531_15:30
 #get original data of meteorological variables
 
-varis2 <- c('TIME','TP','RH')   #to_be_set
-varis2w <- c('WS')   #to_be_set
-varis2g <- c('TG', 'WBGT') #to_be_set
-varis3 <- c(varis2, varis2w, varis2g) #to_be_set
-varis4 <-  setdiff(varis3, 'TIME')
-varis5 <- c(varis4, 'DI', 'HI', 'HR', 'PET', 'UTCI') #to_be_set
+varis2 <- c('TIME','TP','RH')
 
 data_1_ori <- list()
 for(c_vari in varis2){
@@ -95,27 +90,13 @@ for(c_vari in varis2){
   }
 }
 
-for(c_vari in varis2g){
-  data_1_ori[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari, '_time', ii,'.csv'))
-  }
-}
-
-for(c_vari in varis2w){
-  data_1_ori[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', c_vari, '_time', ii,'.csv'))
-  }
-}
-
 #======================================
 #up2024_0531_15:30
 #adjust data form of 'data_1_ori'
 #adjust TP data based on elevation 
 
 data_1_ori2 <- list()
-for(c_vari in varis3){
+for(c_vari in varis2){
   data_1_ori2[[c_vari]] <- list()
   for(ii in times_set){
     data_1_ori2[[c_vari]][[ii]] <- list()
@@ -137,14 +118,11 @@ for(c_vari in varis3){
 }
 
 #======================================
-#up2024_0716_08:22
+#up2024_0531_15:30
 
-data_1_TIME <- data_1_ori2$TIME
 data_1_TP <- data_1_ori2$TP
 data_1_RH <- data_1_ori2$RH
-data_1_WS <- data_1_ori2$WS
-data_1_TG <- data_1_ori2$TG
-data_1_WBGT <- data_1_ori2$WBGT
+data_1_TIME <- data_1_ori2$TIME
 
 cat('==============step2: calculate heat indexes================\n')
 #up2024_0531_15:30
@@ -210,52 +188,15 @@ for(ii in times_set){
 }
 
 #==============================================
-#up2024_0716_08:27
-
-data_1_ray1 <- list()
-data_1_ray2 <- list()
-data_1_PET <- list()
-data_1_UTCI <- list()
-
-for(ii in times_set){
-  data_1_ray1[[ii]] <- read.table(paste0('ARCGIS/RES2/rayman_out_time', ii, '.dat'), header = FALSE, skip = 5)
-  data_1_ray2[[ii]] <- as.matrix(data_1_ray1[[ii]])
-  c_pet_1 <- data_1_ray1[[ii]][,18] #to_be_set
-  c_utci_1 <- data_1_ray1[[ii]][,19] #to_be_set
-  c_pet_2 <- matrix(c_pet_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
-  c_utci_2 <- matrix(c_utci_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
-  data_1_PET[[ii]] <- list()
-  data_1_UTCI[[ii]] <- list()
-  for(jj in strs_co){
-    fc_1 <- (jj - 1) * len_sites + 1
-    fc_2 <- jj * len_sites
-    data_1_PET[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
-    data_1_UTCI[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
-    for(kk in days_ori){
-      data_1_PET[[ii]][[jj]][,kk] <- c_pet_2[fc_1:fc_2,kk]
-      data_1_UTCI[[ii]][[jj]][,kk] <- c_utci_2[fc_1:fc_2,kk]
-    }
-  }
-  write.csv(c_pet_2, paste0('ARCGIS/RES2/rayman_pet_out_', ii, '.csv'))
-  write.csv(c_utci_2, paste0('ARCGIS/RES2/rayman_utci_out_', ii, '.csv'))
-  write.csv(data_1_ray1[[ii]], paste0('ARCGIS/RES2/rayman0_out_', ii, '.csv'))
-}
-
-#==============================================
-#up2024_0716_08:30
+#up2024_0531_15:30
 #sumary of all data sets into data_1
 
 data_1 <- list()
 data_1[['TP']] <- data_1_TP
 data_1[['RH']] <- data_1_RH
-data_1[['WS']] <- data_1_WS
-data_1[['TG']] <- data_1_TG
-data_1[['WBGT']] <- data_1_WBGT
 data_1[['DI']] <- data_1_DI
 data_1[['HI']] <- data_1_HI
 data_1[['HR']] <- data_1_HR
-data_1[['PET']] <- data_1_PET
-data_1[['UTCI']] <- data_1_UTCI
 
 cat('==============step3.1: change relative to the reference(all days)================\n')
 #up2024_0528_16:00
@@ -286,7 +227,7 @@ d2_vari_f <- function(f_vari){
 #calculate change relative to the reference(all days)
 
 data_2_ori <- list()
-for(c_vari in varis5){
+for(c_vari in varis){
   data_2_ori[[c_vari]] <- d2_vari_f(c_vari)
 }
 
@@ -315,7 +256,7 @@ data_2[['ORI']] <- data_2_ori
 for(c_subs1_name in subs1_name){
   c_subs1 <- subs1[[c_subs1_name]]
   data_2[[c_subs1_name]] <- list()
-  for(c_vari in varis5){
+  for(c_vari in varis){
     data_2[[c_subs1_name]][[c_vari]] <- d2_vari_sub_f(c_subs1, c_vari)
   }
 }
@@ -325,7 +266,7 @@ cat('==============step4: export files================\n')
 
 data_1_csv <- list()
 data_1_csv_df <- list()
-for(c_vari in varis5){
+for(c_vari in varis){
   data_1_csv[[c_vari]] <- list()
   data_1_csv_df[[c_vari]] <- list() 
   for(ii in times_set){
@@ -348,7 +289,7 @@ for(c_vari in varis5){
 
 data_2_csv <- list()
 data_2_csv_df <- list()
-for(c_vari in varis5){
+for(c_vari in varis){
   data_2_csv[[c_vari]] <- list()
   data_2_csv_df[[c_vari]] <- list()
   for(ii in times_set){
