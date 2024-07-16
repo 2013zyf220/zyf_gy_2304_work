@@ -18,8 +18,10 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 #result 4: each sub, each variable, each time, streets together, days merged
 #result 5: each sub, each variable, each time, each street, days together
 #result 6: each sub, each variable, each time, streets together, days together
-#=================================================================
+
+cat('========================step 1: basic setting==========================\n')
 #up2024_0528_17:00
+#add and set parameters
 
 load('RES1/ANA1_data_1_paras.RData')
 
@@ -66,6 +68,7 @@ indep_set <- 40 #to_be_set_key
 
 #=================================================================
 #up2024_0531_17:00
+#set independent variables for regression
 
 reg_se_sum <- list()
 reg_se_sum[[1]] <- c(23,40,41)
@@ -73,9 +76,6 @@ reg_se_sum[[2]] <- c(12)
 
 reg_set <- 1 #to_be_set_key
 reg_se <- reg_se_sum[[reg_set]]
-#=================================================================
-#up2024_0528_17:00
-#set independent variables for regression
 
 cname_index_1 <- colnames(index_1)
 cname_index_2 <- cname_index_1[reg_se] #to_be_set_key
@@ -83,7 +83,7 @@ cname_index_3 <- paste(cname_index_2, collapse = ' + ')
 
 #============================define functions=====================================
 #up2024_0528_17:00
-#define function: from subs_name to subs
+#define function: from subs_name(name of days) to subs(days)
 
 days_trans_f <- function(f_1){
   if(f_1 == 'ORI'){
@@ -98,6 +98,7 @@ days_trans_f <- function(f_1){
 
 #======================================================
 #up2024_0528_17:00
+#define distances
 
 dis_1 <- seq(10, 500, 10) #to_be_set
 dis_2 <- rep(dis_1, len_strs_mo)
@@ -125,6 +126,7 @@ for(c_sub_name in subs_name){
 }
 #==============================================
 #up2024_0617_20:30
+#for analysis by distances
 
 bydis_itv <- 10 #to_be_set
 bydis_num <- len_sites/bydis_itv
@@ -147,8 +149,9 @@ for(mm in 1: bydis_num){
   bydis2[[mm]] <- c_s: c_e
 }
 
-cat('========================step 1: basic data(data2_2)==========================\n')
+cat('========================step 2: basic data(data2_2)==========================\n')
 #up2024_0528_17:00
+#get original data(substract by reference, all days)
 
 data2_2_ori <- list()
 for(c_vari in varis){
@@ -160,6 +163,7 @@ for(c_vari in varis){
 
 #=========================================================
 #up2024_0528_18:00
+#get original data(substract by reference, selected days)
 
 data2_2_nor <- list()
 data2_2_hot <- list()
@@ -177,10 +181,9 @@ data2_2[['ORI']] <- data2_2_ori
 data2_2[['NOR']] <- data2_2_nor
 data2_2[['HOT']] <- data2_2_hot
 
-cat('========================step 2: calculate mean==========================\n')
-
+cat('========================step 3: calculate mean==========================\n')
 #up2024_0528_18:00
-#function: input weather data(mean)
+#function: input weather data(averaged by day)
 
 d2_mean_1f <- function(f_data, f_sub, f_vari){
   f_1 <- f_data[[f_sub]][[f_vari]]
@@ -195,7 +198,8 @@ d2_mean_1f <- function(f_data, f_sub, f_vari){
 
 #==============================================
 #up2024_0528_18:00
-#summarize data by averaging days
+#summarize data(averaged by day)
+#size of data2_2_mean$NOR$TP: 300 * 3
 
 data2_2_mean <- list()
 for(c_sub_name in subs_name){
@@ -209,9 +213,9 @@ for(c_sub_name in subs_name){
   }
 }
 
-cat('========================step 3: data for regression==========================\n')
+cat('========================step 4: data for regression==========================\n')
 #up2024_0528_18:00
-#get index_1
+#get index_1 by adding data2_2_mean(summarize data averaged by day)
 
 for(c_sub_name in subs_name){
   for(c_vari in varis){
@@ -230,7 +234,7 @@ write.csv(index_1c, paste0('RES2/index_1c.csv'), row.names = FALSE)
 
 #======================================================
 #up2024_0528_18:00
-#get index_2
+#get index_2 by adding data2_2_ori(original data compared to reference)
 
 for(c_vari in varis){
   for(ii in times_set){
@@ -245,6 +249,7 @@ write.csv(index_2, paste0('RES2/index_2.csv'), row.names = FALSE)
 
 #==============================================
 #up2024_0709_13:50
+#adjust distance intervals
 
 seq_a <- seq(1,49,2) #to_be_set
 seq_b <- seq(1,299,2) #to_be_set
@@ -261,27 +266,27 @@ index_c2 <- index_2[seq_b, ]
 
 index_1s <- list()
 index_2s <- list()
-for(ii in 1: len_strs_mo){
-  c_1 <- (ii - 1) * len_sites + 1
-  c_2 <- ii * len_sites
-  index_1s[[ii]] <- index_1[c_1:c_2,]
-  index_2s[[ii]] <- index_2[c_1:c_2,]
+for(jj in 1: len_strs_mo){
+  c_1 <- (jj - 1) * len_sites + 1
+  c_2 <- jj * len_sites
+  index_1s[[jj]] <- index_1[c_1:c_2,]
+  index_2s[[jj]] <- index_2[c_1:c_2,]
 }
 
 
 index_c1s <- list()
 index_c2s <- list()
-for(ii in 1: len_strs_mo){
-  c_1 <- (ii - 1) * len_sites_2 + 1
-  c_2 <- ii * len_sites_2
+for(jj in 1: len_strs_mo){
+  c_1 <- (jj - 1) * len_sites_2 + 1
+  c_2 <- jj * len_sites_2
   cat('index_c:',c_1,c_2,'\n')
-  index_c1s[[ii]] <- index_c1[c_1:c_2,]
-  index_c2s[[ii]] <- index_c2[c_1:c_2,]
+  index_c1s[[jj]] <- index_c1[c_1:c_2,]
+  index_c2s[[jj]] <- index_c2[c_1:c_2,]
 }
 
-cat('========================step 4: rce calculation==========================\n')
+cat('========================step 5: rce calculation==========================\n')
 #up2024_0528_18:00
-#define function: calculate RCE indexes
+#define function: calculate RCE indexes 1a
 
 rce_f <- function(f_1, f_2, f_3){
   f_rcd <- (-2 * f_2 - sqrt(4 * f_2^2 - 12 * f_1 * f_3))/(6 * f_1)
@@ -297,7 +302,7 @@ rce_f <- function(f_1, f_2, f_3){
 
 #==============================================
 #up2024_0528_18:00
-#define function: calculate rce indexes
+#define function: calculate RCE indexes 1b
 
 rce_1_f <- function(f_1, f_2){
   f_rce_1 <- lm(f_1 ~ poly(f_2, 3, raw = TRUE))
@@ -321,6 +326,7 @@ rce_1_f <- function(f_1, f_2){
 
 #==============================================
 #up2024_0709_13:55
+#define function: calculate RCE indexes 2
 
 rce_2_f <- function(f_1){
   f_interval <- 3 #to_be_set
@@ -351,6 +357,7 @@ rce_2_f <- function(f_1){
 
 #==============================================
 #up2024_0617_20:30
+#RCE calculation based on method 2(single day)
 
 rce_rb1 <- list()
 for(c_vari in varis){
@@ -370,6 +377,7 @@ for(c_vari in varis){
 
 #==============================================
 #up2024_0617_20:30
+#RCE calculation based on method 2(daily mean)
 
 rce_rb2 <- list()
 for(c_sub_name in subs_name){
@@ -389,7 +397,7 @@ for(c_sub_name in subs_name){
 
 #==============================================
 #up2024_0528_22:00
-#calculate rce indexes(each each variable, each time, each street, each day)
+#calculate rce indexes(method 1, each each variable, each time, each street, each day)
 
 rce_r1 <- list()
 for(c_vari in varis){
@@ -409,7 +417,7 @@ for(c_vari in varis){
 
 #==============================================
 #up2024_0529_10:00
-#calculate rce indexes(each sub, each variable, each time, each street, days together)
+#calculate rce indexes(method 1, each sub, each variable, each time, each street, days together)
 
 data2_2v <- list()
 rce_r2 <- list()
@@ -434,7 +442,7 @@ for(c_sub_name in subs_name){
 
 #==============================================
 #up2024_0529_10:00
-#calculate rce indexes(days merged, streets together; each sub, each variable, each time)
+#calculate rce indexes(method 1, days merged, streets together; each sub, each variable, each time)
 
 rce_r3 <- list()
 for(c_sub_name in subs_name){
@@ -447,7 +455,7 @@ for(c_sub_name in subs_name){
   }
 }
 
-cat('========================step 5: regression==========================\n')
+cat('========================step 6: regression==========================\n')
 #up2024_0529_10:00
 #define function: regression(each variable, each time, each street, each day)
 
@@ -695,7 +703,7 @@ for(c_sub_name in subs_name){
   }
 }
 
-cat('========================step 6: figures==========================\n')
+cat('========================step 7: figures==========================\n')
 #up2024_0529_10:00
 #define function: fig(each variable, each time, each street, each day)
 

@@ -46,7 +46,7 @@ days_ori <- c(1,2,3,4,5,6)  #to_be_set_key
 days_nor <- c(1,2,3,5)  #to_be_set_key(number inside days_ori)
 days_hot <- c(4,6)  #to_be_set_key(number inside days_ori)
 
-varis <- c('TP','RH','DI','HI','HR')  #to_be_set
+varis <- c('TP','RH','DI','HI','HR','WS','TG','WBGT','PET','UTCI')  #to_be_set
 subs1 <- list(NOR = days_nor, HOT = days_hot)  #to_be_set
 subs1_name <- c('NOR','HOT')  #to_be_set
 subs <- c(ORI = days_ori, subs1)
