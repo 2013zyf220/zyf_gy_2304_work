@@ -10,24 +10,52 @@ library(readxl)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2')
 
 cat('==============step 1: preparation================\n')
-#up2024_0531_15:30
+#up2024_0528_16:00
 #initial setting and input data
 
 len_sites <- 50  #to_be_set
-load('ARCGIS/RES1/ANA1_data_1_paras.RData')
 
-times_set <- data_1_paras[['times_set']]
-strs_co <- data_1_paras[['strs_co']]
-strs_mo <- data_1_paras[['strs_mo']]
-days_ori <- data_1_paras[['days_ori']]
-days_nor <- data_1_paras[['days_nor']]
-days_hot <- data_1_paras[['days_hot']]
-varis <- data_1_paras[['varis']]
-subs1 <- data_1_paras[['subs1']]
-subs1_name <- data_1_paras[['subs1_name']]
-subs <- data_1_paras[['subs']]
-subs_name <- data_1_paras[['subs_name']]
-days_ori_name <- data_1_paras[['days_ori_name']]
+adj_para_1 <- read_csv('DATA_PRO_1/adj_para_1.csv', skip = 0)
+TP_adj_2 <- read_csv('ARCGIS/TP_adj_2.csv', skip = 0)
+
+#========================================
+#up2024_0528_16:00
+#set temperature adjustment based on elevation
+
+TP_adj_ref <- TP_adj_2$str4[1] #to_be_set
+TP_adj_ref_2 <- rep(TP_adj_ref, len_sites)
+TP_adj_2$str7 <- TP_adj_ref_2
+TP_adj_2$str8 <- TP_adj_ref_2
+
+#====================
+#up2024_0528_16:00
+#define function: from street to route(8s4r)
+
+str2rou_f <- function(f_str){
+  f_rou <- ceiling(f_str/2)
+  return(f_rou)
+}
+
+#====================
+#up2024_0528_16:00
+#define function: set start time order of each data set
+
+adj_para_f <- function(f_rou, f_time_2){
+  f_name <- paste0('NO', f_rou)
+  f_res <- adj_para_1[[f_name]][f_time_2]
+  return(f_res)
+}
+
+#====================
+#up2024_0528_16:00
+#set parameters
+
+times_set <- c(1,2,3) #to_be_set_key
+strs_co <- c(1,2,3,4,5,6,7,8)  #to_be_set_key
+strs_mo <- c(1,2,3,4,5,6)  #to_be_set_key
+days_ori <- c(1,2,3,4,5,6)  #to_be_set_key
+days_nor <- c(1,2,3,5)  #to_be_set_key(number inside days_ori)
+days_hot <- c(4,6)  #to_be_set_key(number inside days_ori)
 
 len_times_set <- length(times_set)
 len_strs_co <- length(strs_co)
@@ -35,22 +63,30 @@ len_strs_mo <- length(strs_mo)
 len_days_ori <- length(days_ori)
 len_days_nor <- length(days_nor)
 len_days_hot <- length(days_hot)
+
+varis <- c('TP','RH','DI','HI','HR')  #to_be_set
+subs1 <- list(NOR = days_nor, HOT = days_hot)  #to_be_set
+subs1_name <- c('NOR','HOT')  #to_be_set
 len_varis <- length(varis)
 len_subs1 <- length(subs1)
 
-#========================================
-#up2024_0531_15:30
-#set temperature adjustment based on elevation
+strs_co_name <- c('str1','str2','str3','str4','str5','str6','str7','str8')  #to_be_set
+strs_mo_name <- c('str1','str2','str3','str4','str5','str6')  #to_be_sets
+days_ori_name <- c('day1','day2','day3','day4','day5','day6') #to_be_set
 
-TP_adj_2 <- read_csv('ARCGIS/TP_adj_2.csv', skip = 0)
-
-TP_adj_ref <- TP_adj_2$str4[1] #to_be_set
-TP_adj_ref_2 <- rep(TP_adj_ref, len_sites)
-TP_adj_2$str7 <- TP_adj_ref_2
-TP_adj_2$str8 <- TP_adj_ref_2
+data_1_paras <- list()
+data_1_paras[['times_set']] <- times_set
+data_1_paras[['strs_co']] <- strs_co
+data_1_paras[['strs_mo']] <- strs_mo
+data_1_paras[['days_ori']] <- days_ori
+data_1_paras[['days_nor']] <- days_nor
+data_1_paras[['days_hot']] <- days_hot
+data_1_paras[['varis']] <- varis
+data_1_paras[['subs1']] <- subs1
+data_1_paras[['subs1_name']] <- subs1_name
 
 #==============================================
-#up2024_0531_15:30
+#up2024_0528_16:00
 #get data of air pressure
 
 WEA_STA_PR_1 <- read.csv('ARCGIS/WEA_STA_1.csv')$PRESSURE
@@ -75,79 +111,94 @@ for(ii in times_set){
   }
 }
 
-
 cat('==============step 2: get basic data================\n')
-#up2024_0716_08:20
-#get original data of meteorological variables
+#up2024_0528_16:00
+#define function: get basic data(TP/RH)
 
-varis2 <- c('TIME','TP','RH')   #to_be_set
-varis2w <- c('WS')   #to_be_set
-varis2g <- c('TG', 'WBGT') #to_be_set
-varis3 <- c(varis2, varis2w, varis2g) #to_be_set
-varis4 <-  setdiff(varis3, 'TIME')
-varis5 <- c(varis4, 'DI', 'HI', 'HR', 'PET', 'UTCI') #to_be_set
+data_1_f <- function(f_time_1, f_str, f_day){
+  f_rou <- str2rou_f(f_str)
+  f_data_1 <- read_excel(paste0('DATA_PRO_1/RH_TP_NO', f_rou, '_1.xlsx'))
+  
+  f_time_2 <- f_time_1 + (f_day - 1) * 3
+  f_adj_1 <- adj_para_f(f_rou, f_time_2)
+  f_adj_2 <- f_adj_1 + 720 - 1
+  
+  f_data_2 <- f_data_1[f_adj_1: f_adj_2,]
+  f_data_3 <- f_data_2[seq(1, nrow(f_data_2), 6), ]
+  if(f_str %% 2 == 1){
+    f_data_4 <- f_data_3[1:50, ]
+  }else{
+    f_data_4 <- rev(f_data_3[61:110, ])
+  }
+  f_res <- list()
+  f_res[['data_2']] <- f_data_2
+  f_res[['data_3']] <- f_data_3
+  f_res[['data_4']] <- f_data_4 #final data set
+  return(f_res)
+}
+
+#==================================================
+#up2024_0528_16:00
+#get basic data(all variables together)
 
 data_1_ori <- list()
-for(c_vari in varis2){
-  data_1_ori[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/rec_1_', c_vari, '_time', ii,'.csv'))
-  }
-}
-
-for(c_vari in varis2g){
-  data_1_ori[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari, '_time', ii,'.csv'))
-  }
-}
-
-for(c_vari in varis2w){
-  data_1_ori[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', c_vari, '_time', ii,'.csv'))
-  }
-}
-
-#======================================
-#up2024_0531_15:30
-#adjust data form of 'data_1_ori'
-#adjust TP data based on elevation 
-
-data_1_ori2 <- list()
-for(c_vari in varis3){
-  data_1_ori2[[c_vari]] <- list()
-  for(ii in times_set){
-    data_1_ori2[[c_vari]][[ii]] <- list()
-    for(jj in strs_co){
-      c_str_name <- paste0('str',jj)
-      data_1_ori2[[c_vari]][[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
-      c_s <- (jj - 1) * len_sites + 1
-      c_e <- jj * len_sites
-      for(kk in days_ori){
-        if(c_vari == 'TP'){
-          #data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk] + TP_adj_2[[c_str_name]] #to_be_set
-          data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk]
-        }else{
-          data_1_ori2[[c_vari]][[ii]][[jj]][,kk] <- data_1_ori[[c_vari]][[ii]][c_s:c_e,kk]
-        }
-      }
+for(ii in times_set){
+  cat('times:', ii, '\n')
+  data_1_ori[[ii]] <- list()
+  for(jj in strs_co){
+    data_1_ori[[ii]][[jj]] <- list()
+    for(kk in days_ori){
+      data_1_ori[[ii]][[jj]][[kk]] <- data_1_f(ii, jj, kk)$data_4
     }
   }
 }
 
-#======================================
-#up2024_0716_08:22
+#========================================
+#up2024_0528_16:00
+#define function: get basic data(for selected variable)
 
-data_1_TIME <- data_1_ori2$TIME
-data_1_TP <- data_1_ori2$TP
-data_1_RH <- data_1_ori2$RH
-data_1_WS <- data_1_ori2$WS
-data_1_TG <- data_1_ori2$TG
-data_1_WBGT <- data_1_ori2$WBGT
+d1_vari_f <- function(f_vari){
+  f_d1_vari <- list()
+  for(ii in times_set){
+    f_d1_vari[[ii]] <- list()
+    for(jj in strs_co){
+      f_d1_vari[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
+      for(kk in days_ori){
+        f_d1_vari[[ii]][[jj]][,kk] <- data_1_ori[[ii]][[jj]][[kk]][[f_vari]]
+      }
+    }
+  }
+  return(f_d1_vari)
+}
+
+#=============================================
+#up2024_0528_16:00
+#get basic data(for TIME/TP(unadjusted)/RH)
+
+data_1_TIME <- d1_vari_f('TIME')
+data_1_TP1 <- d1_vari_f('TP')
+data_1_RH <- d1_vari_f('RH')
+
+#=============================================
+#up2024_0528_16:00
+#get basic data(for TP(adjusted)) and choose TP data
+
+data_1_TP2 <- list()
+for(ii in times_set){
+  data_1_TP2[[ii]] <- list()
+  for(jj in strs_co){
+    c_str_name <- paste0('str',jj)
+    data_1_TP2[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
+    for(kk in days_ori){
+        data_1_TP2[[ii]][[jj]][,kk] <- data_1_ori[[ii]][[jj]][[kk]][['TP']] + TP_adj_2[[c_str_name]]
+    }
+  }
+}
+
+data_1_TP <- data_1_TP2 #to_be_set(data_1_TP1/data_1_TP2)
 
 cat('==============step2: calculate heat indexes================\n')
-#up2024_0531_15:30
+#up2024_0528_16:00
 #define function: calculate DI,HI and HR
 
 #for DI, refer to: Yin, Zhengtong, Zhixin Liu, Xuan Liu, Wenfeng Zheng, and Lirong Yin. 
@@ -180,7 +231,7 @@ HR_f <- function(f_TP,f_RH,f_pa){
 }
 
 #==============================================
-#up2024_0531_15:30
+#up2024_0528_16:00
 #calculate heat indexes
 
 data_1_DI <- list()
@@ -210,52 +261,15 @@ for(ii in times_set){
 }
 
 #==============================================
-#up2024_0716_08:27
-
-data_1_ray1 <- list()
-data_1_ray2 <- list()
-data_1_PET <- list()
-data_1_UTCI <- list()
-
-for(ii in times_set){
-  data_1_ray1[[ii]] <- read.table(paste0('ARCGIS/RES2/rayman_out_time', ii, '.dat'), header = FALSE, skip = 5)
-  data_1_ray2[[ii]] <- as.matrix(data_1_ray1[[ii]])
-  c_pet_1 <- data_1_ray1[[ii]][,18] #to_be_set
-  c_utci_1 <- data_1_ray1[[ii]][,19] #to_be_set
-  c_pet_2 <- matrix(c_pet_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
-  c_utci_2 <- matrix(c_utci_1, nrow = len_sites * len_strs_co, ncol = len_days_ori, byrow = FALSE)
-  data_1_PET[[ii]] <- list()
-  data_1_UTCI[[ii]] <- list()
-  for(jj in strs_co){
-    fc_1 <- (jj - 1) * len_sites + 1
-    fc_2 <- jj * len_sites
-    data_1_PET[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
-    data_1_UTCI[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
-    for(kk in days_ori){
-      data_1_PET[[ii]][[jj]][,kk] <- c_pet_2[fc_1:fc_2,kk]
-      data_1_UTCI[[ii]][[jj]][,kk] <- c_utci_2[fc_1:fc_2,kk]
-    }
-  }
-  write.csv(c_pet_2, paste0('ARCGIS/RES2/rayman_pet_out_', ii, '.csv'))
-  write.csv(c_utci_2, paste0('ARCGIS/RES2/rayman_utci_out_', ii, '.csv'))
-  write.csv(data_1_ray1[[ii]], paste0('ARCGIS/RES2/rayman0_out_', ii, '.csv'))
-}
-
-#==============================================
-#up2024_0716_08:30
+#up2024_0528_16:00
 #sumary of all data sets into data_1
 
 data_1 <- list()
 data_1[['TP']] <- data_1_TP
 data_1[['RH']] <- data_1_RH
-data_1[['WS']] <- data_1_WS
-data_1[['TG']] <- data_1_TG
-data_1[['WBGT']] <- data_1_WBGT
 data_1[['DI']] <- data_1_DI
 data_1[['HI']] <- data_1_HI
 data_1[['HR']] <- data_1_HR
-data_1[['PET']] <- data_1_PET
-data_1[['UTCI']] <- data_1_UTCI
 
 cat('==============step3.1: change relative to the reference(all days)================\n')
 #up2024_0528_16:00
@@ -286,7 +300,7 @@ d2_vari_f <- function(f_vari){
 #calculate change relative to the reference(all days)
 
 data_2_ori <- list()
-for(c_vari in varis5){
+for(c_vari in varis){
   data_2_ori[[c_vari]] <- d2_vari_f(c_vari)
 }
 
@@ -315,7 +329,7 @@ data_2[['ORI']] <- data_2_ori
 for(c_subs1_name in subs1_name){
   c_subs1 <- subs1[[c_subs1_name]]
   data_2[[c_subs1_name]] <- list()
-  for(c_vari in varis5){
+  for(c_vari in varis){
     data_2[[c_subs1_name]][[c_vari]] <- d2_vari_sub_f(c_subs1, c_vari)
   }
 }
@@ -325,7 +339,7 @@ cat('==============step4: export files================\n')
 
 data_1_csv <- list()
 data_1_csv_df <- list()
-for(c_vari in varis5){
+for(c_vari in varis){
   data_1_csv[[c_vari]] <- list()
   data_1_csv_df[[c_vari]] <- list() 
   for(ii in times_set){
@@ -339,7 +353,7 @@ for(c_vari in varis5){
     }
     data_1_csv_df[[c_vari]][[ii]] <- as.data.frame(data_1_csv[[c_vari]][[ii]])
     colnames(data_1_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_1_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES2/recb_1_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_1_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES1/datac_1_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }
 
@@ -348,7 +362,7 @@ for(c_vari in varis5){
 
 data_2_csv <- list()
 data_2_csv_df <- list()
-for(c_vari in varis5){
+for(c_vari in varis){
   data_2_csv[[c_vari]] <- list()
   data_2_csv_df[[c_vari]] <- list()
   for(ii in times_set){
@@ -362,6 +376,12 @@ for(c_vari in varis5){
     }
     data_2_csv_df[[c_vari]][[ii]] <- as.data.frame(data_2_csv[[c_vari]][[ii]])
     colnames(data_2_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES2/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES1/datac_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }
+
+#=======================================================
+#up2024_0528_16:00
+#save data
+
+save(data_1_paras, file = 'ARCGIS/RES1/ANA1_data_1_paras.RData')

@@ -12,8 +12,11 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 #============================================
 #up2024_0716_09:00
 
-vari_1 <- 'TG' #to_be_set_key
-seta_1 <- 'recg'  #to_be_set_key
+setas <- c('recg','recw')  #to_be_set_key
+
+varis <- list()
+varis[['recg']] <- c('TA','RH','TG','WBGT') #to_be_set
+varis[['recw']] <- c('WS') #to_be_set
 vari_set_2 <- 1 #to_be_set
 times_set <- c(1,2,3) #to_be_set
 len_days_ori <- 6 #to_be_set
@@ -67,6 +70,13 @@ interp_f <- function(f_time, f_vari, f_seta){
 #up2024_0716_09:00
 
 interp_res <- list()
-for(ii in times_set){
-  interp_res[[ii]] <- interp_f(ii, vari_1, seta_1)
+for(c_seta in setas){
+  interp_res[[c_seta]] <- list()
+  for(c_vari in varis[[c_seta]]){
+    interp_res[[c_seta]][[c_vari]] <- list()
+    for(ii in times_set){
+      interp_res[[c_seta]][[c_vari]][[ii]] <- interp_f(ii, c_vari, c_seta)
+    }
+  }
 }
+
