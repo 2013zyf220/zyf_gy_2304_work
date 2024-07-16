@@ -77,7 +77,7 @@ for(ii in times_set){
 
 
 cat('==============step 2: get basic data================\n')
-#up2024_0713_21:00
+#up2024_0716_08:20
 #get original data of meteorological variables
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
@@ -86,7 +86,7 @@ varis2g <- c('TG', 'WBGT') #to_be_set
 varis3 <- c(varis2, varis2w, varis2g) #to_be_set
 varis4 <-  setdiff(varis3, 'TIME')
 varis5 <- c(varis4, 'DI', 'HI', 'HR', 'PET', 'UTCI') #to_be_set
-  
+
 data_1_ori <- list()
 for(c_vari in varis2){
   data_1_ori[[c_vari]] <- list()
@@ -105,12 +105,12 @@ for(c_vari in varis2g){
 for(c_vari in varis2w){
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_1', c_vari, '_time', ii,'.csv'))
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', c_vari, '_time', ii,'.csv'))
   }
 }
 
 #======================================
-#up2024_0713_21:00
+#up2024_0531_15:30
 #adjust data form of 'data_1_ori'
 #adjust TP data based on elevation 
 
@@ -137,7 +137,7 @@ for(c_vari in varis3){
 }
 
 #======================================
-#up2024_0713_21:00
+#up2024_0716_08:22
 
 data_1_TIME <- data_1_ori2$TIME
 data_1_TP <- data_1_ori2$TP
@@ -210,7 +210,7 @@ for(ii in times_set){
 }
 
 #==============================================
-#up2024_0713_21:20
+#up2024_0716_08:27
 
 data_1_ray1 <- list()
 data_1_ray2 <- list()
@@ -231,9 +231,10 @@ for(ii in times_set){
     fc_2 <- jj * len_sites
     data_1_PET[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
     data_1_UTCI[[ii]][[jj]] <- matrix(0, nrow = len_sites, ncol = len_days_ori)
-    for(kk in days_ori)
+    for(kk in days_ori){
       data_1_PET[[ii]][[jj]][,kk] <- c_pet_2[fc_1:fc_2,kk]
       data_1_UTCI[[ii]][[jj]][,kk] <- c_utci_2[fc_1:fc_2,kk]
+    }
   }
   write.csv(c_pet_2, paste0('ARCGIS/RES2/rayman_pet_out_', ii, '.csv'))
   write.csv(c_utci_2, paste0('ARCGIS/RES2/rayman_utci_out_', ii, '.csv'))
@@ -241,7 +242,7 @@ for(ii in times_set){
 }
 
 #==============================================
-#up2024_0713_21:20
+#up2024_0716_08:30
 #sumary of all data sets into data_1
 
 data_1 <- list()
