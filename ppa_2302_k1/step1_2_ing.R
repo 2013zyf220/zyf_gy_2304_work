@@ -77,7 +77,7 @@ for(ii in times_set){
 
 
 cat('==============step 2: get basic data================\n')
-#up2024_0716_08:20
+#up2024_0531_15:30
 #get original data of meteorological variables
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
@@ -137,7 +137,7 @@ for(c_vari in varis3){
 }
 
 #======================================
-#up2024_0716_08:22
+#up2024_0716_08:30
 
 data_1_TIME <- data_1_ori2$TIME
 data_1_TP <- data_1_ori2$TP
