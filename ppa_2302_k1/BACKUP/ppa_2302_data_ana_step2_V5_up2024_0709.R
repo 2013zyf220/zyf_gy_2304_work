@@ -1885,7 +1885,7 @@ if(res_run[6,2] == 1){
 #up2024_0618 08:00
 
 vari_set_check <- 'TP' #to_be_set
-check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
+#check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
 #check_1c <- fig1c_res_f(vari_set_check, 3, 6, indep_set) #to_be_set
 #check_2b <- fig2b_res_f(vari_set_check, indep_set)
 #check_2c <- fig2c_res_f(vari_set_check, 3, indep_set)

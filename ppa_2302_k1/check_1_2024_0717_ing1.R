@@ -18,10 +18,8 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 #result 4: each sub, each variable, each time, streets together, days merged
 #result 5: each sub, each variable, each time, each street, days together
 #result 6: each sub, each variable, each time, streets together, days together
-
-cat('========================step 1: basic setting==========================\n')
+#=================================================================
 #up2024_0528_17:00
-#add and set parameters
 
 load('RES1/ANA1_data_1_paras.RData')
 
@@ -52,7 +50,6 @@ len_days_hot <- length(days_hot)
 len_varis <- length(varis)
 len_subs <- length(subs)
 len_sites <- 50 #to_be_set
-len_sites_2 <- 25 #to_be_set
 
 ele_2a <- read.csv('ele_2_table.csv')
 ele_2b <- as.matrix(ele_2a)
@@ -68,7 +65,6 @@ indep_set <- 40 #to_be_set_key
 
 #=================================================================
 #up2024_0531_17:00
-#set independent variables for regression
 
 reg_se_sum <- list()
 reg_se_sum[[1]] <- c(23,40,41)
@@ -76,6 +72,9 @@ reg_se_sum[[2]] <- c(12)
 
 reg_set <- 1 #to_be_set_key
 reg_se <- reg_se_sum[[reg_set]]
+#=================================================================
+#up2024_0528_17:00
+#set independent variables for regression
 
 cname_index_1 <- colnames(index_1)
 cname_index_2 <- cname_index_1[reg_se] #to_be_set_key
@@ -83,7 +82,7 @@ cname_index_3 <- paste(cname_index_2, collapse = ' + ')
 
 #============================define functions=====================================
 #up2024_0528_17:00
-#define function: from subs_name(name of days) to subs(days)
+#define function: from subs_name to subs
 
 days_trans_f <- function(f_1){
   if(f_1 == 'ORI'){
@@ -98,7 +97,6 @@ days_trans_f <- function(f_1){
 
 #======================================================
 #up2024_0528_17:00
-#define distances
 
 dis_1 <- seq(10, 500, 10) #to_be_set
 dis_2 <- rep(dis_1, len_strs_mo)
@@ -126,7 +124,6 @@ for(c_sub_name in subs_name){
 }
 #==============================================
 #up2024_0617_20:30
-#for analysis by distances
 
 bydis_itv <- 10 #to_be_set
 bydis_num <- len_sites/bydis_itv
@@ -149,9 +146,8 @@ for(mm in 1: bydis_num){
   bydis2[[mm]] <- c_s: c_e
 }
 
-cat('========================step 2: basic data(data2_2)==========================\n')
+cat('========================step 1: basic data(data2_2)==========================\n')
 #up2024_0528_17:00
-#get original data(substract by reference, all days)
 
 data2_2_ori <- list()
 for(c_vari in varis){
@@ -163,7 +159,6 @@ for(c_vari in varis){
 
 #=========================================================
 #up2024_0528_18:00
-#get original data(substract by reference, selected days)
 
 data2_2_nor <- list()
 data2_2_hot <- list()
@@ -181,9 +176,10 @@ data2_2[['ORI']] <- data2_2_ori
 data2_2[['NOR']] <- data2_2_nor
 data2_2[['HOT']] <- data2_2_hot
 
-cat('========================step 3: calculate mean==========================\n')
+cat('========================step 2: calculate mean==========================\n')
+
 #up2024_0528_18:00
-#function: input weather data(averaged by day)
+#function: input weather data(mean)
 
 d2_mean_1f <- function(f_data, f_sub, f_vari){
   f_1 <- f_data[[f_sub]][[f_vari]]
@@ -198,8 +194,7 @@ d2_mean_1f <- function(f_data, f_sub, f_vari){
 
 #==============================================
 #up2024_0528_18:00
-#summarize data(averaged by day)
-#size of data2_2_mean$NOR$TP: 300 * 3
+#summarize data by averaging days
 
 data2_2_mean <- list()
 for(c_sub_name in subs_name){
@@ -213,9 +208,9 @@ for(c_sub_name in subs_name){
   }
 }
 
-cat('========================step 4: data for regression==========================\n')
+cat('========================step 3: data for regression==========================\n')
 #up2024_0528_18:00
-#get index_1 by adding data2_2_mean(summarize data averaged by day)
+#get index_1
 
 for(c_sub_name in subs_name){
   for(c_vari in varis){
@@ -234,7 +229,7 @@ write.csv(index_1c, paste0('RES2/index_1c.csv'), row.names = FALSE)
 
 #======================================================
 #up2024_0528_18:00
-#get index_2 by adding data2_2_ori(original data compared to reference)
+#get index_2
 
 for(c_vari in varis){
   for(ii in times_set){
@@ -248,45 +243,21 @@ for(c_vari in varis){
 write.csv(index_2, paste0('RES2/index_2.csv'), row.names = FALSE)
 
 #==============================================
-#up2024_0709_13:50
-#adjust distance intervals
-
-seq_a <- seq(1,49,2) #to_be_set
-seq_b <- seq(1,299,2) #to_be_set
-seq_c <- list()
-seq_c[['ORI']] <- seq(1,299,2) #to_be_set
-seq_c[['NOR']] <- seq(1,199,2) #to_be_set
-seq_c[['HOT']] <- seq(1,99,2) #to_be_set
-index_c1 <- index_1[seq_b, ]
-index_c2 <- index_2[seq_b, ]
-
-#==============================================
-#up2024_0709_13:55
+#up2024_0528_18:00
 #separate index_1/index_2 by streets
 
 index_1s <- list()
 index_2s <- list()
-for(jj in 1: len_strs_mo){
-  c_1 <- (jj - 1) * len_sites + 1
-  c_2 <- jj * len_sites
-  index_1s[[jj]] <- index_1[c_1:c_2,]
-  index_2s[[jj]] <- index_2[c_1:c_2,]
+for(ii in 1: len_strs_mo){
+  c_1 <- (ii - 1) * len_sites + 1
+  c_2 <- ii * len_sites
+  index_1s[[ii]] <- index_1[c_1:c_2,]
+  index_2s[[ii]] <- index_2[c_1:c_2,]
 }
 
-
-index_c1s <- list()
-index_c2s <- list()
-for(jj in 1: len_strs_mo){
-  c_1 <- (jj - 1) * len_sites_2 + 1
-  c_2 <- jj * len_sites_2
-  cat('index_c:',c_1,c_2,'\n')
-  index_c1s[[jj]] <- index_c1[c_1:c_2,]
-  index_c2s[[jj]] <- index_c2[c_1:c_2,]
-}
-
-cat('========================step 5: rce calculation==========================\n')
+cat('========================step 4: rce calculation==========================\n')
 #up2024_0528_18:00
-#define function: calculate RCE indexes 1a
+#define function: calculate RCE indexes
 
 rce_f <- function(f_1, f_2, f_3){
   f_rcd <- (-2 * f_2 - sqrt(4 * f_2^2 - 12 * f_1 * f_3))/(6 * f_1)
@@ -302,7 +273,7 @@ rce_f <- function(f_1, f_2, f_3){
 
 #==============================================
 #up2024_0528_18:00
-#define function: calculate RCE indexes 1b
+#define function: calculate rce indexes
 
 rce_1_f <- function(f_1, f_2){
   f_rce_1 <- lm(f_1 ~ poly(f_2, 3, raw = TRUE))
@@ -325,16 +296,14 @@ rce_1_f <- function(f_1, f_2){
 }
 
 #==============================================
-#up2024_0709_13:55
-#define function: calculate RCE indexes 2
+#up2024_0617_20:30
 
 rce_2_f <- function(f_1){
-  f_interval <- 3 #to_be_set
   f_1_len <- length(f_1)
-  f_1_len2 <- f_1_len - f_interval
+  f_1_len2 <- f_1_len - 5
   for(nn in 1: f_1_len2){
     c_1 <- nn + 1
-    c_2 <- nn + f_interval
+    c_2 <- nn + 5
     if(f_1[nn] > max(f_1[c_1: c_2])){
       f_rcd <- nn
       f_rci <- f_1[f_rcd] - f_1[1]
@@ -357,7 +326,6 @@ rce_2_f <- function(f_1){
 
 #==============================================
 #up2024_0617_20:30
-#RCE calculation based on method 2(single day)
 
 rce_rb1 <- list()
 for(c_vari in varis){
@@ -369,7 +337,7 @@ for(c_vari in varis){
       c_2 <- jj * len_sites
       rce_rb1[[c_vari]][[ii]][[jj]] <- list()
       for(kk in days_ori){
-        rce_rb1[[c_vari]][[ii]][[jj]][[kk]] <- rce_2_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a])
+        rce_rb1[[c_vari]][[ii]][[jj]][[kk]] <- rce_2_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2,kk])
       }
     }
   }
@@ -377,7 +345,6 @@ for(c_vari in varis){
 
 #==============================================
 #up2024_0617_20:30
-#RCE calculation based on method 2(daily mean)
 
 rce_rb2 <- list()
 for(c_sub_name in subs_name){
@@ -389,7 +356,7 @@ for(c_sub_name in subs_name){
       for(jj in strs_mo){
         c_1 <- (jj - 1) * len_sites + 1
         c_2 <- jj * len_sites
-        rce_rb2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_2_f(data2_2_mean[[c_sub_name]][[c_vari]][c_1: c_2,ii][seq_a])
+        rce_rb2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_2_f(data2_2_mean[[c_sub_name]][[c_vari]][c_1: c_2,ii])
       }
     }
   }
@@ -397,19 +364,19 @@ for(c_sub_name in subs_name){
 
 #==============================================
 #up2024_0528_22:00
-#calculate rce indexes(method 1, each each variable, each time, each street, each day)
+#calculate rce indexes(each each variable, each time, each street, each day)
 
 rce_r1 <- list()
 for(c_vari in varis){
   rce_r1[[c_vari]] <- list()
-    for(ii in times_set){
-      rce_r1[[c_vari]][[ii]] <- list()
-      for(jj in strs_mo){
-        c_1 <- (jj - 1) * len_sites + 1
-        c_2 <- jj * len_sites
-        rce_r1[[c_vari]][[ii]][[jj]] <- list()        
-        for(kk in days_ori){
-          rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
+  for(ii in times_set){
+    rce_r1[[c_vari]][[ii]] <- list()
+    for(jj in strs_mo){
+      c_1 <- (jj - 1) * len_sites + 1
+      c_2 <- jj * len_sites
+      rce_r1[[c_vari]][[ii]][[jj]] <- list()        
+      for(kk in days_ori){
+        rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1:c_2,kk], dis_1)
       }
     }
   }
@@ -417,7 +384,7 @@ for(c_vari in varis){
 
 #==============================================
 #up2024_0529_10:00
-#calculate rce indexes(method 1, each sub, each variable, each time, each street, days together)
+#calculate rce indexes(each sub, each variable, each time, each street, days together)
 
 data2_2v <- list()
 rce_r2 <- list()
@@ -442,7 +409,7 @@ for(c_sub_name in subs_name){
 
 #==============================================
 #up2024_0529_10:00
-#calculate rce indexes(method 1, days merged, streets together; each sub, each variable, each time)
+#calculate rce indexes(days merged, streets together; each sub, each variable, each time)
 
 rce_r3 <- list()
 for(c_sub_name in subs_name){
@@ -455,14 +422,14 @@ for(c_sub_name in subs_name){
   }
 }
 
-cat('========================step 6: regression==========================\n')
+cat('========================step 5: regression==========================\n')
 #up2024_0529_10:00
 #define function: regression(each variable, each time, each street, each day)
 
 regre_1f <- function(f_vari, f_time, f_str, f_day){
   f_name <- paste0('ORI_', f_vari, '_time', f_time,'_day',f_day)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
-  f_model_res <- lm(f_model_for, data = index_c2s[[f_str]])
+  f_model_res <- lm(f_model_for, data = index_2s[[f_str]])
   f_model_sum <- summary(f_model_res)
   f_r2 <- f_model_sum$r.squared
   f_r2_adj <- f_model_sum$adj.r.squared
@@ -500,7 +467,7 @@ for(c_vari in varis){
 regre_2f <- function(f_vari, f_time, f_day){
   f_name <- paste0('ORI_', f_vari, '_time', f_time,'_day',f_day)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
-  f_model_res <- lm(f_model_for, data = index_c2)
+  f_model_res <- lm(f_model_for, data = index_2)
   f_model_sum <- summary(f_model_res)
   f_r2 <- f_model_sum$r.squared
   f_r2_adj <- f_model_sum$adj.r.squared
@@ -535,7 +502,7 @@ for(c_vari in varis){
 regre_3f <- function(f_sub, f_vari, f_time, f_str){
   f_name <- paste0('mean1_', f_sub, '_', f_vari, '_times_', f_time)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
-  f_model_res <- lm(f_model_for, data = index_c1s[[f_str]])
+  f_model_res <- lm(f_model_for, data = index_1s[[f_str]])
   f_model_sum <- summary(f_model_res)
   f_r2 <- f_model_sum$r.squared
   f_r2_adj <- f_model_sum$adj.r.squared
@@ -573,7 +540,7 @@ for(c_sub_name in subs_name){
 regre_4f <- function(f_sub, f_vari, f_time){
   f_name <- paste0('mean1_', f_sub, '_', f_vari, '_times_', f_time)
   f_model_for <- as.formula(paste0(f_name, ' ~ ', cname_index_3)) 
-  f_model_res <- lm(f_model_for, data = index_c1)
+  f_model_res <- lm(f_model_for, data = index_1)
   f_model_sum <- summary(f_model_res)
   f_r2 <- f_model_sum$r.squared
   f_r2_adj <- f_model_sum$adj.r.squared
@@ -703,7 +670,7 @@ for(c_sub_name in subs_name){
   }
 }
 
-cat('========================step 7: figures==========================\n')
+cat('========================step 6: figures==========================\n')
 #up2024_0529_10:00
 #define function: fig(each variable, each time, each street, each day)
 
@@ -714,14 +681,13 @@ fig_1f <- function(f_vari, f_time){
     for(kk in days_ori){
       f_1 <- (jj - 1) * len_sites + 1
       f_2 <- jj * len_sites
-      f_y <- data2_2_ori[[f_vari]][[f_time]][f_1:f_2,kk][seq_a]
-      f_dis <- dis_1[seq_a]
-      plot(f_dis, f_y, main = paste0('str: ', jj, '_day:', kk), 
+      f_y <- data2_2_ori[[f_vari]][[f_time]][f_1:f_2,kk]
+      plot(dis_1, f_y, main = paste0('str: ', jj, '_day:', kk), 
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      #curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
+      #curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -752,14 +718,13 @@ fig_2f <- function(f_vari){
   par(mfrow = c(len_times_set, len_days_ori)) 
   for(ii in times_set){
     for(kk in days_ori){
-      f_y <- data2_2_ori[[f_vari]][[ii]][,kk][seq_b]
-      f_dis <- dis_2[seq_b]
-      plot(f_dis, f_y, main = paste0('time: ', ii, '_day:', kk), 
+      f_y <- data2_2_ori[[f_vari]][[ii]][,kk]
+      plot(dis_2, f_y, main = paste0('time: ', ii, '_day:', kk), 
            xlab = 'Distance (m)', ylab = paste0('d ', f_vari), pch = 19, col = 'skyblue')
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_2, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_2, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -789,14 +754,13 @@ fig_3f <- function(f_sub, f_vari){
     for(jj in strs_mo){
       f_1 <- (jj - 1) * len_sites + 1
       f_2 <- jj * len_sites
-      f_y <- data2_2_mean[[f_sub]][[f_vari]][f_1:f_2,ii][seq_a]
-      f_dis <- dis_1[seq_a]
-      plot(f_dis, f_y, main = paste0('time: ', ii, '_str:', jj), 
+      f_y <- data2_2_mean[[f_sub]][[f_vari]][f_1:f_2,ii]
+      plot(dis_1, f_y, main = paste0('time: ', ii, '_str:', jj), 
            xlab = 'Distance (m)', ylab = paste0(f_sub, '_d ', f_vari), pch = 19, col = 'skyblue')
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_1, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_1, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_1 = x)), add = TRUE, col = 'red', lty = 2)
     }
   }
   dev.off() 
@@ -829,14 +793,13 @@ fig_4f <- function(f_vari){
   par(mfrow = c(len_subs, len_times_set), oma = c(3, 3, 3, 3), mar = c(2.8,2.8,2.8,2.8),  mgp = c(2, 0.5, 0)) 
   for(c_sub_name in subs_name){
     for(ii in times_set){
-      f_y <- data2_2_mean[[c_sub_name]][[f_vari]][,ii][seq_b]
-      f_dis <- dis_2[seq_b]
-      plot(f_dis, f_y, main = paste0('sub:', c_sub_name, '__time: ', ii), xlab = 'Distance (m)', ylab = paste0('d ', f_vari), 
+      f_y <- data2_2_mean[[c_sub_name]][[f_vari]][,ii]
+      plot(dis_2, f_y, main = paste0('sub:', c_sub_name, '__time: ', ii), xlab = 'Distance (m)', ylab = paste0('d ', f_vari), 
            col = 'skyblue', family = 'calibri', cex.main = 0.5, cex.lab = 0.6, cex.axis = 0.6, pch = 19, cex = 0.2)
-      f_fit1 <- lm(f_y ~ poly(f_dis, 1, raw = TRUE))
-      f_fit2 <- lm(f_y ~ poly(f_dis, 2, raw = TRUE))
-      curve(predict(f_fit1, newdata = data.frame(f_dis = x)), add = TRUE, col = 'red', lty = 2)
-      curve(predict(f_fit2, newdata = data.frame(f_dis = x)), add = TRUE, col = 'green', lty = 2)
+      f_fit1 <- lm(f_y ~ poly(dis_2, 1, raw = TRUE))
+      f_fit2 <- lm(f_y ~ poly(dis_2, 2, raw = TRUE))
+      curve(predict(f_fit1, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'red', lty = 2)
+      curve(predict(f_fit2, newdata = data.frame(dis_2 = x)), add = TRUE, col = 'green', lty = 2)
       #grid(nx = NULL, ny = NULL, col = 'gray', lty = 'dotted')    
     }
   }
@@ -950,8 +913,8 @@ fig1b_list_f <- function(f_vari, f_time, f_indep){
       f_fig1b_data_colnames <- c(f_fig1b_data_colnames, paste0('str_', jj, '_day_', kk, '_xx'), paste0('str_', jj, '_day_', kk, '_yy'))
       nn <- nn + 1
       f_fig1b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][fc_1:fc_2][seq_a],
-        yy = data2_2_ori[[f_vari]][[f_time]][fc_1:fc_2,kk][seq_a]
+        xx = index_1[[f_indep]][fc_1:fc_2],
+        yy = data2_2_ori[[f_vari]][[f_time]][fc_1:fc_2,kk]
       )
     }
   }
@@ -1079,8 +1042,8 @@ fig2b_list_f <- function(f_vari, f_indep){
       f_fig2b_data_colnames <- c(f_fig2b_data_colnames, paste0('time_', ii, '_day_', kk, '_xx'), paste0('time_', ii, '_day_', kk, '_yy'))
       nn <- nn + 1
       f_fig2b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][seq_b],
-        yy = data2_2_ori[[f_vari]][[ii]][seq_b,kk]
+        xx = index_1[[f_indep]],
+        yy = data2_2_ori[[f_vari]][[ii]][,kk]
       )     
     }
   }
@@ -1208,12 +1171,12 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
       fc_1 <- (jj - 1) * len_sites + 1
       fc_2 <- jj * len_sites
       f_fig3b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][fc_1:fc_2][seq_a],
-        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii][seq_a]
+        xx = index_1[[f_indep]][fc_1:fc_2],
+        yy = data2_2_mean[[f_sub]][[f_vari]][fc_1:fc_2,ii]
       )
     }
   }
-
+  
   f_fig3b_data <- data.frame(matrix(ncol = len_times_set * len_strs_mo * 2, nrow = len_sites))
   for (qq in 1:length(f_fig3b_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1337,12 +1300,12 @@ fig4b_list_f <- function(f_sub, f_indep){
       f_fig4b_data_colnames <- c(f_fig4b_data_colnames, paste0(c_vari, '_time_', ii, '_xx'), paste0(c_vari, '_time_', ii, '_yy'))
       nn <- nn + 1
       f_fig4b_list[[nn]] <- data.frame(
-        xx = index_1[[f_indep]][seq_b],
-        yy = data2_2_mean[[f_sub]][[c_vari]][seq_b,ii]
+        xx = index_1[[f_indep]],
+        yy = data2_2_mean[[f_sub]][[c_vari]][,ii]
       )
     }
   }
-
+  
   f_fig4b_data <- data.frame(matrix(ncol = len_varis * len_times_set * 2, nrow = len_sites * len_strs_mo))
   for (qq in 1:length(f_fig4b_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1413,7 +1376,7 @@ fig4c_list_f <- function(f_sub, f_vari, f_indep){
       )
     }
   }
-
+  
   f_fig4c_data <- data.frame(matrix(ncol = len_times_set * bydis_num * 2, nrow = bydis_itv * len_strs_mo))
   for (qq in 1:length(f_fig4c_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1486,7 +1449,7 @@ fig5b_list_f <- function(f_sub, f_vari, f_indep){
       )
     }
   }
-
+  
   f_fig5b_data <- data.frame(matrix(ncol = len_times_set * len_strs_mo * 2, nrow = len_sites * f_days_len))
   for (qq in 1:length(f_fig5b_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1746,7 +1709,7 @@ fig6c_res_f <- function(f_sub, f_vari, f_indep){
 #======================================================
 #up2024_0618 08:00
 
-res_run_0 <- c(1,0,0,0,0,0,0,0,0,0,0,0) #to_be_set
+res_run_0 <- c(0,0,0,0,0,0,0,0,0,0,0,0) #to_be_set
 res_run <- matrix(res_run_0, nrow = 6, ncol = 2, byrow = TRUE)
 
 if(res_run[1,1] == 1){
@@ -1885,7 +1848,7 @@ if(res_run[6,2] == 1){
 #up2024_0618 08:00
 
 vari_set_check <- 'TP' #to_be_set
-#check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
+check_1b <- fig1b_res_f(vari_set_check, 3, indep_set) #to_be_set
 #check_1c <- fig1c_res_f(vari_set_check, 3, 6, indep_set) #to_be_set
 #check_2b <- fig2b_res_f(vari_set_check, indep_set)
 #check_2c <- fig2c_res_f(vari_set_check, 3, indep_set)
