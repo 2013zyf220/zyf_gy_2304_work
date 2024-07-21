@@ -52,7 +52,7 @@ len_days_hot <- length(days_hot)
 len_varis <- length(varis)
 len_subs <- length(subs)
 len_sites <- 50 #to_be_set
-len_sites_2 <- 25 #to_be_set
+len_sites_2 <- 50 #to_be_set_seq(25/50)
 
 ele_2a <- read.csv('ele_2_table.csv')
 ele_2b <- as.matrix(ele_2a)
@@ -251,12 +251,12 @@ write.csv(index_2, paste0('RES2/index_2.csv'), row.names = FALSE)
 #up2024_0709_13:50
 #adjust distance intervals
 
-seq_a <- seq(1,49,2) #to_be_set
-seq_b <- seq(1,299,2) #to_be_set
+seq_a <- seq(1,50,1) #to_be_set_seq(seq(1,49,2)/seq(1,50,1))
+seq_b <- seq(1,300,1) #to_be_set_seq(seq(1,299,2)/seq(1,300,1))
 seq_c <- list()
-seq_c[['ORI']] <- seq(1,299,2) #to_be_set
-seq_c[['NOR']] <- seq(1,199,2) #to_be_set
-seq_c[['HOT']] <- seq(1,99,2) #to_be_set
+seq_c[['ORI']] <- seq(1,300,1) #to_be_set_seq(seq(1,299,2)/seq(1,300,1))
+seq_c[['NOR']] <- seq(1,200,1) #to_be_set_seq(seq(1,199,2)/seq(1,200,1))
+seq_c[['HOT']] <- seq(1,100,1) #to_be_set_seq(seq(1,99,2)/seq(1,100,1))
 index_c1 <- index_1[seq_b, ]
 index_c2 <- index_2[seq_b, ]
 
@@ -1746,13 +1746,14 @@ fig6c_res_f <- function(f_sub, f_vari, f_indep){
 #======================================================
 #up2024_0618 08:00
 
-res_run_0 <- c(1,0,0,0,0,0,0,0,0,0,0,0) #to_be_set
+res_run_0 <- c(0,0,0,0,0,0,0,0,0,0,0,0) #to_be_set
 res_run <- matrix(res_run_0, nrow = 6, ncol = 2, byrow = TRUE)
+varis_2 <- c('TP','RH') #to_be_set
 
 if(res_run[1,1] == 1){
   cat('run_figs_1b','\n')
   fig1b_res <- list()
-  for(c_vari in varis){
+  for(c_vari in varis_2){
     fig1b_res[[c_vari]] <- list()
     for(ii in times_set){
       fig1b_res[[c_vari]][[ii]] <- fig1b_res_f(c_vari,ii, indep_set)
@@ -1763,7 +1764,7 @@ if(res_run[1,1] == 1){
 if(res_run[1,2] == 1){
   cat('run_figs_1c','\n')
   fig1c_res <- list()
-  for(c_vari in varis){
+  for(c_vari in varis_2){
     fig1c_res[[c_vari]] <- list()
     for(ii in times_set){
       fig1c_res[[c_vari]][[ii]] <- list()
@@ -1777,7 +1778,7 @@ if(res_run[1,2] == 1){
 if(res_run[2,1] == 1){
   cat('run_figs_2b','\n')
   fig2b_res <- list()
-  for(c_vari in varis){
+  for(c_vari in varis_2){
     fig2b_res[[c_vari]] <- fig2b_res_f(c_vari, indep_set)
   }
 }
@@ -1785,7 +1786,7 @@ if(res_run[2,1] == 1){
 if(res_run[2,2] == 1){
   cat('run_figs_2c','\n')
   fig2c_res <- list()
-  for(c_vari in varis){
+  for(c_vari in varis_2){
     fig2c_res[[c_vari]] <- list()
     for(ii in times_set){
       fig2c_res[[c_vari]][[ii]] <- fig2c_res_f(c_vari, ii, indep_set)
@@ -1798,7 +1799,7 @@ if(res_run[3,1] == 1){
   fig3b_res <- list()
   for(c_sub_name in subs_name){
     fig3b_res[[c_sub_name]] <- list()
-    for(c_vari in varis){
+    for(c_vari in varis_2){
       fig3b_res[[c_sub_name]][[c_vari]] <- fig3b_res_f(c_sub_name, c_vari, indep_set)
     }
   }
@@ -1809,7 +1810,7 @@ if(res_run[3,2] == 1){
   fig3c_res <- list()
   for(c_sub_name in subs_name){
     fig3c_res[[c_sub_name]] <- list()
-    for(c_vari in varis){
+    for(c_vari in varis_2){
       fig3c_res[[c_sub_name]][[c_vari]] <- list()
       for(ii in times_set){
         fig3c_res[[c_sub_name]][[c_vari]][[ii]] <- fig3c_res_f(c_sub_name, c_vari, ii, indep_set)
@@ -1842,7 +1843,7 @@ if(res_run[5,1] == 1){
   fig5b_res <- list()
   for(c_sub_name in subs_name){
     fig5b_res[[c_sub_name]] <- list()
-    for(c_vari in varis){
+    for(c_vari in varis_2){
       fig5b_res[[c_sub_name]][[c_vari]] <- fig5b_res_f(c_sub_name, c_vari, indep_set)
     }
   } 
@@ -1853,7 +1854,7 @@ if(res_run[5,2] == 1){
   fig5c_res <- list()
   for(c_sub_name in subs_name){
     fig5c_res[[c_sub_name]] <- list()
-    for(c_vari in varis){
+    for(c_vari in varis_2){
       fig5c_res[[c_sub_name]][[c_vari]] <- list()
       for(ii in times_set){
         fig5c_res[[c_sub_name]][[c_vari]][[ii]] <- fig5c_res_f(c_sub_name, c_vari, ii, indep_set)
@@ -1875,7 +1876,7 @@ if(res_run[6,2] == 1){
   fig6c_res <- list()
   for(c_sub_name in subs_name){
     fig6c_res[[c_sub_name]] <- list()
-    for(c_vari in varis){
+    for(c_vari in varis_2){
       fig6c_res[[c_sub_name]][[c_vari]] <- fig6c_res_f(c_sub_name, c_vari, indep_set)
     }
   }
