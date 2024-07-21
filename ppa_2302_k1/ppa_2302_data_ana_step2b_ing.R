@@ -455,9 +455,8 @@ for(c_sub_name in subs_name){
   }
 }
 
-#=====================================================================
 cat('========================step b1: regression_b==========================\n')
-#ing2024_0721_20:26
+#up2024_0721_21:23 
 
 regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_days <- days_trans_f(f_sub)
@@ -487,6 +486,9 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_model_res <- lm(f_model_for, data = f_z_2)
   f_model_sum <- summary(f_model_res)
   f_r2b <- f_model_sum$r.squared
+  f_p1 <- f_model_sum$coefficients[, 4]
+  f_p2 <- as.vector(f_p1[-1])
+  
   
   f_res <- list()
   f_res[['days']] <- f_days
@@ -502,9 +504,9 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
 }
 
 #========================================
-#ing
+#up2024_0721_21:23 
 
-regreb_6f_sub <- 'ORI'
+regreb_6f_sub <- 'ORI' #to_be_set
 
 regreb_6f_r2 <- list()
 for(c_vari in varis){
@@ -514,7 +516,7 @@ for(c_vari in varis){
     for(mm in 1: bydis_num){
       regreb_6f_r2[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$r2a
     }
-    colnames(regreb_6f_r2[[c_vari]][[ii]]) <- cname_index_2
+    rownames(regreb_6f_r2[[c_vari]][[ii]]) <- cname_index_2
     write.csv(regreb_6f_r2[[c_vari]][[ii]], paste0('RES3/Fig_r2_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
   }
 }
