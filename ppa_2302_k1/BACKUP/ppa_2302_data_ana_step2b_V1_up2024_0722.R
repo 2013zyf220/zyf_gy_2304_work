@@ -38,10 +38,12 @@ subs1_name <- data_1_paras[['subs1_name']]
 subs <- c(ORI = list(days_ori), subs1)
 subs_name <- c('ORI', subs1_name)
 
-days_ori_name <- c('day1','day2','day3','day4','day5','day6')  #to_be_set
-days_nor_name <- c('day1','day2','day3','day5')  #to_be_set
-days_hot_name <- c('day4','day6')  #to_be_set
+days_name <- list()
+days_name[['ORI']] <- c('day1','day2','day3','day4','day5','day6')  #to_be_set
+days_name[['NOR']] <- c('day1','day2','day3','day5')  #to_be_set
+days_name[['HOT']] <- c('day4','day6')  #to_be_set
 times_set_name <- c('time1','time2','time3')
+strs_mo_name <- c('str1', 'str2', 'str3', 'str4', 'str5', 'str6')
 
 len_times_set <- length(times_set)
 len_strs_co <- length(strs_co)
@@ -534,6 +536,8 @@ for(c_vari in varis){
         rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$model_rcd_1 * 10 #to_be_set
       }
     }
+    rownames(rcd_r1_b[[c_vari]][[ii]]) <- strs_mo_name
+    colnames(rcd_r1_b[[c_vari]][[ii]]) <- days_name[[regreb_6f_sub]]
     write.csv(rcd_r1_b[[c_vari]][[ii]], paste0('RES3/rcd_r1_b_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'))
   }
 }
@@ -549,5 +553,7 @@ for(c_vari in varis){
       rcd_r2_b[[c_vari]][ii,jj] <- rce_r2[[regreb_6f_sub]][[c_vari]][[ii]][[jj]]$model_rcd_1 * 10 #to_be_set
     }
   }
+  rownames(rcd_r2_b[[c_vari]]) <- times_set_name
+  colnames(rcd_r2_b[[c_vari]]) <- strs_mo_name
   write.csv(rcd_r2_b[[c_vari]], paste0('RES3/rcd_r2_b_', regreb_6f_sub, '_', c_vari, '.csv'))
 }
