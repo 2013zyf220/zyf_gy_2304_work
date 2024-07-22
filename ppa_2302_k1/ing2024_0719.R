@@ -56,16 +56,17 @@ for(c_vari in varis){
 
 
 #========================================
-rce_r1_sub <- 'ORI'
-rce_r1_days <- days_trans_f(rce_r1_sub)
-rce_r1_a1 <- list()
+regre_6f_sub <- 'ORI'
+regre_6f_days <- days_trans_f(regre_6f_sub)
+
+rcd_r1_b <- list()
 for(c_vari in varis){
-  rce_r1_a1[[c_vari]] <- list()
+  rcd_r1_b[[c_vari]] <- list()
   for(ii in times_set){
-    rce_r1_a1[[c_vari]] <- matrix(0, nrow = 6, ncol = 6)
+    rcd_r1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regre_6f_days))
     for(jj in strs_mo){
-      for(kk in 1: length(rce_r1_days)){
-        rce_r1_a1[[c_vari]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[rce_r1_days[kk]]]$model_rcd_1
+      for(kk in 1: length(regre_6f_days)){
+        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[rce_r1_days[kk]]]$model_rcd_1 * 10
       }
     }
   }
@@ -74,12 +75,12 @@ for(c_vari in varis){
 #========================================
 rce_r2_sub <- 'ORI'
 
-rce_r2_a1 <- list()
+rcd_r2_b <- list()
 for(c_vari in varis){
-  rce_r2_a1[[c_vari]] <- matrix(0, nrow = 3, ncol = 6)
+  rcd_r2_b[[c_vari]] <- matrix(0, nrow = len_times_set, ncol = len_strs_mo)
   for(ii in times_set){
     for(jj in strs_mo){
-        rce_r2_a1[[c_vari]][ii,jj] <- rce_r2[[rce_r2_sub]][[c_vari]][[ii]][[jj]]$model_rcd_1
+        rcd_r2_b[[c_vari]][ii,jj] <- rce_r2[[rce_r2_sub]][[c_vari]][[ii]][[jj]]$model_rcd_1 * 10
     }
   }
 }

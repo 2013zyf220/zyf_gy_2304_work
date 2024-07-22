@@ -534,6 +534,7 @@ for(c_vari in varis){
         rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$model_rcd_1 * 10
       }
     }
+    write.csv(rcd_r1_b[[c_vari]][[ii]], paste0('RES3/rcd_r1_b_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'))
   }
 }
 
@@ -547,5 +548,6 @@ for(c_vari in varis){
     for(jj in strs_mo){
       rcd_r2_b[[c_vari]][ii,jj] <- rce_r2[[regreb_6f_sub]][[c_vari]][[ii]][[jj]]$model_rcd_1 * 10
     }
+    write.csv(rcd_r2_b[[c_vari]], paste0('RES3/rcd_r2_b_', regreb_6f_sub, '_', c_vari, '.csv'))
   }
 }
