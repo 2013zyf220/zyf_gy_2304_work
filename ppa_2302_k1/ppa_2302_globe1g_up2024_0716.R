@@ -62,6 +62,11 @@ cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
 #up2024_0709_07:21
 
 cal_globe_2f <- function(f_vari){
+  if(f_vari == 'TA'){
+    f_vari2 <- 'TP'
+  }else{
+    f_vari2 <- f_vari
+  }
   f_data_1 <- list()
   f_data_1_df <- list()
   
@@ -76,7 +81,7 @@ cal_globe_2f <- function(f_vari){
     }
     f_data_1_df[[ii]] <- as.data.frame(f_data_1[[ii]])
     colnames(f_data_1_df[[ii]]) <- days_ori_name
-    write.csv(f_data_1_df[[ii]], paste0('RES1/datag_1_', f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    write.csv(f_data_1_df[[ii]], paste0('RES1/datag_1_', f_vari2, '_time', ii,'.csv'), row.names = FALSE)
   }
   return(f_data_1_df)
 }

@@ -15,7 +15,7 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 setas <- c('recg','recw')  #to_be_set_key
 
 varis <- list()
-varis[['recg']] <- c('TA','RH','TG','WBGT') #to_be_set
+varis[['recg']] <- c('TP','RH','TG','WBGT') #to_be_set
 varis[['recw']] <- c('WS') #to_be_set
 vari_set_2 <- 1 #to_be_set
 times_set <- c(1,2,3) #to_be_set

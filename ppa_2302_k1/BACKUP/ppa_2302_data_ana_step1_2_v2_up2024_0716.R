@@ -75,6 +75,30 @@ for(ii in times_set){
   }
 }
 
+#==================================
+#up2024_0723_22:30
+
+varis2g_f <- function(f_vari){
+  if(f_vari == 'TPG'){
+    f_vari2 <- 'TP'
+  }else if(f_vari == 'RHG'){
+    f_vari2 <- 'RH'
+  }else{
+    f_vari2 <- f_vari
+  }
+  return(f_vari2)
+}
+
+varis2w_f <- function(f_vari){
+  if(f_vari == 'TPW'){
+    f_vari2 <- 'TP'
+  }else if(f_vari == 'RHW'){
+    f_vari2 <- 'RH'
+  }else{
+    f_vari2 <- f_vari
+  }
+  return(f_vari2)
+}
 
 cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
@@ -97,16 +121,18 @@ for(c_vari in varis2){
 }
 
 for(c_vari in varis2g){
+  c_vari2 <- varis2g_f(c_vari)
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari, '_time', ii,'.csv'))
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari2, '_time', ii,'.csv'))
   }
 }
 
 for(c_vari in varis2w){
+  c_vari2 <- varis2w_f(c_vari)
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', recw_seta, c_vari, '_time', ii,'.csv'))
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', recw_seta, c_vari2, '_time', ii,'.csv'))
   }
 }
 

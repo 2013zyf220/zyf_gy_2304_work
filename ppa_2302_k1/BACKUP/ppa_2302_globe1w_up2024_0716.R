@@ -94,9 +94,9 @@ get_dataw_1f <- function(f_str, f_day, f_time){
   f_data_ws1 <- list()
   f_data_ws1_1 <- rep(0, f_min_seq_len)
   f_data_ws1_2 <- rep(0, f_min_seq_len)
-  f_data_ta1 <- list()
-  f_data_ta1_1 <- rep(0, f_min_seq_len)
-  f_data_ta1_2 <- rep(0, f_min_seq_len)
+  f_data_tp1 <- list()
+  f_data_tp1_1 <- rep(0, f_min_seq_len)
+  f_data_tp1_2 <- rep(0, f_min_seq_len)
   f_data_rh1 <- list()
   f_data_rh1_1 <- rep(0, f_min_seq_len)
   f_data_rh1_2 <- rep(0, f_min_seq_len)
@@ -104,20 +104,20 @@ get_dataw_1f <- function(f_str, f_day, f_time){
     #cat('pp:', pp, '\n')
     f_data_4[[pp]] <- subset(f_data_2, time_x2 >= f_min_seq_1[pp] & time_x2 < f_min_seq_1[pp + 1])
     f_data_ws1[[pp]] <- as.numeric(f_data_4[[pp]]$Wind.Speed) 
-    f_data_ta1[[pp]] <- as.numeric(f_data_4[[pp]]$Temperature) 
+    f_data_tp1[[pp]] <- as.numeric(f_data_4[[pp]]$Temperature) 
     f_data_rh1[[pp]] <- as.numeric(f_data_4[[pp]]$Relative.Humidity) 
     if(length(f_data_ws1[[pp]]) > 0){
       f_data_ws1_1[pp] <- mean(f_data_ws1[[pp]])
       f_data_ws1_2[pp] <- f_data_ws1[[pp]][1]  
-      f_data_ta1_1[pp] <- mean(f_data_ta1[[pp]])
-      f_data_ta1_2[pp] <- f_data_ta1[[pp]][1]  
+      f_data_tp1_1[pp] <- mean(f_data_tp1[[pp]])
+      f_data_tp1_2[pp] <- f_data_tp1[[pp]][1]  
       f_data_rh1_1[pp] <- mean(f_data_rh1[[pp]])
       f_data_rh1_2[pp] <- f_data_rh1[[pp]][1]  
     }else{
       f_data_ws1_1[pp] <- NA
       f_data_ws1_2[pp] <- NA
-      f_data_ta1_1[pp] <- NA
-      f_data_ta1_2[pp] <- NA
+      f_data_tp1_1[pp] <- NA
+      f_data_tp1_2[pp] <- NA
       f_data_rh1_1[pp] <- NA
       f_data_rh1_2[pp] <- NA
     }
@@ -127,9 +127,9 @@ get_dataw_1f <- function(f_str, f_day, f_time){
   f_res[['ws1']] <- f_data_ws1
   f_res[['ws1_1']] <- f_data_ws1_1
   f_res[['ws1_2']] <- f_data_ws1_2
-  f_res[['ta1']] <- f_data_ta1
-  f_res[['ta1_1']] <- f_data_ta1_1
-  f_res[['ta1_2']] <- f_data_ta1_2
+  f_res[['tp1']] <- f_data_tp1
+  f_res[['tp1_1']] <- f_data_tp1_1
+  f_res[['tp1_2']] <- f_data_tp1_2
   f_res[['rh1']] <- f_data_rh1
   f_res[['rh1_1']] <- f_data_rh1_1
   f_res[['rh1_2']] <- f_data_rh1_2
@@ -140,7 +140,7 @@ get_dataw_1f <- function(f_str, f_day, f_time){
 #up2024_0711_08:03
 
 ws_vari <- c('ws1_1','ws1_2')
-ta_vari <- c('ta1_1','ta1_2')
+tp_vari <- c('tp1_1','tp1_2')
 rh_vari <- c('rh1_1','rh1_2')
 
 #============================================
@@ -150,8 +150,8 @@ get_dataw_2f <- function(f_vari){
   f_vari_set <- 1 #to_be_set_key
   if(f_vari == 'WS'){
     f_vari1 <- ws_vari[f_vari_set]
-  }else if(f_vari == 'TA'){
-    f_vari1 <- ta_vari[f_vari_set]
+  }else if(f_vari == 'TP'){
+    f_vari1 <- tp_vari[f_vari_set]
   }else if(f_vari == 'RH'){
     f_vari1 <- rh_vari[f_vari_set]
   }else{
