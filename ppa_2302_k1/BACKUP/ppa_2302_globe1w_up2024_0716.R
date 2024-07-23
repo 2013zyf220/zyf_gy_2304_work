@@ -27,7 +27,7 @@ days_hot <- c(4,6)  #to_be_set_key(number inside days_ori)
 strs_co <- c(1,2,3,4,5,6,7,8)  #to_be_set_key
 strs_mo <- c(1,2,3,4,5,6)  #to_be_set_key
 varis_1 <- c('Date', 'Time', 'TA','RH','TG','WBGT')  #to_be_set_key
-varis_2 <- c('WS')  #to_be_set_key('WS','TA','RH')
+varis_2 <- c('WS','TA','RH')  #to_be_set_key('WS','TA','RH')
 
 len_days_ori <- length(days_ori)
 len_days_nor <- length(days_nor)
@@ -147,7 +147,7 @@ rh_vari <- c('rh1_1','rh1_2')
 #up2024_0709_08:21
 
 get_dataw_2f <- function(f_vari){
-  f_vari_set <- 1 #to_be_set
+  f_vari_set <- 1 #to_be_set_key
   if(f_vari == 'WS'){
     f_vari1 <- ws_vari[f_vari_set]
   }else if(f_vari == 'TA'){

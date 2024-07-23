@@ -82,8 +82,8 @@ cat('==============step 2: get basic data================\n')
 recw_seta <- 1   #to_be_set
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
-varis2w <- c('WS')   #to_be_set
-varis2g <- c('TG', 'WBGT') #to_be_set
+varis2w <- c('WS')   #to_be_set_key
+varis2g <- c('TG', 'WBGT') #to_be_set_key
 varis3 <- c(varis2, varis2w, varis2g) #to_be_set
 varis4 <-  setdiff(varis3, 'TIME')
 varis5 <- c(varis4, 'DI', 'HI', 'HR', 'PET', 'UTCI') #to_be_set

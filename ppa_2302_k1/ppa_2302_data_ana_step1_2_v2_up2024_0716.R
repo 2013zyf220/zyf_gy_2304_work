@@ -75,6 +75,19 @@ for(ii in times_set){
   }
 }
 
+#==================================
+#ing
+
+varis2g_f <- function(f_vari){
+  if(f_vari == 'TPG'){
+    f_vari2 <- 'TA'
+  }else if(f_vari == 'RHG'){
+    f_vari2 <- 'RH'
+  }else{
+    f_vari2 <- f_vari
+  }
+}
+
 
 cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
@@ -82,8 +95,8 @@ cat('==============step 2: get basic data================\n')
 recw_seta <- 1   #to_be_set
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
-varis2w <- c('WS')   #to_be_set
-varis2g <- c('TG', 'WBGT') #to_be_set
+varis2w <- c('WS')   #to_be_set_key
+varis2g <- c('TG', 'WBGT') #to_be_set_key
 varis3 <- c(varis2, varis2w, varis2g) #to_be_set
 varis4 <-  setdiff(varis3, 'TIME')
 varis5 <- c(varis4, 'DI', 'HI', 'HR', 'PET', 'UTCI') #to_be_set
@@ -97,6 +110,7 @@ for(c_vari in varis2){
 }
 
 for(c_vari in varis2g){
+  c_vari2 <- varis2g_f(c_vari)
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
     data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recg_1_', c_vari, '_time', ii,'.csv'))

@@ -77,7 +77,7 @@ for(ii in times_set){
 tp_1 <- list()
 tp_2 <- list()
 for(ii in times_set){
-  tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TP_time', ii, '.csv')))
+  tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TP_time', ii, '.csv'))) #to_be_set_key
   tp_2[[ii]] <- as.vector(tp_1[[ii]])
 }
 
@@ -88,7 +88,7 @@ for(ii in times_set){
 rh_1 <- list()
 rh_2 <- list()
 for(ii in times_set){
-  rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_RH_time', ii, '.csv')))
+  rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_RH_time', ii, '.csv')))  #to_be_set_key
   rh_2[[ii]] <- as.vector(rh_1[[ii]])
 }
 
@@ -98,7 +98,7 @@ for(ii in times_set){
 ws_1 <- list()
 ws_2 <- list()
 for(ii in times_set){
-  ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/recw2_1_1WS_time', ii, '.csv')))
+  ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/recw2_1_1WS_time', ii, '.csv')))  #to_be_set_key
   ws_2[[ii]] <- round(as.vector(ws_1[[ii]]), 2)
 }
 

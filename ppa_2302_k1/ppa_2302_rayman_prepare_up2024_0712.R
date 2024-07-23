@@ -72,12 +72,32 @@ for(ii in times_set){
 }
 
 #==================
+
+
+tp_para <- c('rec', 'recw', 'recg') #to_be_set
+
+get_tp_f <- function(f_data_0){
+  f_tp_1 <- list()
+  f_tp_2 <- list()
+  for(ii in times_set){
+    f_tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', tp_para, '_1_TP_time', ii, '.csv'))) #to_be_set_key
+    f_tp_2[[ii]] <- as.vector(tp_1[[ii]])
+  }
+  return(tp_2)
+}
+
+tp_data <- list()
+for(c_tp_para in tp_para){
+  tp_data[[c_tp_para]] <- get_tp_f(c_tp_para)
+}
+#==================
 #up2024_0712_22:06
+
 
 tp_1 <- list()
 tp_2 <- list()
 for(ii in times_set){
-  tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TP_time', ii, '.csv')))
+  tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TP_time', ii, '.csv'))) #to_be_set_key
   tp_2[[ii]] <- as.vector(tp_1[[ii]])
 }
 
@@ -88,7 +108,7 @@ for(ii in times_set){
 rh_1 <- list()
 rh_2 <- list()
 for(ii in times_set){
-  rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_RH_time', ii, '.csv')))
+  rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_RH_time', ii, '.csv')))  #to_be_set_key
   rh_2[[ii]] <- as.vector(rh_1[[ii]])
 }
 
@@ -98,7 +118,7 @@ for(ii in times_set){
 ws_1 <- list()
 ws_2 <- list()
 for(ii in times_set){
-  ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/recw2_1_1WS_time', ii, '.csv')))
+  ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/recw2_1_1WS_time', ii, '.csv')))  #to_be_set_key
   ws_2[[ii]] <- round(as.vector(ws_1[[ii]]), 2)
 }
 
@@ -133,3 +153,33 @@ for(ii in times_set){
   write.table(rayman_1_df[[ii]], file = paste0('RES2/rayman_1_time', ii, '.txt'), sep = ' ', row.names = FALSE, col.names = TRUE, quote = FALSE)
 }
 
+
+#===============================
+rayman_f1 <- function(f_para_tp, f_para_rh, f_para_ws, f_time){
+  rayman_1 <- matrix(0, nrow = len_sites * len_strs_co * len_days_ori, ncol = 10) #to_be_set
+  rayman_1[,1] <- date_3
+  rayman_1[,2] <- time_sum[[f_time]]
+  rayman_1[,3] <- lon_2
+  rayman_1[,4] <- lat_2
+  rayman_1[,5] <- ele_2
+  rayman_1[,6] <- timez_2
+  rayman_1[,7] <- tp_2[[f_time]]
+  rayman_1[,8] <- rh_2[[f_time]]
+  rayman_1[,9] <- ws_2[[f_time]]
+  rayman_1[,10] <- could_2
+  rayman_1_df <- as.data.frame(rayman_1)
+  colnames(rayman_1_df) <- col_names_set
+  write.csv(rayman_1_df, paste0('RAYMAN/rayman_1_time', f_para_tp, f_para_rh, f_para_ws, ii, '.csv'), row.names = FALSE)
+  write.table(rayman_1_df, file = paste0('RAYMAN/rayman_1_time', f_para_tp, f_para_rh, f_para_ws, ii, '.txt'), sep = ' ', row.names = FALSE, col.names = TRUE, quote = FALSE)
+  
+}
+
+for(c_para_tp in para_tp){
+  for(c_para_rh in para_rh){
+    for(c_para_ws in para_ws){
+      for(ii in times_set){
+        rayman_f1(c_para_tp, c_para_rh, c_para_ws, ii)
+      }
+    }
+  }
+}

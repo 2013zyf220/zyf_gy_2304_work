@@ -321,8 +321,8 @@ rce_1_f <- function(f_1, f_2){
   f_res[['model_1']] <- f_rce_1
   f_res[['model_2']] <- f_rce_2
   f_res[['model_coe']] <- f_rce_coe
-  f_res[['model_rci_1']] <- f_rci_1
-  f_res[['model_rcd_1']] <- f_rcd_1
+  f_res[['RCI']] <- f_rci_1
+  f_res[['RCD']] <- f_rcd_1
   return(f_res)
 }
 
@@ -527,18 +527,41 @@ for(c_vari in varis){
 #up2024_0722_09:18 
 
 rcd_r1_b <- list()
+rci_r1_b <- list()
+rcd_rb1_b <- list()
+rci_rb1_b <- list()
 for(c_vari in varis){
   rcd_r1_b[[c_vari]] <- list()
+  rci_r1_b[[c_vari]] <- list()
+  rcd_rb1_b[[c_vari]] <- list()
+  rci_rb1_b[[c_vari]] <- list()
   for(ii in times_set){
     rcd_r1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
+    rci_r1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
+    rcd_rb1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
+    rci_rb1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
     for(jj in strs_mo){
       for(kk in 1: length(regreb_6f_days)){
-        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$model_rcd_1 * 10 #to_be_set
+        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
+        rci_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
+        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
+        rci_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
       }
     }
     rownames(rcd_r1_b[[c_vari]][[ii]]) <- strs_mo_name
+    rownames(rci_r1_b[[c_vari]][[ii]]) <- strs_mo_name
+    rownames(rcd_rb1_b[[c_vari]][[ii]]) <- strs_mo_name
+    rownames(rci_rb1_b[[c_vari]][[ii]]) <- strs_mo_name
+    
     colnames(rcd_r1_b[[c_vari]][[ii]]) <- days_name[[regreb_6f_sub]]
+    colnames(rci_r1_b[[c_vari]][[ii]]) <- days_name[[regreb_6f_sub]]
+    colnames(rcd_rb1_b[[c_vari]][[ii]]) <- days_name[[regreb_6f_sub]]
+    colnames(rci_rb1_b[[c_vari]][[ii]]) <- days_name[[regreb_6f_sub]]
+    
     write.csv(rcd_r1_b[[c_vari]][[ii]], paste0('RES3/rcd_r1_b_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'))
+    write.csv(rci_r1_b[[c_vari]][[ii]], paste0('RES3/rci_r1_b_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'))
+    write.csv(rcd_rb1_b[[c_vari]][[ii]], paste0('RES3/rcd_rb1_b_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'))
+    write.csv(rci_rb1_b[[c_vari]][[ii]], paste0('RES3/rci_rb1_b_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'))
   }
 }
 
@@ -546,14 +569,20 @@ for(c_vari in varis){
 #up2024_0722_09:22
 
 rcd_r2_b <- list()
+rci_r2_b <- list()
 for(c_vari in varis){
   rcd_r2_b[[c_vari]] <- matrix(0, nrow = len_times_set, ncol = len_strs_mo)
+  rci_r2_b[[c_vari]] <- matrix(0, nrow = len_times_set, ncol = len_strs_mo)
   for(ii in times_set){
     for(jj in strs_mo){
-      rcd_r2_b[[c_vari]][ii,jj] <- rce_r2[[regreb_6f_sub]][[c_vari]][[ii]][[jj]]$model_rcd_1 * 10 #to_be_set
+      rcd_r2_b[[c_vari]][ii,jj] <- rce_r2[[regreb_6f_sub]][[c_vari]][[ii]][[jj]]$RCD * 10 #to_be_set
+      rci_r2_b[[c_vari]][ii,jj] <- rce_r2[[regreb_6f_sub]][[c_vari]][[ii]][[jj]]$RCI #to_be_set
     }
   }
   rownames(rcd_r2_b[[c_vari]]) <- times_set_name
+  rownames(rci_r2_b[[c_vari]]) <- times_set_name
   colnames(rcd_r2_b[[c_vari]]) <- strs_mo_name
+  colnames(rci_r2_b[[c_vari]]) <- strs_mo_name
   write.csv(rcd_r2_b[[c_vari]], paste0('RES3/rcd_r2_b_', regreb_6f_sub, '_', c_vari, '.csv'))
+  write.csv(rci_r2_b[[c_vari]], paste0('RES3/rcd_r2_b_', regreb_6f_sub, '_', c_vari, '.csv'))
 }
