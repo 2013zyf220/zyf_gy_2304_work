@@ -116,7 +116,7 @@ get_ws_f <- function(f_para){
   f_ws_1 <- list()
   f_ws_2 <- list()
   for(ii in times_set){
-    f_ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_1WS_time', ii, '.csv'))) #to_be_set_key
+    f_ws_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_WS1_time', ii, '.csv'))) #to_be_set_key
     f_ws_2[[ii]] <- as.vector(f_ws_1[[ii]])
   }
   return(f_ws_2)

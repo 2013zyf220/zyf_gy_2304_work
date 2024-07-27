@@ -132,7 +132,7 @@ for(c_vari in varis2w){
   c_vari2 <- varis2w_f(c_vari)
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', recw_seta, c_vari2, '_time', ii,'.csv'))
+    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recw2_1_', c_vari2, recw_seta, '_time', ii,'.csv'))
   }
 }
 

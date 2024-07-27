@@ -29,7 +29,7 @@ days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6') #to_be_set
 
 interp_f <- function(f_time, f_vari, f_seta){
   if(f_seta == 'recw'){
-    f_data_1 <- read.csv(paste0('RES2/recw_1_', vari_set_2, f_vari, '_time', f_time, '.csv'))
+    f_data_1 <- read.csv(paste0('RES2/recw_1_', f_vari, vari_set_2, '_time', f_time, '.csv'))
   }else if(f_seta == 'recg'){
     f_data_1 <- read.csv(paste0('RES2/recg_1_', f_vari, '_time', f_time, '.csv'))
     f_data_1[f_data_1 == -9999] <- NA
@@ -57,7 +57,7 @@ interp_f <- function(f_time, f_vari, f_seta){
   f_data_res_df <- as.data.frame(f_data_res_2b)
   colnames(f_data_res_df) <- days_ori_name
   if(f_seta == 'recw'){
-    write.csv(f_data_res_df, paste0('RES2/recw2_1_', vari_set_2, f_vari, '_time', f_time, '.csv'), row.names = FALSE)
+    write.csv(f_data_res_df, paste0('RES2/recw2_1_', f_vari, vari_set_2, '_time', f_time, '.csv'), row.names = FALSE)
   }else if(f_seta == 'recg'){
     write.csv(f_data_res_df, paste0('RES2/recg2_1_', f_vari, '_time', f_time, '.csv'), row.names = FALSE)
   }else{

@@ -178,7 +178,7 @@ get_dataw_2f <- function(f_vari){
     
     f_d1_vari_df[[ii]] <- as.data.frame(f_d1_vari[[ii]])
     colnames(f_d1_vari_df[[ii]]) <- days_ori_name
-    write.csv(f_d1_vari_df[[ii]], paste0('RES1/dataw_1_', f_vari_set, f_vari, '_time', ii,'.csv'), row.names = FALSE)
+    write.csv(f_d1_vari_df[[ii]], paste0('RES1/dataw_1_', f_vari, f_vari_set, '_time', ii,'.csv'), row.names = FALSE)
   }
   return(f_d1_vari_df)
 }
