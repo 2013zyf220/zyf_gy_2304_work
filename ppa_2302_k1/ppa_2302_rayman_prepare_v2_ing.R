@@ -81,7 +81,7 @@ get_tp_f <- function(f_para){
   f_tp_1 <- list()
   f_tp_2 <- list()
   for(ii in times_set){
-    if(f_para == 'recw2'){
+    if(f_para == 'recw2'){s
       f_tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_TP', vari_ws_set, '_time', ii, '.csv'))) #to_be_set_key
     }else{
       f_tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_TP_time', ii, '.csv'))) #to_be_set_key

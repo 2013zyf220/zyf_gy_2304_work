@@ -12,6 +12,8 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 #==================
 #up2024_0712_22:03
 paras <- c('rec', 'recg2', 'recw2') #to_be_set_key
+para_ws <- 'recw2'
+vari_ws_set <- 1
 
 len_sites <- 50 #to_be_set
 len_strs_co <- 8  #to_be_set
@@ -79,7 +81,12 @@ get_tp_f <- function(f_para){
   f_tp_1 <- list()
   f_tp_2 <- list()
   for(ii in times_set){
-    f_tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_TP_time', ii, '.csv'))) #to_be_set_key
+    if(f_para == 'recw2'){
+      f_tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_TP', vari_ws_set, '_time', ii, '.csv'))) #to_be_set_key
+    }else{
+      f_tp_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_TP_time', ii, '.csv'))) #to_be_set_key
+    }
+    
     f_tp_2[[ii]] <- as.vector(f_tp_1[[ii]])
   }
   return(f_tp_2)
@@ -97,7 +104,12 @@ get_rh_f <- function(f_para){
   f_rh_1 <- list()
   f_rh_2 <- list()
   for(ii in times_set){
-    f_rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_RH_time', ii, '.csv'))) #to_be_set_key
+    if(f_para == 'recw2'){
+      f_rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_RH', vari_ws_set, '_time', ii, '.csv'))) #to_be_set_key
+    }else{
+      f_rh_1[[ii]] <- as.matrix(read.csv(paste0('RES2/', f_para, '_1_RH_time', ii, '.csv'))) #to_be_set_key
+    }
+    
     f_rh_2[[ii]] <- as.vector(f_rh_1[[ii]])
   }
   return(f_rh_2)
@@ -123,7 +135,7 @@ get_ws_f <- function(f_para){
 }
 
 ws_data <- list()
-for(c_para in paras){
+for(c_para in para_ws){
   ws_data[[c_para]] <- get_ws_f(c_para)
 }
 
@@ -139,7 +151,7 @@ could_2 <- rep(could_1, len_sites * len_strs_co * len_days_ori)
 
 col_names_set <- c('DATE', 'TIME', 'LON', 'LAT', 'ELE', 'TIMEZONE', 'TP', 'RH', 'WS', 'CLOUD') #to_be_set
 
-rayman_f1 <- function(f_para_tr, f_para_ws, f_time){
+rayman_f1 <- function(f_para_tr, f_time){
   f_rayman_1 <- matrix(0, nrow = len_sites * len_strs_co * len_days_ori, ncol = 10) #to_be_set
   f_rayman_1[,1] <- date_3
   f_rayman_1[,2] <- time_sum[[f_time]]
@@ -149,12 +161,12 @@ rayman_f1 <- function(f_para_tr, f_para_ws, f_time){
   f_rayman_1[,6] <- timez_2
   f_rayman_1[,7] <- tp_data[[f_para_tr]][[f_time]]
   f_rayman_1[,8] <- rh_data[[f_para_tr]][[f_time]]
-  f_rayman_1[,9] <- ws_data[[f_para_ws]][[f_time]]
+  f_rayman_1[,9] <- ws_data[[para_ws]][[f_time]]
   f_rayman_1[,10] <- could_2
   f_rayman_1_df <- as.data.frame(f_rayman_1)
   colnames(f_rayman_1_df) <- col_names_set
-  write.csv(f_rayman_1_df, paste0('RAYMAN/rayman_1_time', ii, '_', f_para_tr, '_', f_para_ws, '.csv'), row.names = FALSE)
-  write.table(f_rayman_1_df, file = paste0('RAYMAN/rayman_1_time', ii, '_', f_para_tr, '_', f_para_ws, '.txt'), sep = ' ', row.names = FALSE, col.names = TRUE, quote = FALSE)
+  write.csv(f_rayman_1_df, paste0('RAYMAN/rayman_1_time', ii, '_', f_para_tr, '.csv'), row.names = FALSE)
+  write.table(f_rayman_1_df, file = paste0('RAYMAN/rayman_1_time', ii, '_', f_para_tr, '.txt'), sep = ' ', row.names = FALSE, col.names = TRUE, quote = FALSE)
 }
 
 #===============================
@@ -163,10 +175,7 @@ rayman_f1 <- function(f_para_tr, f_para_ws, f_time){
 rayman_res <- list()
 for(c_para_tr in paras){
   rayman_res[[c_para_tr]] <- list()
-  for(c_para_ws in paras){
-    rayman_res[[c_para_tr]][[c_para_ws]] <- list()
     for(ii in times_set){
-      rayman_res[[c_para_tr]][[c_para_ws]][[ii]] <- rayman_f1(c_para_tr, c_para_ws, ii)
-    }
+      rayman_res[[c_para_tr]][[ii]] <- rayman_f1(c_para_tr, ii)
   }
 }
