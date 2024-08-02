@@ -157,7 +157,7 @@ data2_2_ori <- list()
 for(c_vari in varis){
   data2_2_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES3/recc_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
+    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES2/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
   } 
 }
 

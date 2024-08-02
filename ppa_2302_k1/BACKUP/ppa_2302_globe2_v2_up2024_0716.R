@@ -16,7 +16,7 @@ setas <- c('recg','recw')  #to_be_set_key
 
 varis <- list()
 varis[['recg']] <- c('TP','RH','TG','WBGT') #to_be_set
-varis[['recw']] <- c('WS') #to_be_set
+varis[['recw']] <- c('TP','RH','WS') #to_be_set
 vari_set_2 <- 1 #to_be_set
 times_set <- c(1,2,3) #to_be_set
 len_days_ori <- 6 #to_be_set

@@ -71,7 +71,7 @@ time2_2 <- list()
 for(ii in times_set){
   time2_1[[ii]] <- as.matrix(read.csv(paste0('RES2/rec_1_TIME_time', ii, '.csv')))
   time2_2[[ii]] <- as.vector(time2_1[[ii]])
-  write.csv(time2_2[[ii]], paste0('RES2/rayman_time2_1_time', ii, '.csv'))
+  write.csv(time2_2[[ii]], paste0('RAYMAN/rayman_time2_1_time', ii, '.csv'))
 }
 
 #==================
