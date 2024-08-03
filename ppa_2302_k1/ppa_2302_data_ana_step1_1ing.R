@@ -83,7 +83,7 @@ data_1_paras[['days_ori_name']] <- days_ori_name
 
 cat('==============step 2: get basic data================\n')
 #up2024_0531_15:15
-#define function: get basic data(TP/RH)
+#define function: get basic data(all variables)
 
 data_1_f <- function(f_time_1, f_str, f_day){
   f_rou <- str2rou_f(f_str)
@@ -111,16 +111,16 @@ data_1_f <- function(f_time_1, f_str, f_day){
   }
   
   f_res <- list()
-  f_res[['data_2']] <- f_data_2
+  f_res[['data_2']] <- f_data_2 #data at start represents data of the minute
   f_res[['data_3']] <- f_data_3
   f_res[['data_4']] <- f_data_4
-  f_res[['data_5']] <- f_data_5
+  f_res[['data_5']] <- f_data_5 #average data represents data of the minute
   return(f_res)
 }
 
 #========================================
 #up2024_0531_15:15
-#define function: get basic data(for selected variable)
+#define function: get basic data(for selected variable) and export file
 
 d1_vari_f <- function(f_vari){
   f_d1_vari <- list()

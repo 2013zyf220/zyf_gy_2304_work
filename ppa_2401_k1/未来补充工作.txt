@@ -1,0 +1,3 @@
+-*算NDVI/NDWI
+-*算SVF
+-*半变异函数（CHATGPT可提供答案）

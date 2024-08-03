@@ -157,7 +157,7 @@ data2_2_ori <- list()
 for(c_vari in varis){
   data2_2_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES2/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
+    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES3/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
   } 
 }
 
@@ -209,7 +209,7 @@ for(c_sub_name in subs_name){
     c_data2_2_mean <- data2_2_mean[[c_sub_name]][[c_vari]]
     c_data2_2_mean_df <- as.data.frame(c_data2_2_mean)
     colnames(c_data2_2_mean_df) <- times_set_name
-    write.csv(c_data2_2_mean_df, paste0('RES2/data2_2_mean_', c_sub_name, '_', c_vari,'.csv'), row.names = FALSE)
+    write.csv(c_data2_2_mean_df, paste0('RES3/data2_2_mean_', c_sub_name, '_', c_vari,'.csv'), row.names = FALSE)
   }
 }
 
@@ -226,11 +226,11 @@ for(c_sub_name in subs_name){
   }
 }
 
-write.csv(index_1, paste0('RES2/index_1b.csv'), row.names = FALSE)
+write.csv(index_1, paste0('RES3/index_1b.csv'), row.names = FALSE)
 
 index_1_set_1 <- c(12,15)
 index_1c <- index_1[index_1_set_1]
-write.csv(index_1c, paste0('RES2/index_1c.csv'), row.names = FALSE)
+write.csv(index_1c, paste0('RES3/index_1c.csv'), row.names = FALSE)
 
 #======================================================
 #up2024_0528_18:00
@@ -245,7 +245,7 @@ for(c_vari in varis){
   }
 }
 
-write.csv(index_2, paste0('RES2/index_2.csv'), row.names = FALSE)
+write.csv(index_2, paste0('RES3/index_2.csv'), row.names = FALSE)
 
 #==============================================
 #up2024_0709_13:50

@@ -7,6 +7,7 @@ library(pROC)
 library(ggplot2)
 library(readxl)
 
+#change the format of data from the global meter
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #============================================
@@ -41,6 +42,7 @@ days_ori_name <- c('day1', 'day2', 'day3', 'day4', 'day5', 'day6')
 
 #============================================
 #up2024_0709_07:06
+#get the data from globe meter
 
 cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
   f_rou <- str2rou_f(f_str)
@@ -60,6 +62,8 @@ cal_globe_1f <- function(f_vari, f_time, f_str, f_day){
 
 #============================================
 #up2024_0709_07:21
+#export data from globe meter
+#for temperature data, change the variable name from 'TA' to 'TP'
 
 cal_globe_2f <- function(f_vari){
   if(f_vari == 'TA'){
