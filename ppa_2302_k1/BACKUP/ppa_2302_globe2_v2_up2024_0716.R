@@ -7,6 +7,7 @@ library(pROC)
 library(ggplot2)
 library(readxl)
 
+#data interpolation
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #============================================

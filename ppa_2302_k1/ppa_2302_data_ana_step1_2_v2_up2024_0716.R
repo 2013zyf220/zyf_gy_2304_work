@@ -263,9 +263,9 @@ for(ii in times_set){
       data_1_UTCI[[ii]][[jj]][,kk] <- c_utci_2[fc_1:fc_2,kk]
     }
   }
-  write.csv(c_pet_2, paste0('ARCGIS/RES2/rayman_pet_out_', ii, '.csv'))
-  write.csv(c_utci_2, paste0('ARCGIS/RES2/rayman_utci_out_', ii, '.csv'))
-  write.csv(data_1_ray1[[ii]], paste0('ARCGIS/RES2/rayman0_out_', ii, '.csv'))
+  write.csv(c_pet_2, paste0('ARCGIS/RAYMAN/rayman_1_out_rec_pet_', ii, '.csv'))
+  write.csv(c_utci_2, paste0('ARCGIS/RAYMAN/rayman_1_out_rec_utci_', ii, '.csv'))
+  write.csv(data_1_ray1[[ii]], paste0('ARCGIS/RAYMAN/rayman_1_out_', ii, '.csv'))
 }
 
 #==============================================
@@ -366,7 +366,7 @@ for(c_vari in varis5){
     }
     data_1_csv_df[[c_vari]][[ii]] <- as.data.frame(data_1_csv[[c_vari]][[ii]])
     colnames(data_1_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_1_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES2/recb_1_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_1_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_1_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }
 
@@ -389,6 +389,6 @@ for(c_vari in varis5){
     }
     data_2_csv_df[[c_vari]][[ii]] <- as.data.frame(data_2_csv[[c_vari]][[ii]])
     colnames(data_2_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES2/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }

@@ -459,6 +459,7 @@ for(c_sub_name in subs_name){
 
 cat('========================step b1: regression_b==========================\n')
 #up2024_0722_09:15 
+#regression results of weather variables with environmental variables(each time,each day, streets together)
 
 regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_days <- days_trans_f(f_sub)
@@ -506,6 +507,7 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
 
 #========================================
 #up2024_0722_09:15
+#regression results of weather variables with environmental variables(each time,each day, streets together)
 
 regreb_6f_sub <- 'ORI' #to_be_set
 regreb_6f_days <- days_trans_f(regreb_6f_sub)
@@ -525,6 +527,7 @@ for(c_vari in varis){
 
 #========================================
 #up2024_0722_09:18 
+#calculation of RCE indexes(each day, each time, each street)
 
 rcd_r1_b <- list()
 rci_r1_b <- list()
@@ -567,7 +570,7 @@ for(c_vari in varis){
 
 #========================================
 #up2024_0722_09:22
-
+#calculation of RCE indexes(days together, each time, each street)
 rcd_r2_b <- list()
 rci_r2_b <- list()
 for(c_vari in varis){
