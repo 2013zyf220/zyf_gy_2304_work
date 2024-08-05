@@ -104,6 +104,7 @@ cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
 #get original data of meteorological variables
 recw_seta <- 1   #to_be_set
+rec_seta <- 2 #to_be_set
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
 varis2w <- c('WS')   #to_be_set_key
@@ -116,7 +117,12 @@ data_1_ori <- list()
 for(c_vari in varis2){
   data_1_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/rec_1_', c_vari, '_time', ii,'.csv'))
+    if(rec_seta == 1){
+      data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/rec_1_', c_vari, '_time', ii,'.csv'))
+    }else{
+      data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recb_1_', c_vari, '_time', ii,'.csv'))
+    }
+    
   }
 }
 
