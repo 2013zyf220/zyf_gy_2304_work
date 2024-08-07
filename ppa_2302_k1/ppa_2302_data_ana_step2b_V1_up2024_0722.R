@@ -73,7 +73,7 @@ indep_set <- 40 #to_be_set_key
 #set independent variables for regression
 
 reg_se_sum <- list()
-reg_se_sum[[1]] <- c(23,40,41)
+reg_se_sum[[1]] <- c(23,29,31,40,41,42,44)
 reg_se_sum[[2]] <- c(12)
 
 reg_set <- 1 #to_be_set_key
