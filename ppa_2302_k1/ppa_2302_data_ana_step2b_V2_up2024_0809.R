@@ -151,6 +151,7 @@ for(mm in 1: bydis_num){
   bydis2[[mm]] <- c_s: c_e
 }
 
+len_y_1m <- bydis_itv * len_strs_mo
 cat('========================step 2: basic data(data2_2)==========================\n')
 #up2024_0528_17:00
 #get original data(substract by reference, all days)
@@ -464,24 +465,32 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_days <- days_trans_f(f_sub)
   f_order <- bydis[[f_bydis_num]]
   f_y_1 <- c()
+  f_y_1m <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = length(f_days))
   for(f_day in f_days){
     f_name <- paste0('ORI_', f_vari, '_time', f_time, '_day', f_day)
     f_y_1 <- c(f_y_1, index_2[[f_name]][f_order])
+    f_y_1m[, f_day] <- index_2[[f_name]][f_order]
   }
+  f_y_1m2 <- rowMeans(f_y_1m)
   
   f_r2a <- rep(0, length(f_reg_se))
   f_x_2 <- matrix(0, nrow = bydis_itv * len_strs_mo * length(f_days), ncol = length(f_reg_se))
+  f_x_m2 <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = length(f_reg_se))
+  
   f_model_1 <- list()
   f_cor_1 <- rep(0, length(f_reg_se))
   for(mm in 1:length(f_reg_se)){
     c_reg <- f_reg_se[mm] 
+    f_x_m <- index_2[, c_reg][f_order]
+    f_x_m2[, mm] <- f_x_m
+    
     f_x_1 <- rep(index_2[, c_reg][f_order], length(f_days))
     f_model_1[[mm]] <- lm(f_y_1 ~ f_x_1)
     f_r2a[mm] <- summary(f_model_1[[mm]])$r.squared
     f_x_2[,mm] <- f_x_1
     f_cor_1[mm] <- cor(f_x_1, f_y_1)
   }
-  
+  f_z_m <- cbind(f_x_m2, f_y_1m2)
   f_z_1 <- cbind(f_x_2, f_y_1)
   f_z_2 <- as.data.frame(f_z_1)
   f_colnames <- append(cname_index_2, 'y_regreb_6')
@@ -502,6 +511,7 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_res[['x_2']] <- f_x_2
   f_res[['z_1']] <- f_z_1
   f_res[['z_2']] <- f_z_2
+  f_res[['z_m']] <- f_z_m
   f_res[['r2a']] <- f_r2a
   f_res[['r2b']] <- f_r2b
   f_res[['p2']] <- f_p2
