@@ -455,6 +455,35 @@ for(c_sub_name in subs_name){
   }
 }
 
+#==============================================================================
+#up2024_0813_08:05
+
+rci_r1 <- list()
+rcd_r1 <- list()
+rci_rb1 <- list()
+rcd_rb1 <- list()
+for(c_vari in varis){
+  rci_r1[[c_vari]] <- list()
+  rcd_r1[[c_vari]] <- list()
+  rci_rb1[[c_vari]] <- list()
+  rcd_rb1[[c_vari]] <- list()
+  for(ii in times_set){
+    rci_r1[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = len_days_ori)
+    rcd_r1[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = len_days_ori)
+    rci_rb1[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = len_days_ori)
+    rcd_rb1[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = len_days_ori)
+    for(jj in strs_mo){
+      for(kk in days_ori){
+        rci_r1[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[kk]]$model_rci_1
+        rcd_r1[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[kk]]$model_rcd_1
+        rci_rb1[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[kk]]$RCI
+        rcd_rb1[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[kk]]$RCD
+      }
+    }
+  }
+}
+
+
 cat('========================step 6: regression==========================\n')
 #up2024_0529_10:00
 #define function: regression(each variable, each time, each street, each day)

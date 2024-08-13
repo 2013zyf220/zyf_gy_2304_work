@@ -1746,9 +1746,9 @@ fig6c_res_f <- function(f_sub, f_vari, f_indep){
 #======================================================
 #up2024_0618 08:00
 
-res_run_0 <- c(1,1,0,0,0,0,0,0,0,0,0,0) #to_be_set
+res_run_0 <- c(1,0,0,0,0,0,0,0,0,0,0,0) #to_be_set
 res_run <- matrix(res_run_0, nrow = 6, ncol = 2, byrow = TRUE)
-varis_2 <- c('TP','RH','DI','HI','HR') #to_be_set
+varis_2 <- c('TP') #to_be_set(another option)
 
 if(res_run[1,1] == 1){
   cat('run_figs_1b','\n')
