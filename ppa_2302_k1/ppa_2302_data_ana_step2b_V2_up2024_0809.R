@@ -633,3 +633,78 @@ for(c_vari in varis){
   write.csv(rcd_r2_b[[c_vari]], paste0('RES3/rcd_r2_b_', regreb_6f_sub, '_', c_vari, '.csv'))
   write.csv(rci_r2_b[[c_vari]], paste0('RES3/rcd_r2_b_', regreb_6f_sub, '_', c_vari, '.csv'))
 }
+
+#==============================
+#up2024_0813_21:02
+
+rci_rb1_b_mean1 <- list()
+rcd_rb1_b_mean1 <- list()
+for(c_vari in varis){
+  rci_rb1_b_mean1[[c_vari]] <- list()
+  rcd_rb1_b_mean1[[c_vari]] <- list()
+  for(ii in times_set){
+    c_rci_rb1_b <- rci_rb1_b[[c_vari]][[ii]]
+    c_rcd_rb1_b <- rci_rb1_b[[c_vari]][[ii]]
+    colnames(c_rci_rb1_b) <- NULL
+    rownames(c_rci_rb1_b) <- NULL
+    colnames(c_rcd_rb1_b) <- NULL
+    rownames(c_rcd_rb1_b) <- NULL
+    rci_rb1_b_mean1[[c_vari]][[ii]] <- rowMeans(c_rci_rb1_b)
+    rcd_rb1_b_mean1[[c_vari]][[ii]] <- rowMeans(c_rcd_rb1_b)
+  }
+}
+
+
+#===========================================================================
+#up2024_0813_21:02
+
+rce_indexes <- list()
+rce_indexes[['R1']] <- list()
+rce_indexes[['RB1']] <- list()
+rce_indexes[['RB1']][['RCI']] <- rci_rb1_b_mean1
+rce_indexes[['RB1']][['RCD']] <- rcd_rb1_b_mean1
+
+#==============================
+#up2024_0813_21:02
+
+index_rce_reg_se <- c(5,6,7,8,9,10,11) #to_be_set
+index_rce_ncol <- length(index_rce_reg_se)
+index_rce <- read.csv(paste0('RCE/ppa_2302_rce_relate_buf', buf_set, '.csv'))
+index_rce_m <- as.matrix(index_rce)
+index_rce_m2 <- index_rce_m[, index_rce_reg_se]
+
+#===========================================================================
+#up2024_0813_21:02
+
+regre_rce_f1 <- function(f_index1, f_index2, f_vari, f_time){
+  f_y_1 <- rce_indexes[[f_index1]][[f_index2]][[f_vari]][[f_time]]
+  f_z_1 <- cbind(index_rce_m2, f_y_1)
+  f_cor <- rep(0, index_rce_ncol)
+  for(mm in 1: index_rce_ncol){
+    f_x_1 <- index_rce_m2[,mm]
+    f_cor[mm] <- cor(f_x_1, f_y_1)
+  }
+  
+  write.csv(f_z_1, paste0('RES3/Fig_z3_', f_index1, f_index2, '_', f_vari, f_time, '.csv'))
+  return(f_cor)
+}
+
+#===========================================================================
+#up2024_0813_21:02
+
+index1_set <- 'RB1' #to_be_set
+index2_sets <- c('RCI','RCD')
+
+regre_rce_r1 <- list()
+for(c_index2_set in index2_sets){
+  regre_rce_r1[[c_index2_set]] <- list()
+  for(c_vari in varis){
+    regre_rce_r1[[c_index2_set]][[c_vari]] <- list()
+    for(ii in times_set){
+      regre_rce_r1[[c_index2_set]][[c_vari]][[ii]] <- regre_rce_f1(index1_set, c_index2_set, c_vari, ii)
+    }
+  }
+}
+
+
+
