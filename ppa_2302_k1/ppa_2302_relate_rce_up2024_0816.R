@@ -12,7 +12,8 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 len_strs_mo <- 6  #to_be_set
 len_sites <- 50 #to_be_set
 
-bh_1 <- raster("BH/BH_CP_4.tif")
+bh_1 <- rast("BH/BH_CP_4.tif")
+bh_b <- raster("BH/BH_CP_4.tif")
 lines_1 <- st_read('BH/str_lines3_b0_c2.shp')
 
 plot(bh_1)
@@ -105,7 +106,7 @@ bh_sub_4_mean <- rep(0, len_strs_mo)
 bh_ratio <- rep(0, len_strs_mo)
 
 for(ii in 1: len_strs_mo){
-  c_bh_sub_1 <- crop(bh_1, extent(buf_1p[ii, ]))
+  c_bh_sub_1 <- crop(bh_b, extent(buf_1p[ii, ]))
   c_bh_sub_1[is.na(c_bh_sub_1)] <- 0
   c_bh_sub_2 <- mask(c_bh_sub_1, buf_1p[ii, ])
   bh_sub_2v[[ii]] <- getValues(c_bh_sub_2)
@@ -142,5 +143,5 @@ rce_relate_1[,12] <- asp_2
   
   
 rce_relate_1_df <- as.data.frame(rce_relate_1)
-colnames(rce_relate_1_df) <- c('NUMBER','GRID_X','GRID_Y','PS_BLD','PS_VEG','SW','BH_1', 'BH_2','ASP1','ASP2') #to_be_set
+colnames(rce_relate_1_df) <- c('NUMBER','GRID_X','GRID_Y','PS_BLD','PS_VEG','SW','BH_1', 'BH_2','BH_3', 'BH_4','ASP1','ASP2') #to_be_set
 write.csv(rce_relate_1_df, paste0('RCE/ppa_2302_rce_relate_buf', buf_set, '.csv'))
