@@ -104,7 +104,7 @@ cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
 #get original data of meteorological variables
 recw_seta <- 1   #to_be_set
-rec_seta <- 2 #to_be_set
+rec_seta <- 1 #to_be_set
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
 varis2w <- c('WS')   #to_be_set_key
