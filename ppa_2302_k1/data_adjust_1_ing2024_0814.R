@@ -4,7 +4,8 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3')
 
 vari_set <- 'TP' #to_be_set_key
 time_set <- 3 #to_be_set_key
-data_1 <- read.csv(paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ1.csv'))
+#data_1 <- read.csv(paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ1.csv'))
+data_1 <- read.csv(paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJB1.csv'))
 data_2 <- as.matrix(data_1)
 
 days_ori <- c(1,2,3,4,5,6) #to_be_set
@@ -50,8 +51,8 @@ for(ii in days_ori){
 }
 data_3_df <- as.data.frame(data_3)
 colnames(data_3_df) <- names1
-write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2.csv'), row.names = FALSE)
-
+#write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2.csv'), row.names = FALSE)
+write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJB2.csv'), row.names = FALSE)
 #============================
 
 
@@ -67,8 +68,8 @@ for(ii in days_ori){
 
 data_3b_df <- as.data.frame(data_3b)
 colnames(data_3b_df) <- names2b
-write.csv(data_3b_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2b.csv'), row.names = FALSE)
-
+#write.csv(data_3b_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2b.csv'), row.names = FALSE)
+write.csv(data_3b_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJB2b.csv'), row.names = FALSE)
 #============================
 
 data_3c <- matrix(0, nrow = len_sites, ncol = len_days_ori * len_strs_mo)
@@ -83,4 +84,5 @@ for(jj in strs_mo){
 
 data_3c_df <- as.data.frame(data_3c)
 colnames(data_3c_df) <- names2c
-write.csv(data_3c_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2c.csv'), row.names = FALSE)
+#write.csv(data_3c_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2c.csv'), row.names = FALSE)
+write.csv(data_3c_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJB2c.csv'), row.names = FALSE)

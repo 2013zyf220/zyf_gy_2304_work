@@ -398,14 +398,14 @@ for(c_sub_name in subs_name){
 rce_r1 <- list()
 for(c_vari in varis){
   rce_r1[[c_vari]] <- list()
-    for(ii in times_set){
-      rce_r1[[c_vari]][[ii]] <- list()
-      for(jj in strs_mo){
-        c_1 <- (jj - 1) * len_sites + 1
-        c_2 <- jj * len_sites
-        rce_r1[[c_vari]][[ii]][[jj]] <- list()        
-        for(kk in days_ori){
-          rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
+  for(ii in times_set){
+    rce_r1[[c_vari]][[ii]] <- list()
+    for(jj in strs_mo){
+      c_1 <- (jj - 1) * len_sites + 1
+      c_2 <- jj * len_sites
+      rce_r1[[c_vari]][[ii]][[jj]] <- list()        
+      for(kk in days_ori){
+        rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
       }
     }
   }
@@ -1209,7 +1209,7 @@ fig3b_list_f <- function(f_sub, f_vari, f_indep){
       )
     }
   }
-
+  
   f_fig3b_data <- data.frame(matrix(ncol = len_times_set * len_strs_mo * 2, nrow = len_sites))
   for (qq in 1:length(f_fig3b_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1338,7 +1338,7 @@ fig4b_list_f <- function(f_sub, f_indep){
       )
     }
   }
-
+  
   f_fig4b_data <- data.frame(matrix(ncol = len_varis * len_times_set * 2, nrow = len_sites * len_strs_mo))
   for (qq in 1:length(f_fig4b_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1409,7 +1409,7 @@ fig4c_list_f <- function(f_sub, f_vari, f_indep){
       )
     }
   }
-
+  
   f_fig4c_data <- data.frame(matrix(ncol = len_times_set * bydis_num * 2, nrow = bydis_itv * len_strs_mo))
   for (qq in 1:length(f_fig4c_list)){
     f_s <- (qq - 1) * 2 + 1
@@ -1441,12 +1441,11 @@ fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
   f_eq <- paste0('y = ', round(f_interc, 4), ' + ', round(f_slope, 4), ' * x')
   f_pears_est_eq <- paste0('cor_pearson = ', round(f_pears_est, 2))
   f_pears_p_eq <- paste0('p_pearson = ', round(f_pears_p, 2))
-  
   f_p <- ggplot(f_data, aes(x = xx, y = yy)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE, col = 'blue') +
     annotate('text', x = Inf, y = Inf, label = f_eq, hjust = 1.1, vjust = 1.5, size = 5, color = 'red') +
-    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 2.1, vjust = 3.5, size = 5, color = 'red') +
+    annotate('text', x = Inf, y = Inf, label = f_r2_eq, hjust = 1.1, vjust = 3.5, size = 5, color = 'red') +
     annotate('text', x = Inf, y = Inf, label = f_pears_est_eq, hjust = 1.1, vjust = 5.5, size = 5, color = 'red') +
     annotate('text', x = Inf, y = Inf, label = f_pears_p_eq, hjust = 1.1, vjust = 7.5, size = 5, color = 'red') +
     ggtitle(paste('time:',f_time,'_dis', f_bydis)) +
@@ -1454,7 +1453,11 @@ fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
     ylab(f_vari) + 
     theme_minimal()
   
-  return(f_p)
+  f_res <- list()
+  f_res[['pp']] <- f_p
+  f_res[['pears_est']] <- f_pears_est
+  f_res[['pears_p']] <- f_pears_p
+  return(f_res)
 }
 
 #==============================================
@@ -1463,11 +1466,17 @@ fig4c_plot_f <- function(f_data, f_index, f_vari, f_indep){
 fig4c_res_f <- function(f_sub, f_vari, f_indep){
   cat('run_fig4c_', f_sub, '_', f_vari, '\n')
   f_data_fig4c_list_1 <- fig4c_list_f(f_sub, f_vari, f_indep)$list
-  f_plots_fig4c_1 <- lapply(seq_along(f_data_fig4c_list_1), function(nn) fig4c_plot_f(f_data_fig4c_list_1[[nn]], nn, f_vari, f_indep))
+  f_plots_fig4c_1 <- lapply(seq_along(f_data_fig4c_list_1), function(nn) fig4c_plot_f(f_data_fig4c_list_1[[nn]], nn, f_vari, f_indep)[['pp']])
   f_comb_plots_fig4c_1 <- grid.arrange(grobs = f_plots_fig4c_1, ncol = bydis_num, nrow = len_times_set)
   ggsave(paste0('FIG2/comb_plots_fig4c_1_', f_sub, '__', f_vari, '__indep_', f_indep,'.jpg'), plot = f_comb_plots_fig4c_1, width = 15, height = 15, dpi = 300)  
   return(f_comb_plots_fig4c_1)
 }
+
+#=====================
+#ing0906
+
+
+
 
 #=====================
 #up2024_0617 11:05
@@ -1489,7 +1498,7 @@ fig5b_list_f <- function(f_sub, f_vari, f_indep){
       )
     }
   }
-
+  
   f_fig5b_data <- data.frame(matrix(ncol = len_times_set * len_strs_mo * 2, nrow = len_sites * f_days_len))
   for (qq in 1:length(f_fig5b_list)){
     f_s <- (qq - 1) * 2 + 1

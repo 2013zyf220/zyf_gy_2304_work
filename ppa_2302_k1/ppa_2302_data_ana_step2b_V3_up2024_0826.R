@@ -230,12 +230,6 @@ for(c_sub_name in subs_name){
   }
 }
 
-write.csv(index_1, paste0('RES4/index_1b.csv'), row.names = FALSE)
-
-index_1_set_1 <- c(12,15)
-index_1c <- index_1[index_1_set_1]
-write.csv(index_1c, paste0('RES4/index_1c.csv'), row.names = FALSE)
-
 #======================================================
 #up2024_0528_18:00
 #get index_2 by adding data2_2_ori(original data compared to reference)
@@ -248,8 +242,6 @@ for(c_vari in varis){
     }
   }
 }
-
-write.csv(index_2, paste0('RES4/index_2.csv'), row.names = FALSE)
 
 #==============================================
 #up2024_0709_13:50
@@ -332,24 +324,42 @@ rce_1_f <- function(f_1, f_2){
 #up2024_0709_13:55
 #define function: calculate RCE indexes 2
 
-rce_2_f <- function(f_1){
+rce_2_f <- function(f_1, f_vari){
   f_interval <- 5 #to_be_set
   f_1_len <- length(f_1)
   f_1_len2 <- f_1_len - f_interval
-  for(nn in 1: f_1_len2){
-    c_1 <- nn + 1
-    c_2 <- nn + f_interval
-    if(f_1[nn] >= max(f_1[c_1: c_2])){
-      f_rcd <- nn
-      f_rci <- f_1[f_rcd] - f_1[1]
-      f_crci <- f_1[f_rcd] * f_rcd - sum(f_1[1:f_rcd])
-      break
-    }else if(nn == f_1_len2){
-      f_rcd <- -9999 
-      f_rci <- -9999 
-      f_crci <- -9999
-      print('ERROR')
-    }else{}
+  if(f_vari == 'RH'){
+    for(nn in 1: f_1_len2){
+      c_1 <- nn + 1
+      c_2 <- nn + f_interval
+      if(f_1[nn] <= min(f_1[c_1: c_2])){
+        f_rcd <- nn
+        f_rci <- f_1[f_rcd] - f_1[1]
+        f_crci <- f_1[f_rcd] * f_rcd - sum(f_1[1:f_rcd])
+        break
+      }else if(nn == f_1_len2){
+        f_rcd <- -9999 
+        f_rci <- -9999 
+        f_crci <- -9999
+        print('ERROR')
+      }else{}
+    }    
+  }else{
+    for(nn in 1: f_1_len2){
+      c_1 <- nn + 1
+      c_2 <- nn + f_interval
+      if(f_1[nn] >= max(f_1[c_1: c_2])){
+        f_rcd <- nn
+        f_rci <- f_1[f_rcd] - f_1[1]
+        f_crci <- f_1[f_rcd] * f_rcd - sum(f_1[1:f_rcd])
+        break
+      }else if(nn == f_1_len2){
+        f_rcd <- -9999 
+        f_rci <- -9999 
+        f_crci <- -9999
+        print('ERROR')
+      }else{}
+    }
   }
   
   f_res <- list()
@@ -373,7 +383,7 @@ for(c_vari in varis){
       c_2 <- jj * len_sites
       rce_rb1[[c_vari]][[ii]][[jj]] <- list()
       for(kk in days_ori){
-        rce_rb1[[c_vari]][[ii]][[jj]][[kk]] <- rce_2_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a])
+        rce_rb1[[c_vari]][[ii]][[jj]][[kk]] <- rce_2_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], c_vari)
       }
     }
   }
@@ -393,7 +403,7 @@ for(c_sub_name in subs_name){
       for(jj in strs_mo){
         c_1 <- (jj - 1) * len_sites + 1
         c_2 <- jj * len_sites
-        rce_rb2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_2_f(data2_2_mean[[c_sub_name]][[c_vari]][c_1: c_2,ii][seq_a])
+        rce_rb2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_2_f(data2_2_mean[[c_sub_name]][[c_vari]][c_1: c_2,ii][seq_a], c_vari)
       }
     }
   }
@@ -465,58 +475,98 @@ cat('========================step b1: regression_b==========================\n')
 regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_days <- days_trans_f(f_sub)
   f_order <- bydis[[f_bydis_num]]
+  
   f_y_1 <- c()
-  f_y_1m <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = length(f_days))
+  f_y_m1 <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = length(f_days))
   for(f_day in f_days){
     f_name <- paste0('ORI_', f_vari, '_time', f_time, '_day', f_day)
     f_y_1 <- c(f_y_1, index_2[[f_name]][f_order])
-    f_y_1m[, f_day] <- index_2[[f_name]][f_order]
+    f_y_m1[, f_day] <- index_2[[f_name]][f_order]
   }
-  f_y_1m2 <- rowMeans(f_y_1m)
+  f_y_m2 <- rowMeans(f_y_m1)
   
-  f_r2a <- rep(0, length(f_reg_se))
+  f_1_r2a <- rep(0, length(f_reg_se))
+  f_m1_r2a <- rep(0, length(f_reg_se))
+  f_cor_1 <- rep(0, length(f_reg_se))
+  f_cor_m1 <- rep(0, length(f_reg_se))
+  f_model_1 <- list()
+  f_model_m1 <- list()
+  
   f_x_2 <- matrix(0, nrow = bydis_itv * len_strs_mo * length(f_days), ncol = length(f_reg_se))
   f_x_m2 <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = length(f_reg_se))
   
-  f_model_1 <- list()
-  f_cor_1 <- rep(0, length(f_reg_se))
   for(mm in 1:length(f_reg_se)){
     c_reg <- f_reg_se[mm] 
-    f_x_m <- index_2[, c_reg][f_order]
-    f_x_m2[, mm] <- f_x_m
-    
     f_x_1 <- rep(index_2[, c_reg][f_order], length(f_days))
-    f_model_1[[mm]] <- lm(f_y_1 ~ f_x_1)
-    f_r2a[mm] <- summary(f_model_1[[mm]])$r.squared
     f_x_2[,mm] <- f_x_1
+    f_x_m1 <- index_2[, c_reg][f_order]
+    f_x_m2[, mm] <- f_x_m1
+    f_model_1[[mm]] <- lm(f_y_1 ~ f_x_1)
+    f_model_m1[[mm]] <- lm(f_y_m2 ~ f_x_m1)
+    
     f_cor_1[mm] <- cor(f_x_1, f_y_1)
+    f_1_r2a[mm] <- summary(f_model_1[[mm]])$r.squared
+    
+    f_cor_m1[mm] <- cor(f_x_m1, f_y_m2)
+    f_m1_r2a[mm] <- summary(f_model_m1[[mm]])$r.squared
   }
-  f_z_m <- cbind(f_x_m2, f_y_1m2)
+  
   f_z_1 <- cbind(f_x_2, f_y_1)
-  f_z_2 <- as.data.frame(f_z_1)
+  f_z_1_df <- as.data.frame(f_z_1)
+  f_z_m1 <- cbind(f_x_m2, f_y_m2)
+  f_z_m1_df <- as.data.frame(f_z_m1)
+  
   f_colnames <- append(cname_index_2, 'y_regreb_6')
-  colnames(f_z_2) <- f_colnames
   f_model_for <- as.formula(paste0('y_regreb_6', ' ~ ', cname_index_3)) 
-  f_model_res <- lm(f_model_for, data = f_z_2)
-  f_model_sum <- summary(f_model_res)
-  f_r2b <- f_model_sum$r.squared
-  f_p1 <- f_model_sum$coefficients[, 4]
-  f_p2 <- as.vector(f_p1[-1])
+  colnames(f_z_1_df) <- f_colnames
+  colnames(f_z_m1_df) <- f_colnames
+  
+  f_model_1_res <- lm(f_model_for, data = f_z_1_df)
+  f_model_m1_res <- lm(f_model_for, data = f_z_m1_df)
+  f_model_1_sum <- summary(f_model_1_res)
+  f_model_m1_sum <- summary(f_model_m1_res)
+  
+  f_1_r2b <- f_model_1_sum$r.squared
+  f_1_p1 <- f_model_1_sum$coefficients[, 4]
+  f_1_p2 <- as.vector(f_1_p1[-1])
+  
+  f_m1_r2b <- f_model_m1_sum$r.squared
+  f_m1_p1 <- f_model_m1_sum$coefficients[, 4]
+  f_m1_p2 <- as.vector(f_m1_p1[-1])  
   
   f_res <- list()
   f_res[['days']] <- f_days
   f_res[['order']] <- f_order
-  f_res[['model_1']] <- f_model_1
-  f_res[['model_sum']] <- f_model_sum
+  
   f_res[['y_1']] <- f_y_1
+  f_res[['y_m1']] <- f_y_m1
+  f_res[['y_m2']] <- f_y_m2
   f_res[['x_2']] <- f_x_2
-  f_res[['z_1']] <- f_z_1
-  f_res[['z_2']] <- f_z_2
-  f_res[['z_m']] <- f_z_m
-  f_res[['r2a']] <- f_r2a
-  f_res[['r2b']] <- f_r2b
-  f_res[['p2']] <- f_p2
+  f_res[['x_m2']] <- f_x_m2  
+  
+  f_res[['model_1']] <- f_model_1
+  f_res[['model_m1']] <- f_model_m1
+  f_res[['model_1_res']] <- f_model_1_sum
+  f_res[['model_m1_res']] <- f_model_m1_sum
+  f_res[['model_1_sum']] <- f_model_1_sum
+  f_res[['model_m1_sum']] <- f_model_m1_sum
   f_res[['cor_1']] <- f_cor_1
+  f_res[['cor_m1']] <- f_cor_m1
+  f_res[['a1_r2a']] <- f_1_r2a
+  f_res[['m1_r2a']] <- f_m1_r2a  
+  
+  f_res[['z_1']] <- f_z_1
+  f_res[['z_1_df']] <- f_z_1_df
+  f_res[['z_m1']] <- f_z_m1
+  f_res[['z_m1_df']] <- f_z_m1_df
+  
+  f_res[['a1_r2b']] <- f_1_r2b
+  f_res[['m1_r2b']] <- f_m1_r2b
+  f_res[['a1_p1']] <- f_1_p1
+  f_res[['m1_p1']] <- f_m1_p1
+  f_res[['a1_p2']] <- f_1_p2
+  f_res[['m1_p2']] <- f_m1_p2
+  
   return(f_res)
 }
 
@@ -544,7 +594,7 @@ for(c_vari in varis){
     regreb_6f_cor[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
     regreb_6f_z2[[c_vari]][[ii]] <- matrix(0, nrow = len1, ncol = (length(reg_se) + 1) * bydis_num)
     for(mm in 1: bydis_num){
-      regreb_6f_r2[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$r2a
+      regreb_6f_r2[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$a1_r2a
       regreb_6f_cor[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$cor_1
       c_1 <- (mm - 1) * (length(reg_se) + 1) + 1
       c_2 <- mm * (length(reg_se) + 1)
@@ -560,6 +610,42 @@ for(c_vari in varis){
     write.csv(regreb_6f_cor[[c_vari]][[ii]], paste0('RES4/Fig_cor_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
     write.csv(regreb_6f_z2[[c_vari]][[ii]], paste0('RES4/Fig_z2_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
     write.xlsx(regreb_6f_z2[[c_vari]][[ii]], paste0('RES4/Fig_z2_', regreb_6f_sub, '_', c_vari, '_time', ii, '.xlsx'))
+  }
+}
+
+
+#=============================================
+
+regreb_6f_r2m <- list()
+regreb_6f_corm <- list()
+regreb_6f_z2m <- list()
+regreb_6f_z2m_df <- list()
+for(c_vari in varis){
+  regreb_6f_r2m[[c_vari]] <- list()
+  regreb_6f_corm[[c_vari]] <- list()
+  regreb_6f_z2m[[c_vari]] <- list()
+  regreb_6f_z2m_df[[c_vari]] <- list()
+  for(ii in times_set){
+    regreb_6f_r2m[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
+    regreb_6f_corm[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
+    regreb_6f_z2m[[c_vari]][[ii]] <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = (length(reg_se) + 1) * bydis_num)
+    for(mm in 1: bydis_num){
+      regreb_6f_r2m[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$m1_r2a
+      regreb_6f_corm[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$cor_m1
+      c_1 <- (mm - 1) * (length(reg_se) + 1) + 1
+      c_2 <- mm * (length(reg_se) + 1)
+      regreb_6f_z2m[[c_vari]][[ii]][,c_1: c_2] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$z_m1
+    }
+    regreb_6f_z2m_df[[c_vari]][[ii]] <- as.data.frame(regreb_6f_z2m[[c_vari]][[ii]])
+    colnames(regreb_6f_z2m_df[[c_vari]][[ii]]) <- colnames2
+    write.csv(regreb_6f_z2m_df[[c_vari]][[ii]], paste0('RES4/Fig_z2m_df_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
+    write.xlsx(regreb_6f_z2m_df[[c_vari]][[ii]], paste0('RES4/Fig_z2m_df_', regreb_6f_sub, '_', c_vari, '_time', ii, '.xlsx'))
+    rownames(regreb_6f_r2m[[c_vari]][[ii]]) <- cname_index_2
+    rownames(regreb_6f_corm[[c_vari]][[ii]]) <- cname_index_2
+    write.csv(regreb_6f_r2m[[c_vari]][[ii]], paste0('RES4/Fig_r2m_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
+    write.csv(regreb_6f_corm[[c_vari]][[ii]], paste0('RES4/Fig_corm_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = TRUE)
+    write.csv(regreb_6f_z2m[[c_vari]][[ii]], paste0('RES4/Fig_z2m_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
+    write.xlsx(regreb_6f_z2m[[c_vari]][[ii]], paste0('RES4/Fig_z2m_', regreb_6f_sub, '_', c_vari, '_time', ii, '.xlsx'))
   }
 }
 

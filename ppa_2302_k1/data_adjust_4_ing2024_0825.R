@@ -46,4 +46,5 @@ for(ii in days_ori){
 
 data_4b_df <- as.data.frame(data_4b)
 colnames(data_4b_df) <- names2b
-write.csv(data_4b_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ4b.csv'), row.names = FALSE)
+#write.csv(data_4b_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ4b.csv'), row.names = FALSE)
+write.csv(data_4b_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJB4b.csv'), row.names = FALSE)
