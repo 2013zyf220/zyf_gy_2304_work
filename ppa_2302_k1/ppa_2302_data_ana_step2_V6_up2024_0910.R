@@ -61,7 +61,10 @@ ele_2c <- matrix(ele_2b, nrow = len_sites * len_strs_mo, ncol = 1)
 buf_set <- 100 #to_be_set
 index_name1 <- paste0('index_1m_df3_buf', buf_set, '.csv')
 index_1 <- read.csv(index_name1)[1:300,]
+index_add_1 <- read.csv(paste0('index_add_1_', buf_set, '.csv'))
 index_1$ele_2 <- ele_2c
+index_1$TREECOVER <- index_add_1$TREECOVER
+index_1$SVF <- index_add_1$SVF
 index_2 <- index_1
 
 indep_set <- 40 #to_be_set_key

@@ -44,7 +44,7 @@ for(ii in 1: len_all){
   tc_4_len[ii] <- length(tc_4[[ii]])
   tc_5[[ii]] <- tc_4[[ii]][tc_4[[ii]] != 0]
   tc_5_len[ii] <- length(tc_5[[ii]])
-  tc_cover[ii] <- tc_5_len[ii]/tc_4_len[ii]
+  tc_cover[ii] <- round(tc_5_len[ii]/tc_4_len[ii],2)
 }
 
 res_1 <- cbind(tc_cover, svf_1m)
