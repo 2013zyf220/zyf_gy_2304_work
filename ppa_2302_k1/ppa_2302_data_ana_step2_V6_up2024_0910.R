@@ -74,7 +74,7 @@ indep_set <- 40 #to_be_set_key
 #set independent variables for regression
 
 reg_se_sum <- list()
-reg_se_sum[[1]] <- c(23,40,41)
+reg_se_sum[[1]] <- c(20,23,28,29,31,35,40,41,42,44) #to_be_set
 reg_se_sum[[2]] <- c(12)
 
 reg_set <- 1 #to_be_set_key
@@ -328,7 +328,7 @@ rce_1_f <- function(f_1, f_2){
 #define function: calculate RCE indexes 2
 
 rce_2_f <- function(f_1){
-  f_interval <- 3 #to_be_set
+  f_interval <- 5 #to_be_set
   f_1_len <- length(f_1)
   f_1_len2 <- f_1_len - f_interval
   for(nn in 1: f_1_len2){

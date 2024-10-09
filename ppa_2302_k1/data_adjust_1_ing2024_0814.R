@@ -2,9 +2,15 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3')
 library(readxl)
 #============================
 
+data_select <- 2 #to_be_set_key
 vari_set <- 'TP' #to_be_set_key
 time_set <- 3 #to_be_set_key
-data_1 <- read_excel(paste0('REVISE1c_Fig_z2_df_ORI_', vari_set, '_time', time_set, '.xlsx'), sheet = 'SUMMARY')
+if(data_select == 2){
+  data_1 <- read_excel(paste0('REVISE1c_Fig_z2_df_ORI_', vari_set, '_time', time_set, '.xlsx'), sheet = 'SUMMARY')
+}else{
+  data_1 <- read_excel(paste0('REVISE1c_Fig_z2_df_ORI_', vari_set, '_time', time_set, '.xlsx'), sheet = 'SUMMARY1B')
+}
+
 data_2 <- as.matrix(data_1)
 
 days_ori <- c(1,2,3,4,5,6) #to_be_set
@@ -50,8 +56,15 @@ for(ii in days_ori){
 }
 data_3_df <- as.data.frame(data_3)
 colnames(data_3_df) <- names1
-#write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2.csv'), row.names = FALSE)
-write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJC2.csv'), row.names = FALSE)
+
+if(data_select == 2){
+  #write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJ2.csv'), row.names = FALSE)
+  write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJC2.csv'), row.names = FALSE)
+}else{
+  write.csv(data_3_df, paste0('Fig_z2_df_ORI_', vari_set, '_time', time_set,'_ADJC2d.csv'), row.names = FALSE)
+}
+
+
 #============================
 
 

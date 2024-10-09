@@ -104,7 +104,7 @@ cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
 #get original data of meteorological variables
 recw_seta <- 1   #to_be_set
-rec_seta <- 2 #to_be_set
+rec_seta <- 1 #to_be_set
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
 varis2w <- c('WS')   #to_be_set_key
@@ -122,6 +122,7 @@ for(c_vari in varis2){
     }else{
       data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recb_1_', c_vari, '_time', ii,'.csv'))
     }
+    
   }
 }
 
@@ -394,28 +395,6 @@ for(c_vari in varis5){
     }
     data_2_csv_df[[c_vari]][[ii]] <- as.data.frame(data_2_csv[[c_vari]][[ii]])
     colnames(data_2_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2b_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }
-
-#============================================================
-#up2024_0831_16:00
-
-len_c1 <- len_sites * len_strs_mo
-len_c2 <- len_c1 + 1
-
-data_c1 <- list()
-data_c2 <- list()
-data_c3 <- list()
-for(c_vari in varis5){
-  data_c1[[c_vari]] <- list()
-  data_c2[[c_vari]] <- list()
-  data_c3[[c_vari]] <- list()
-  for(ii in times_set){
-    data_c1[[c_vari]][[ii]] = data_1_csv[[c_vari]][[ii]][len_c2,]
-    data_c2[[c_vari]][[ii]] <- matrix(rep(data_c1[[c_vari]][[ii]], times = len_c1), nrow = len_c1, byrow = TRUE)
-    data_c3[[c_vari]][[ii]] <- data_c2[[c_vari]][[ii]] + data_2_csv[[c_vari]][[ii]]
-    write.csv(data_c3[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
-  }
-}
-

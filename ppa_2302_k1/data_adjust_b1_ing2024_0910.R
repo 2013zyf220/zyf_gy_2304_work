@@ -1,5 +1,6 @@
 library(readxl)
 library(openxlsx)
+library(MASS)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3')
 
 #=========================================
@@ -11,20 +12,35 @@ strs_mo <- c(1,2,3,4,5,6)   #to_be_set
 len_strs_mo <- 6   #to_be_set
 len_days_ori <- 6   #to_be_set
 len_sites <- 50   #to_be_set
-time_set <- 3  #to_be_set
-vari_set <- 'TP'  #to_be_set
-data_1 <- read_excel(paste0('RCE_THEORY_1_time', time_set,'_', vari_set, '.xlsx'), sheet = 'Sheet3')
+time_set <- 3  #to_be_set_key
+vari_set <- 'TP'  #to_be_set_key
+data_1 <- read_excel(paste0('PREPARE/REVISE2d1_Fig_z2_df_ORI_time', time_set, '.xlsx'), sheet = 'THEORY_3')
 
-RCI_1 <- data_1$RCI_1
-RCI_2 <- -RCI_1
-RCD_1 <- data_1$RCD_1 
-RCD_2 <- RCD_1/10 - 1
+if(vari_set == 'RH'){
+  RCI_1 <- data_1$RCI_RH_1 
+  RCD_1 <- data_1$RCD_RH_1 
+}else if(vari_set == 'TP'){
+  RCI_1 <- data_1$RCI_TP_1
+  RCD_1 <- data_1$RCD_TP_1
+}else{
+  print('ERROR')
+}
+
+if(vari_set == 'RH'){
+  RCI_2 <- RCI_1
+}else{
+  RCI_2 <- -RCI_1
+}
+
+
+RCD_2 <- RCD_1/10
 
 SLP_1 <- RCI_1/RCD_2
 RCD_2_len <- length(RCD_2)
 
 #=========================================
 #up2024_0917
+
 rce_curve_1 <- function(f_inter_x, f_inter_y){
   f_a <- matrix(c(f_inter_x^2, f_inter_x, 0, 0), nrow=2, byrow=TRUE)
   f_b <- matrix(c(-f_inter_y, f_inter_y), ncol=1)
@@ -46,7 +62,7 @@ rce_curve_1 <- function(f_inter_x, f_inter_y){
 }
 
 #=========================================
-
+#up2024_0917
 values_1A <- matrix(0, ncol = RCD_2_len, nrow = len_sites + 2) #to_be_set
 for(ii in 1: RCD_2_len){
   values_1A[1: len_sites,ii] <- rce_curve_1(RCD_2[ii], RCI_2[ii])$z1
@@ -127,5 +143,5 @@ for(ii in 1:4){
 
 values_3_df <- as.data.frame(values_3)
 values_4_df <- as.data.frame(values_4)
-write.xlsx(values_3_df, paste0('RCE_THEORY_EXPORT_VALUE3_time', time_set,'_', vari_set, '.xlsx'))
-write.xlsx(values_4_df, paste0('RCE_THEORY_EXPORT_VALUE4_time', time_set,'_', vari_set, '.xlsx'))
+#write.xlsx(values_3_df, paste0('PREPARE/RCE_THEORY_EXPORT_VALUE3_time', time_set,'_', vari_set, '.xlsx'))
+write.xlsx(values_4_df, paste0('PREPARE/RCE_THEORY_EXPORT_VALUE4_time', time_set,'_', vari_set, '.xlsx'))
