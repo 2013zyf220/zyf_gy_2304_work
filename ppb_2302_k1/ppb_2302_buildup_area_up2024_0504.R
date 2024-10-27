@@ -18,8 +18,8 @@ years <- seq(year_s, year_e, year_gap)
 len_years <- length(years)
 
 #special province names: jining,niaoning,guangzhou,shaanxi(xian),sichuang
-prov_1 <- c('hebei') #to_be_set(province)
-shp_data_1 <- c('tangshan_1') #to_be_set(shp data)
+prov_1 <- c('guangzhou') #to_be_set(province)
+shp_data_1 <- c('guangzhou_2') #to_be_set(shp data)
 len_shp_data_1 <- length(shp_data_1)
 
 #up2024_0511_09:34_e
@@ -41,7 +41,7 @@ bu_area_sub <- function(f_year, f_prov, f_shp_data, f_type){
   
   for(ii in 1: f_shp_size){
     f_luse_2[[ii]] <- crop(f_luse_1, extent(f_shp_2[ii, ]))
-    f_luse_3[[ii]] <- mask(f_luse_2[[ii]], f_shp_2[ii, ]);
+    f_luse_3[[ii]] <- mask(f_luse_2[[ii]], st_zm(f_shp_2[ii, ]));
     
     f_luse_4[[ii]] <- na.omit(getValues(f_luse_3[[ii]]));
     f_luse_5[ii] <- sum(f_luse_4[[ii]] == f_type) * 900/(1000 * 1000) #to_be_set

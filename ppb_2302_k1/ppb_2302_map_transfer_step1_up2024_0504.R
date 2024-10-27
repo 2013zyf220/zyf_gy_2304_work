@@ -21,8 +21,8 @@ for(ii in 1: len_years_2){
   years_end[ii] <- years[ii + 1]
 }
 
-prov_1 <- c('hebei') #to_be_set
-shp_data_1 <- c('tangshan_1') #to_be_set
+prov_1 <- c('guangzhou') #to_be_set
+shp_data_1 <- c('guangzhou_2') #to_be_set
 len_shp_data_1 <- length(shp_data_1)
 type_set <- 8  #to_be_set
 

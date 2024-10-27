@@ -104,7 +104,7 @@ cat('==============step 2: get basic data================\n')
 #up2024_0531_15:30
 #get original data of meteorological variables
 recw_seta <- 1   #to_be_set
-rec_seta <- 1 #to_be_set
+rec_seta <- 2 #to_be_set
 
 varis2 <- c('TIME','TP','RH')   #to_be_set
 varis2w <- c('WS')   #to_be_set_key
@@ -395,6 +395,64 @@ for(c_vari in varis5){
     }
     data_2_csv_df[[c_vari]][[ii]] <- as.data.frame(data_2_csv[[c_vari]][[ii]])
     colnames(data_2_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    #write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+  }
+}
+
+#=======================================================
+#ing
+data_3a <- data_2$ORI
+
+data_3b <- list()
+basic_1 <- list()
+
+for(c_vari in varis5){
+  basic_1[[c_vari]] <- list()
+  data_3b[[c_vari]] <- list()
+
+  for(ii in times_set){
+    basic_1[[c_vari]][[ii]] <- list()
+    data_3b[[c_vari]][[ii]] <- list()
+
+    for(jj in strs_mo){
+      if(jj%%2 == 1){
+        c_basic_1 <- data_1[[c_vari]][[ii]][[7]][1,]
+      }else{
+        c_basic_1 <- data_1[[c_vari]][[ii]][[8]][1,]
+      }
+      basic_1[[c_vari]][[ii]][[jj]] <- matrix(rep(c_basic_1, times = len_sites), nrow = len_sites, byrow = TRUE)
+      data_3b[[c_vari]][[ii]][[jj]] <- basic_1[[c_vari]][[ii]][[jj]] + data_3a[[c_vari]][[ii]][[jj]]
+    }
+  }
+}
+
+#=============================================
+data_3a2 <- list()
+data_3b2 <- list()
+data_3a2_df <- list()
+data_3b2_df <- list()
+for(c_vari in varis5){
+  data_3a2[[c_vari]] <- list()
+  data_3b2[[c_vari]] <- list()
+  data_3a2_df[[c_vari]] <- list()
+  data_3b2_df[[c_vari]] <- list()
+  for(ii in times_set){
+    data_3a2[[c_vari]][[ii]] <- matrix(0, ncol = len_days_ori, nrow = len_strs_mo * len_sites)
+    data_3b2[[c_vari]][[ii]] <- matrix(0, ncol = len_days_ori, nrow = len_strs_mo * len_sites)
+    for(kk in days_ori){
+      for(jj in strs_mo){
+        c_1 <- (jj - 1) * len_sites + 1
+        c_2 <- jj * len_sites
+        data_3a2[[c_vari]][[ii]][c_1:c_2,kk] <- data_3a[[c_vari]][[ii]][[jj]][,kk]
+        data_3b2[[c_vari]][[ii]][c_1:c_2,kk] <- data_3b[[c_vari]][[ii]][[jj]][,kk]
+      }
+    data_3a2_df[[c_vari]][[ii]] <- as.data.frame(data_3a2[[c_vari]][[ii]])
+    data_3b2_df[[c_vari]][[ii]] <- as.data.frame(data_3b2[[c_vari]][[ii]])
+    colnames(data_3a2_df[[c_vari]][[ii]]) <- days_ori_name
+    colnames(data_3b2_df[[c_vari]][[ii]]) <- days_ori_name
+    write.csv(data_3a2_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2a_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_3b2_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2b_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    }
+    
   }
 }

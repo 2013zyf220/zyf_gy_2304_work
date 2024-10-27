@@ -1,7 +1,7 @@
 library(readxl)
 library(openxlsx)
 library(MASS)
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3')
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3/PREPARE/PROCESS_2/V8')
 
 #=========================================
 #up2024_0917
@@ -12,9 +12,9 @@ strs_mo <- c(1,2,3,4,5,6)   #to_be_set
 len_strs_mo <- 6   #to_be_set
 len_days_ori <- 6   #to_be_set
 len_sites <- 50   #to_be_set
-time_set <- 3  #to_be_set_key
+time_set <- 2  #to_be_set_key
 vari_set <- 'TP'  #to_be_set_key
-data_1 <- read_excel(paste0('PREPARE/REVISE2d1_Fig_z2_df_ORI_time', time_set, '.xlsx'), sheet = 'THEORY_3')
+data_1 <- read_excel(paste0('REVISE2d1_Fig_z2_df_ORI_time', time_set, '_V8E.xlsx'), sheet = 'THEORY_3')
 
 if(vari_set == 'RH'){
   RCI_1 <- data_1$RCI_RH_1 
@@ -71,17 +71,7 @@ for(ii in 1: RCD_2_len){
 }
 values_1 <- values_1A[1:len_sites,]
 image(values_1, main = "values_1", xlab = "列", ylab = "行", col = heat.colors(10))
-#=========================================
-#up2024_0917
 
-values_1B <- matrix(0, ncol = RCD_2_len, nrow = len_sites) #to_be_set
-for(ii in 1: RCD_2_len){
-  for(jj in 1: RCD_2[ii]){
-    values_1B[jj,ii] <- RCI_2[ii] + SLP_1[ii] * (jj - 1)
-  }
-  values_1B[49,ii] <- RCD_1[ii]
-  values_1B[50,ii] <- RCI_1[ii]
-}
 
 #=========================================
 #up2024_0917
@@ -106,11 +96,12 @@ for(ii in 1: len_strs_mo){
   values_2_mean[,ii] <- rowMeans(values_2[[ii]])
 }
 
+#values_2_mean: the average curve for each street
 #=======================
 #up2024_0917
 
-values_3 <- matrix(0, ncol = 4, nrow = 10 * len_strs_mo)
-for(ii in 1:4){
+values_3 <- matrix(0, ncol = 5, nrow = 10 * len_strs_mo)
+for(ii in 1:5){
   for(jj in strs_mo){
     c_1 <- (jj - 1) * 10 + 1
     c_2 <- jj * 10
@@ -126,8 +117,8 @@ image(values_2[[1]], main = "values_2_example", xlab = "列", ylab = "行", col 
 #=======================
 #up2024_0917
 
-values_4 <-  matrix(0, ncol = 4, nrow = 10 * len_strs_mo * len_days_ori)
-for(ii in 1:4){
+values_4 <-  matrix(0, ncol = 5, nrow = 10 * len_strs_mo * len_days_ori)
+for(ii in 1:5){
   for(jj in days_ori){
     for(kk in strs_mo){
       c_1 <- (jj - 1) * 60 + (kk - 1) * 10 + 1
@@ -143,5 +134,5 @@ for(ii in 1:4){
 
 values_3_df <- as.data.frame(values_3)
 values_4_df <- as.data.frame(values_4)
-#write.xlsx(values_3_df, paste0('PREPARE/RCE_THEORY_EXPORT_VALUE3_time', time_set,'_', vari_set, '.xlsx'))
-write.xlsx(values_4_df, paste0('PREPARE/RCE_THEORY_EXPORT_VALUE4_time', time_set,'_', vari_set, '.xlsx'))
+#write.xlsx(values_3_df, paste0('RCE_THEORY_EXPORT_VALUE3_time', time_set,'_', vari_set, '.xlsx'))
+write.xlsx(values_4_df, paste0('RCE_THEORY_EXPORT_VALUE4_time', time_set,'_', vari_set, '.xlsx'))

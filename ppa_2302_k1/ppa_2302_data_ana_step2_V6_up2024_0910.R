@@ -74,7 +74,7 @@ indep_set <- 40 #to_be_set_key
 #set independent variables for regression
 
 reg_se_sum <- list()
-reg_se_sum[[1]] <- c(20,23,28,29,31,35,40,41,42,44) #to_be_set
+reg_se_sum[[1]] <- c(20,23,28,29,31,35,40,41,42,44,47) #to_be_set
 reg_se_sum[[2]] <- c(12)
 
 reg_set <- 1 #to_be_set_key
@@ -160,7 +160,7 @@ data2_2_ori <- list()
 for(c_vari in varis){
   data2_2_ori[[c_vari]] <- list()
   for(ii in times_set){
-    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES3/recb_2_', c_vari, '_', ii,'_df.csv'))) #to_be_set
+    data2_2_ori[[c_vari]][[ii]] <- as.matrix(read.csv(paste0('RES3/recb_2b_', c_vari, '_', ii,'_df.csv'))) #to_be_set_key
   } 
 }
 
