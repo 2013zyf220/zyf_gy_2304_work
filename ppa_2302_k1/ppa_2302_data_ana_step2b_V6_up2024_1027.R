@@ -655,8 +655,6 @@ regreb_6f_z2m <- list()
 regreb_6f_z2m_df <- list()
 regreb_p_m1 <- list()
 regreb_p_est_m1 <- list()
-regreb_regre_coef_m1 <- list()
-regreb_regre_r2_m1 <- list()
 for(c_vari in varis){
   regreb_6f_r2m[[c_vari]] <- list()
   regreb_6f_corm[[c_vari]] <- list()
@@ -664,16 +662,12 @@ for(c_vari in varis){
   regreb_6f_z2m_df[[c_vari]] <- list()
   regreb_p_m1[[c_vari]] <- list()
   regreb_p_est_m1[[c_vari]] <- list()
-  regreb_regre_coef_m1[[c_vari]] <- list()
-  regreb_regre_r2_m1[[c_vari]] <- list()
   for(ii in times_set){
     regreb_6f_r2m[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
     regreb_6f_corm[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
     regreb_p_m1[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
     regreb_p_est_m1[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se), ncol = bydis_num)
     regreb_6f_z2m[[c_vari]][[ii]] <- matrix(0, nrow = bydis_itv * len_strs_mo, ncol = (length(reg_se) + 1) * bydis_num)
-    regreb_regre_coef_m1[[c_vari]][[ii]] <- matrix(0, nrow = length(reg_se) + 1, ncol = bydis_num)
-    regreb_regre_r2_m1[[c_vari]][[ii]] <- rep(0, bydis_num)
     for(mm in 1: bydis_num){
       regreb_6f_r2m[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$m1_r2a
       regreb_6f_corm[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$cor_m1
@@ -682,8 +676,6 @@ for(c_vari in varis){
       c_1 <- (mm - 1) * (length(reg_se) + 1) + 1
       c_2 <- mm * (length(reg_se) + 1)
       regreb_6f_z2m[[c_vari]][[ii]][,c_1: c_2] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$z_m1
-      regreb_regre_coef_m1[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$m1_p1
-      regreb_regre_coef_m1[[c_vari]][[ii]][,mm] <- regreb_6f(regreb_6f_sub, c_vari, ii, mm, reg_se)$m1_r2b
     }
     regreb_6f_z2m_df[[c_vari]][[ii]] <- as.data.frame(regreb_6f_z2m[[c_vari]][[ii]])
     colnames(regreb_6f_z2m_df[[c_vari]][[ii]]) <- colnames2
