@@ -13,8 +13,8 @@ len_strs_mo <- 6   #to_be_set
 len_days_ori <- 6   #to_be_set
 len_sites <- 50   #to_be_set
 time_set <- 2  #to_be_set_key
-vari_set <- 'RH'  #to_be_set_key
-data_1 <- read_excel(paste0('REVISE2d1_Fig_z2_df_ORI_time', time_set, '_V8F.xlsx'), sheet = 'THEORY_3')
+vari_set <- 'TP'  #to_be_set_key
+data_1 <- read_excel(paste0('REVISE2d1_Fig_z2_df_ORI_time', time_set, '_V8E.xlsx'), sheet = 'THEORY_3')
 
 if(vari_set == 'RH'){
   RCI_1 <- data_1$RCI_RH_1 

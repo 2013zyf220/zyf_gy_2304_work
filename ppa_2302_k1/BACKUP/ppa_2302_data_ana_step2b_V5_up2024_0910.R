@@ -562,8 +562,8 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   
   f_res[['model_1']] <- f_model_1
   f_res[['model_m1']] <- f_model_m1
-  f_res[['model_1_res']] <- f_model_1_sum
-  f_res[['model_m1_res']] <- f_model_m1_sum
+  f_res[['model_1_res']] <- f_model_1_res
+  f_res[['model_m1_res']] <- f_model_m1_res
   f_res[['model_1_sum']] <- f_model_1_sum
   f_res[['model_m1_sum']] <- f_model_m1_sum
   f_res[['cor_1']] <- f_cor_1
@@ -689,7 +689,7 @@ for(c_vari in varis){
     
     write.csv(regreb_6f_r2m[[c_vari]][[ii]], paste0('RES4/Fig_r2m_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
     write.csv(regreb_6f_corm[[c_vari]][[ii]], paste0('RES4/Fig_corm_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = TRUE)
-    write.csv(regreb_p_m1[[c_vari]][[ii]], paste0('RES4/Fig_p_m1_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)
+    write.csv(regreb_p_m1[[c_vari]][[ii]], paste0('RES4/Fig_p_m1_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = TRUE)
     write.csv(regreb_p_est_m1[[c_vari]][[ii]], paste0('RES4/Fig_p_est_m1_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = TRUE)
     
     write.csv(regreb_6f_z2m[[c_vari]][[ii]], paste0('RES4/Fig_z2m_', regreb_6f_sub, '_', c_vari, '_time', ii, '.csv'), row.names = FALSE)

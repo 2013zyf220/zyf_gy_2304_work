@@ -122,7 +122,6 @@ for(c_vari in varis2){
     }else{
       data_1_ori[[c_vari]][[ii]] <- read.csv(paste0('ARCGIS/RES2/recb_1_', c_vari, '_time', ii,'.csv'))
     }
-    
   }
 }
 
@@ -395,7 +394,7 @@ for(c_vari in varis5){
     }
     data_2_csv_df[[c_vari]][[ii]] <- as.data.frame(data_2_csv[[c_vari]][[ii]])
     colnames(data_2_csv_df[[c_vari]][[ii]]) <- days_ori_name
-    #write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
+    write.csv(data_2_csv_df[[c_vari]][[ii]], paste0('ARCGIS/RES3/recb_2_', c_vari, '_', ii,'_df.csv'), row.names = FALSE)
   }
 }
 

@@ -1,15 +1,15 @@
 library(raster)
-library(terra)
 library(sf)
 library(landscapemetrics)
 library(dplyr)
 library(sp)
+library(terra)
 setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 
 #=======================================
 #up2024_0816_19:00
 
-TEST_NUM <- 4 #to_be_set_key
+TEST_NUM <- 1 #to_be_set_key
 buf_data_set <- 2 #to_be_set
 buf_data_set2 <- 2 #to_be_set
 len_strs_mo <- 6  #to_be_set
@@ -64,7 +64,7 @@ for(ii in 1:len_strs_mo){
   c_1 <- (ii - 1) * 2 + 1
   c_2 <- ii * 2
   cat(c_1, c_2, '\n')
-  bh_1_data[[ii]] <- extract(bh_1, lines_1[c_1: c_2,], fun = NULL, na.rm = FALSE)
+  bh_1_data[[ii]] <- terra::extract(bh_1, lines_1[c_1: c_2,], fun = NULL, na.rm = FALSE)
   bh_1_data_mean[ii] <- mean(bh_1_data[[ii]][['BH_CP_4']], na.rm = TRUE)
 }
 

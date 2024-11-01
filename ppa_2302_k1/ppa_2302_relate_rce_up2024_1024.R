@@ -9,7 +9,7 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 #=======================================
 #up2024_0816_19:00
 
-TEST_NUM <- 1 #to_be_set_key
+TEST_NUM <- 8 #to_be_set_key
 buf_data_set <- 2 #to_be_set
 buf_data_set2 <- 2 #to_be_set
 len_strs_mo <- 6  #to_be_set
