@@ -294,13 +294,13 @@ rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
   f_x2 <- 2 * f_1 + 4 * f_2 + 8 * f_3 
   if(f_vari == 'RH'){
     if(f_b1 > 0 & f_b1 < 50){
-      f_rcd <- (2 * f_2 - sqrt(f_b1))/(-6 * f_3)
+      f_rcd <- (-2 * f_2 - sqrt(4 * f_2^2 - 12 * f_1 * f_3))/(6 * f_1)
     }else if(f_x2 < f_x1){
       f_rcd <- 50
     }else{
-      f_rcd < 0
+      f_rcd <- 0
     }
-  }else if(f_vari == 'TP'|f_vari == 'DI'){
+  }else{
     if(f_b1 > 0 & f_b1 < 50){
       f_rcd <- (-2 * f_2 - sqrt(f_b1))/(6 * f_3)
     }else if(f_x2 > f_x1){
@@ -309,7 +309,6 @@ rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
       f_rcd <- 0
     }
   }
-
   f_rci <- f_3 * f_rcd^3 + f_2 * f_rcd^2 +  f_1 * f_rcd
   f_res <- list()
   f_res[['rcd']] <- f_rcd
@@ -330,10 +329,10 @@ rce_1_f <- function(f_data_1, f_data_2, f_vari){
   f_rce_1 <- lm(f_data_1 ~ poly(f_data_2, 3, raw = TRUE))
   f_rce_2 <- summary(f_rce_1)
   f_rce_coe <- rep(0,4)
-  f_rce_coe[1] <- f_rce_2$coefficients[1,1] #常数项
-  f_rce_coe[2] <- f_rce_2$coefficients[2,1] * 10 #a
-  f_rce_coe[3] <- f_rce_2$coefficients[3,1] * 100 #b
-  f_rce_coe[4] <- f_rce_2$coefficients[4,1] * 1000 #c
+  f_rce_coe[1] <- f_rce_2$coefficients[1,1]
+  f_rce_coe[2] <- f_rce_2$coefficients[2,1]
+  f_rce_coe[3] <- f_rce_2$coefficients[3,1]
+  f_rce_coe[4] <- f_rce_2$coefficients[4,1]
   f_rci_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rci
   f_rcd_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rcd
   
