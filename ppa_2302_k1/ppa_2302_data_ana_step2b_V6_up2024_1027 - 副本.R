@@ -288,46 +288,12 @@ cat('========================step 5: rce calculation==========================\n
 #up2024_0528_18:00
 #define function: calculate RCE indexes 1a
 
-rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
-  f_b1 <- 4 * f_2^2 - 12 * f_1 * f_3
-  f_x1 <- 1 * f_1 + 1 * f_2 + 1 * f_3
-  f_x2 <- 2 * f_1 + 4 * f_2 + 8 * f_3 
-  if(f_vari == 'RH'){
-    if(f_b1 > 0){
-      f_rcd0 <- (2 * f_2 - sqrt(f_b1))/(-6 * f_3)
-    }else{
-      f_rcd0 <- 0
-    }
-    if(f_rcd0 >0 & f_rcd0 < 500){
-      f_rcd <- f_rcd0
-    }else if(f_x2 < f_x1){
-      f_rcd <- 500
-    }else{
-      f_rcd <- 0
-    }
-  }else{
-    if(f_b1 > 0){
-      f_rcd0 <- (-2 * f_2 - sqrt(f_b1))/(6 * f_3)
-    }else{
-      f_rcd0 <- 0
-    }
-      f_rcd <- f_rcd0
-    }else if(f_x2 > f_x1){
-      f_rcd <- 500
-    }else{
-      f_rcd <- 0
-    }
-  }
-  f_rci <- f_3 * f_rcd^3 + f_2 * f_rcd^2 +  f_1 * f_rcd
+rce_f <- function(f_1, f_2, f_3){
+  f_rcd <- (-2 * f_2 - sqrt(4 * f_2^2 - 12 * f_1 * f_3))/(6 * f_1)
+  f_rci <- f_1 * f_rcd^3 + f_2 * f_rcd^2 +  f_3 * f_rcd
   f_res <- list()
   f_res[['rcd']] <- f_rcd
-  f_res[['rcd0']] <- f_rcd0
   f_res[['rci']] <- f_rci
-  f_res[['x1']] <- f_x1
-  f_res[['x2']] <- f_x2
-  f_res[['f_1']] <- f_1
-  f_res[['f_2']] <- f_2
-  f_res[['f_3']] <- f_3
   return(f_res)
 }
 
@@ -338,24 +304,23 @@ rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
 #up2024_0528_18:00
 #define function: calculate RCE indexes 1b
 
-rce_1_f <- function(f_data_1, f_data_2, f_vari){
-  f_rce_1 <- lm(f_data_1 ~ poly(f_data_2, 3, raw = TRUE))
+rce_1_f <- function(f_1, f_2){
+  f_rce_1 <- lm(f_1 ~ poly(f_2, 3, raw = TRUE))
   f_rce_2 <- summary(f_rce_1)
   f_rce_coe <- rep(0,4)
   f_rce_coe[1] <- f_rce_2$coefficients[1,1]
   f_rce_coe[2] <- f_rce_2$coefficients[2,1]
   f_rce_coe[3] <- f_rce_2$coefficients[3,1]
   f_rce_coe[4] <- f_rce_2$coefficients[4,1]
-  f_rci_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rci
-  f_rcd_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rcd
-  f_rcd0_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rcd0
+  f_rci_1 <- rce_f(f_rce_coe[2], f_rce_coe[3], f_rce_coe[4])$rci
+  f_rcd_1 <- rce_f(f_rce_coe[2], f_rce_coe[3], f_rce_coe[4])$rcd
+  
   f_res <- list()
   f_res[['model_1']] <- f_rce_1
   f_res[['model_2']] <- f_rce_2
   f_res[['model_coe']] <- f_rce_coe
   f_res[['RCI']] <- f_rci_1
   f_res[['RCD']] <- f_rcd_1
-  f_res[['RCD0']] <- f_rcd0_1
   return(f_res)
 }
 
@@ -462,7 +427,7 @@ for(c_vari in varis){
         c_2 <- jj * len_sites
         rce_r1[[c_vari]][[ii]][[jj]] <- list()        
         for(kk in days_ori){
-          rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a], c_vari)
+          rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
       }
     }
   }
@@ -487,7 +452,7 @@ for(c_sub_name in subs_name){
         c_1 <- (jj - 1) * len_sites + 1
         c_2 <- jj * len_sites
         data2_2v[[c_sub_name]][[c_vari]][[ii]][[jj]] <- as.vector(data2_2[[c_sub_name]][[c_vari]][[ii]][c_1:c_2,])
-        rce_r2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_1_f(data2_2v[[c_sub_name]][[c_vari]][[ii]][[jj]], dis_3[[c_sub_name]], c_vari)
+        rce_r2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_1_f(data2_2v[[c_sub_name]][[c_vari]][[ii]][[jj]], dis_3[[c_sub_name]])
       }
     }
   }
@@ -503,7 +468,7 @@ for(c_sub_name in subs_name){
   for(c_vari in varis){
     rce_r3[[c_sub_name]][[c_vari]] <- list()
     for(ii in times_set){
-      rce_r3[[c_sub_name]][[c_vari]][[ii]] <- rce_1_f(data2_2_mean[[c_sub_name]][[c_vari]][, ii], dis_2, c_vari)
+      rce_r3[[c_sub_name]][[c_vari]][[ii]] <- rce_1_f(data2_2_mean[[c_sub_name]][[c_vari]][, ii], dis_2)
     }
   }
 }
@@ -771,9 +736,9 @@ for(c_vari in varis){
     rci_rb1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
     for(jj in strs_mo){
       for(kk in 1: length(regreb_6f_days)){
-        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD #to_be_set
+        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
         rci_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
-        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD #to_be_set
+        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
         rci_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
       }
     }
