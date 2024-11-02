@@ -292,6 +292,7 @@ rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
   f_b1 <- 4 * f_2^2 - 12 * f_1 * f_3
   f_x1 <- 1 * f_1 + 1 * f_2 + 1 * f_3
   f_x2 <- 2 * f_1 + 4 * f_2 + 8 * f_3 
+  
   if(f_vari == 'RH'){
     if(f_b1 > 0){
       f_rcd0 <- (2 * f_2 - sqrt(f_b1))/(-6 * f_3)
@@ -311,6 +312,7 @@ rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
     }else{
       f_rcd0 <- 0
     }
+    if(f_rcd0 >0 & f_rcd0 < 500){
       f_rcd <- f_rcd0
     }else if(f_x2 > f_x1){
       f_rcd <- 500
@@ -318,16 +320,11 @@ rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
       f_rcd <- 0
     }
   }
+  f_rcd2 <- f_rcd/10
   f_rci <- f_3 * f_rcd^3 + f_2 * f_rcd^2 +  f_1 * f_rcd
   f_res <- list()
   f_res[['rcd']] <- f_rcd
-  f_res[['rcd0']] <- f_rcd0
   f_res[['rci']] <- f_rci
-  f_res[['x1']] <- f_x1
-  f_res[['x2']] <- f_x2
-  f_res[['f_1']] <- f_1
-  f_res[['f_2']] <- f_2
-  f_res[['f_3']] <- f_3
   return(f_res)
 }
 
@@ -348,14 +345,13 @@ rce_1_f <- function(f_data_1, f_data_2, f_vari){
   f_rce_coe[4] <- f_rce_2$coefficients[4,1]
   f_rci_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rci
   f_rcd_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rcd
-  f_rcd0_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rcd0
+  
   f_res <- list()
   f_res[['model_1']] <- f_rce_1
   f_res[['model_2']] <- f_rce_2
   f_res[['model_coe']] <- f_rce_coe
   f_res[['RCI']] <- f_rci_1
   f_res[['RCD']] <- f_rcd_1
-  f_res[['RCD0']] <- f_rcd0_1
   return(f_res)
 }
 

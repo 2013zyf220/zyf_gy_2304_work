@@ -420,14 +420,14 @@ for(c_sub_name in subs_name){
 rce_r1 <- list()
 for(c_vari in varis){
   rce_r1[[c_vari]] <- list()
-    for(ii in times_set){
-      rce_r1[[c_vari]][[ii]] <- list()
-      for(jj in strs_mo){
-        c_1 <- (jj - 1) * len_sites + 1
-        c_2 <- jj * len_sites
-        rce_r1[[c_vari]][[ii]][[jj]] <- list()        
-        for(kk in days_ori){
-          rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
+  for(ii in times_set){
+    rce_r1[[c_vari]][[ii]] <- list()
+    for(jj in strs_mo){
+      c_1 <- (jj - 1) * len_sites + 1
+      c_2 <- jj * len_sites
+      rce_r1[[c_vari]][[ii]][[jj]] <- list()        
+      for(kk in days_ori){
+        rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
       }
     }
   }
@@ -495,7 +495,7 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_cor_m1 <- rep(0, length(f_reg_se))
   f_model_1 <- list()
   f_model_m1 <- list()
-
+  
   f_pears_1 <- list()
   f_pears_m1 <- list()
   f_pears_p_1 <- rep(0, length(f_reg_se))
@@ -514,13 +514,13 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
     f_x_m2[, mm] <- f_x_m1
     f_model_1[[mm]] <- lm(f_y_1 ~ f_x_1)
     f_model_m1[[mm]] <- lm(f_y_m2 ~ f_x_m1)
-  
+    
     f_cor_1[mm] <- cor(f_x_1, f_y_1)
     f_1_r2a[mm] <- summary(f_model_1[[mm]])$r.squared
     f_pears_1[[mm]] <- cor.test(f_x_1, f_y_1, method = "pearson")
     f_pears_p_1[mm] <- f_pears_1[[mm]]$p.value
     f_pears_est_1[mm] <- f_pears_1[[mm]]$estimate    
-
+    
     f_cor_m1[mm] <- cor(f_x_m1, f_y_m2)
     f_m1_r2a[mm] <- summary(f_model_m1[[mm]])$r.squared
     f_pears_m1[[mm]] <- cor.test(f_x_m1, f_y_m2, method = "pearson")
@@ -583,7 +583,7 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_res[['m1_p1']] <- f_m1_p1
   f_res[['a1_p2']] <- f_1_p2
   f_res[['m1_p2']] <- f_m1_p2
-
+  
   f_res[['pears_p_1']] <- f_pears_p_1
   f_res[['pears_est_1']] <- f_pears_est_1
   f_res[['pears_p_m1']] <- f_pears_p_m1
