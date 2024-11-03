@@ -288,9 +288,40 @@ cat('========================step 5: rce calculation==========================\n
 #up2024_0528_18:00
 #define function: calculate RCE indexes 1a
 
-rce_f <- function(f_1, f_2, f_3){
-  f_rcd <- (-2 * f_2 - sqrt(4 * f_2^2 - 12 * f_1 * f_3))/(6 * f_1)
-  f_rci <- f_1 * f_rcd^3 + f_2 * f_rcd^2 +  f_3 * f_rcd
+rce_f <- function(f_data_1, f_1, f_2, f_3, f_vari){
+  f_b1 <- 4 * f_2^2 - 12 * f_1 * f_3
+  f_x1 <- 1 * f_1 + 1 * f_2 + 1 * f_3
+  f_x2 <- 2 * f_1 + 4 * f_2 + 8 * f_3 
+  
+  if(f_vari == 'RH'){
+    if(f_b1 > 0){
+      f_rcd0 <- (2 * f_2 - sqrt(f_b1))/(-6 * f_3)
+    }else{
+      f_rcd0 <- 0
+    }
+    if(f_rcd0 >0 & f_rcd0 < 500){
+      f_rcd <- f_rcd0
+    }else if(f_x2 < f_x1){
+      f_rcd <- 500
+    }else{
+      f_rcd <- 0
+    }
+  }else{
+    if(f_b1 > 0){
+      f_rcd0 <- (-2 * f_2 - sqrt(f_b1))/(6 * f_3)
+    }else{
+      f_rcd0 <- 0
+    }
+    if(f_rcd0 >0 & f_rcd0 < 500){
+      f_rcd <- f_rcd0
+    }else if(f_x2 > f_x1){
+      f_rcd <- 500
+    }else{
+      f_rcd <- 0
+    }
+  }
+
+  f_rci <- f_3 * f_rcd^3 + f_2 * f_rcd^2 +  f_1 * f_rcd
   f_res <- list()
   f_res[['rcd']] <- f_rcd
   f_res[['rci']] <- f_rci
@@ -304,16 +335,16 @@ rce_f <- function(f_1, f_2, f_3){
 #up2024_0528_18:00
 #define function: calculate RCE indexes 1b
 
-rce_1_f <- function(f_1, f_2){
-  f_rce_1 <- lm(f_1 ~ poly(f_2, 3, raw = TRUE))
+rce_1_f <- function(f_data_1, f_data_2, f_vari){
+  f_rce_1 <- lm(f_data_1 ~ poly(f_data_2, 3, raw = TRUE))
   f_rce_2 <- summary(f_rce_1)
   f_rce_coe <- rep(0,4)
   f_rce_coe[1] <- f_rce_2$coefficients[1,1]
   f_rce_coe[2] <- f_rce_2$coefficients[2,1]
   f_rce_coe[3] <- f_rce_2$coefficients[3,1]
   f_rce_coe[4] <- f_rce_2$coefficients[4,1]
-  f_rci_1 <- rce_f(f_rce_coe[2], f_rce_coe[3], f_rce_coe[4])$rci
-  f_rcd_1 <- rce_f(f_rce_coe[2], f_rce_coe[3], f_rce_coe[4])$rcd
+  f_rci_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rci
+  f_rcd_1 <- rce_f(f_data_1, f_rce_coe[2], f_rce_coe[3], f_rce_coe[4], f_vari)$rcd
   
   f_res <- list()
   f_res[['model_1']] <- f_rce_1
@@ -420,14 +451,14 @@ for(c_sub_name in subs_name){
 rce_r1 <- list()
 for(c_vari in varis){
   rce_r1[[c_vari]] <- list()
-  for(ii in times_set){
-    rce_r1[[c_vari]][[ii]] <- list()
-    for(jj in strs_mo){
-      c_1 <- (jj - 1) * len_sites + 1
-      c_2 <- jj * len_sites
-      rce_r1[[c_vari]][[ii]][[jj]] <- list()        
-      for(kk in days_ori){
-        rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a])
+    for(ii in times_set){
+      rce_r1[[c_vari]][[ii]] <- list()
+      for(jj in strs_mo){
+        c_1 <- (jj - 1) * len_sites + 1
+        c_2 <- jj * len_sites
+        rce_r1[[c_vari]][[ii]][[jj]] <- list()        
+        for(kk in days_ori){
+          rce_r1[[c_vari]][[ii]][[jj]][[kk]] <- rce_1_f(data2_2_ori[[c_vari]][[ii]][c_1: c_2, kk][seq_a], dis_1[seq_a], c_vari)
       }
     }
   }
@@ -452,7 +483,7 @@ for(c_sub_name in subs_name){
         c_1 <- (jj - 1) * len_sites + 1
         c_2 <- jj * len_sites
         data2_2v[[c_sub_name]][[c_vari]][[ii]][[jj]] <- as.vector(data2_2[[c_sub_name]][[c_vari]][[ii]][c_1:c_2,])
-        rce_r2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_1_f(data2_2v[[c_sub_name]][[c_vari]][[ii]][[jj]], dis_3[[c_sub_name]])
+        rce_r2[[c_sub_name]][[c_vari]][[ii]][[jj]] <- rce_1_f(data2_2v[[c_sub_name]][[c_vari]][[ii]][[jj]], dis_3[[c_sub_name]], c_vari)
       }
     }
   }
@@ -468,7 +499,7 @@ for(c_sub_name in subs_name){
   for(c_vari in varis){
     rce_r3[[c_sub_name]][[c_vari]] <- list()
     for(ii in times_set){
-      rce_r3[[c_sub_name]][[c_vari]][[ii]] <- rce_1_f(data2_2_mean[[c_sub_name]][[c_vari]][, ii], dis_2)
+      rce_r3[[c_sub_name]][[c_vari]][[ii]] <- rce_1_f(data2_2_mean[[c_sub_name]][[c_vari]][, ii], dis_2, c_vari)
     }
   }
 }
@@ -495,7 +526,7 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_cor_m1 <- rep(0, length(f_reg_se))
   f_model_1 <- list()
   f_model_m1 <- list()
-  
+
   f_pears_1 <- list()
   f_pears_m1 <- list()
   f_pears_p_1 <- rep(0, length(f_reg_se))
@@ -514,13 +545,13 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
     f_x_m2[, mm] <- f_x_m1
     f_model_1[[mm]] <- lm(f_y_1 ~ f_x_1)
     f_model_m1[[mm]] <- lm(f_y_m2 ~ f_x_m1)
-    
+  
     f_cor_1[mm] <- cor(f_x_1, f_y_1)
     f_1_r2a[mm] <- summary(f_model_1[[mm]])$r.squared
     f_pears_1[[mm]] <- cor.test(f_x_1, f_y_1, method = "pearson")
     f_pears_p_1[mm] <- f_pears_1[[mm]]$p.value
     f_pears_est_1[mm] <- f_pears_1[[mm]]$estimate    
-    
+
     f_cor_m1[mm] <- cor(f_x_m1, f_y_m2)
     f_m1_r2a[mm] <- summary(f_model_m1[[mm]])$r.squared
     f_pears_m1[[mm]] <- cor.test(f_x_m1, f_y_m2, method = "pearson")
@@ -583,7 +614,7 @@ regreb_6f <- function(f_sub, f_vari, f_time, f_bydis_num, f_reg_se){
   f_res[['m1_p1']] <- f_m1_p1
   f_res[['a1_p2']] <- f_1_p2
   f_res[['m1_p2']] <- f_m1_p2
-  
+
   f_res[['pears_p_1']] <- f_pears_p_1
   f_res[['pears_est_1']] <- f_pears_est_1
   f_res[['pears_p_m1']] <- f_pears_p_m1
@@ -736,9 +767,9 @@ for(c_vari in varis){
     rci_rb1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
     for(jj in strs_mo){
       for(kk in 1: length(regreb_6f_days)){
-        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
+        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD #to_be_set
         rci_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
-        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
+        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD #to_be_set
         rci_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
       }
     }
@@ -840,6 +871,30 @@ rce_indexes2[['RB1']][['RCI']] <- rci_rb1_b2
 rce_indexes2[['RB1']][['RCD']] <- rcd_rb1_b2
 
 #==============================
+#ing
+relate_rce_f <- function(f_vari, f_test_num){
+  if(f_vari == 'TP'){
+    f_test_num2 <- f_test_num + 1
+  }else if(f_vari == 'RH'){
+    f_test_num2 <- f_test_num + 2
+  }else if(f_vari == 'DI'){
+    f_test_num2 <- f_test_num + 3
+  }else{
+    print('ERROR')
+  }
+  f_index_rce <- read.csv(paste0('RCE/ppa_2302_rce_relate_buf', buf_set, '_test', f_test_num2, '.csv'))
+  f_index_rce_m <- as.matrix(f_index_rce)
+  f_index_rce_m2 <- f_index_rce_m[, index_rce_reg_se]
+  f_index_rce_m3 <-  f_index_rce_m2[rep(1:nrow(f_index_rce_m2), times = len_days_ori), ] 
+}
+
+index_rce_m3 <- list()
+index_rce_m3['TP'] <- relate_rce_f('TP', 6)
+index_rce_m3['RH'] <- relate_rce_f('RH', 6)
+index_rce_m3['DI'] <- relate_rce_f('DI', 6)
+
+
+#==============================
 #up2024_0813_21:02
 
 index_rce_reg_se <- c(5,6,7,8,9,10,11,12,13) #to_be_set
@@ -870,7 +925,7 @@ regre_rce_f1 <- function(f_index1, f_index2, f_vari, f_time){
 #===========================================================================
 #up2024_0813_21:02
 
-index1_set <- 'RB1' #to_be_set
+index1_set <- 'R1' #to_be_set
 index2_sets <- c('RCI', 'RCD')
 
 regre_rce_r1 <- list()
