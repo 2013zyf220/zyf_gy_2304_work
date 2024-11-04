@@ -767,9 +767,9 @@ for(c_vari in varis){
     rci_rb1_b[[c_vari]][[ii]] <- matrix(0, nrow = len_strs_mo, ncol = length(regreb_6f_days))
     for(jj in strs_mo){
       for(kk in 1: length(regreb_6f_days)){
-        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
+        rcd_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD #to_be_set
         rci_r1_b[[c_vari]][[ii]][jj,kk] <- rce_r1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
-        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD * 10 #to_be_set
+        rcd_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCD #to_be_set
         rci_rb1_b[[c_vari]][[ii]][jj,kk] <- rce_rb1[[c_vari]][[ii]][[jj]][[regreb_6f_days[kk]]]$RCI #to_be_set
       }
     }
@@ -878,11 +878,11 @@ index_rce_ncol <- length(index_rce_reg_se)
 
 relate_rce_f <- function(f_vari, f_time, f_test_num){
   if(f_vari == 'TP'){
-    f_test_num2 <- f_test_num + (f_time - 2) * 3 + 1
+    f_test_num2 <- f_test_num + (f_time - 1) * 3 + 1
   }else if(f_vari == 'RH'){
-    f_test_num2 <- f_test_num + (f_time - 2) * 3 + 2
+    f_test_num2 <- f_test_num + (f_time - 1) * 3 + 2
   }else if(f_vari == 'DI'){
-    f_test_num2 <- f_test_num + (f_time - 2) * 3 + 3
+    f_test_num2 <- f_test_num + (f_time - 1) * 3 + 3
   }else{
     print('ERROR')
   }
@@ -890,11 +890,10 @@ relate_rce_f <- function(f_vari, f_time, f_test_num){
   f_index_rce_m <- as.matrix(f_index_rce)
   f_index_rce_m2 <- f_index_rce_m[, index_rce_reg_se]
   f_index_rce_m3 <-  f_index_rce_m2[rep(1:nrow(f_index_rce_m2), times = len_days_ori), ] 
-  
   f_res <- list()
+  f_res[['rce']] <- f_index_rce
   f_res[['m2']] <- f_index_rce_m2
   f_res[['m3']] <- f_index_rce_m3
-  f_res[['rce']] <- f_index_rce
   return(f_res)
 }
 
@@ -906,11 +905,10 @@ for(f_time in times_set){
   index_rce_m2[[f_time]] <- list()
   index_rce_m3[[f_time]] <- list()
   for(c_vari in varis2){
-    index_rce_m2[[f_time]][[c_vari]] <- relate_rce_f(c_vari, f_time, 6)[['m2']]
-    index_rce_m3[[f_time]][[c_vari]] <- relate_rce_f(c_vari, f_time, 6)[['m3']]
+    index_rce_m2[[f_time]][[c_vari]] <- relate_rce_f(c_vari, f_time, 9)[['m2']] #to_be_set
+    index_rce_m3[[f_time]][[c_vari]] <- relate_rce_f(c_vari, f_time, 9)[['m3']] #to_be_set
   }
 }
-
 
 index_rce_colname1 <- colnames(relate_rce_f('TP', 2, 6)[['rce']])
 index_rce_colname2 <- index_rce_colname1[index_rce_reg_se]
@@ -918,13 +916,13 @@ index_rce_colname2 <- index_rce_colname1[index_rce_reg_se]
 #up2024_0813_21:02
 
 regre_rce_f1 <- function(f_index1, f_index2, f_vari, f_time){
-  f_y_1 <- rce_indexes[[f_index1]][[f_index2]][[f_vari]][[f_time]]
-  
   if(f_vari == 'TP'|f_vari == 'RH'|f_vari == 'DI'){
     f_vari2 <- f_vari
   }else{
     f_vari2 <- 'TP'
   }
+  
+  f_y_1 <- rce_indexes[[f_index1]][[f_index2]][[f_vari]][[f_time]]
   f_z_1 <- cbind(index_rce_m2[[f_time]][[f_vari2]], f_y_1)
   f_cor <- rep(0, index_rce_ncol)
   for(mm in 1: index_rce_ncol){
@@ -939,7 +937,7 @@ regre_rce_f1 <- function(f_index1, f_index2, f_vari, f_time){
 #===========================================================================
 #up2024_0813_21:02
 
-index1_set <- 'RB1' #to_be_set
+index1_set <- 'R1' #to_be_set
 index2_sets <- c('RCI', 'RCD')
 
 regre_rce_r1 <- list()
@@ -959,13 +957,13 @@ for(c_index2_set in index2_sets){
 #up2024_0813_21:02
 
 regre_rce_f2 <- function(f_index1, f_index2, f_vari, f_time){
-  #cat(f_index1, f_index2, f_vari, f_time,'\n')
   if(f_vari == 'TP'|f_vari == 'RH'|f_vari == 'DI'){
     f_vari2 <- f_vari
   }else{
     f_vari2 <- 'TP'
   }
   
+  #cat(f_index1, f_index2, f_vari, f_time,'\n')
   f_y_1 <- rce_indexes2[[f_index1]][[f_index2]][[f_vari]][[f_time]]
   f_z_1 <- cbind(index_rce_m3[[f_time]][[f_vari2]], f_y_1)
   f_cor <- rep(0, index_rce_ncol)
