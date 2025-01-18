@@ -18,8 +18,8 @@ years <- seq(year_s, year_e, year_gap)
 len_years <- length(years)
 
 #special province names: jining,niaoning,guangzhou,shaanxi(xian),sichuang
-prov_1 <- c('henan') #to_be_set(province)
-shp_data_1 <- c('zhengzhou_1') #to_be_set(shp data)
+prov_1 <- c('yunnan') #to_be_set(province)
+shp_data_1 <- c('kunming_1') #to_be_set(shp data)
 len_shp_data_1 <- length(shp_data_1)
 
 #up2024_0511_09:34_e

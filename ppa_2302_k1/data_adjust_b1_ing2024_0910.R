@@ -1,8 +1,9 @@
 library(readxl)
 library(openxlsx)
 library(MASS)
-setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3/PREPARE/PROCESS_2/V8')
+setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS/RES3/PREPARE/PROCESS_2/V15') #to_be_set
 
+#基于理论RCE值计算需调整的距离
 #=========================================
 #up2024_0917
 
@@ -13,8 +14,8 @@ len_strs_mo <- 6   #to_be_set
 len_days_ori <- 6   #to_be_set
 len_sites <- 50   #to_be_set
 time_set <- 2  #to_be_set_key
-vari_set <- 'RH'  #to_be_set_key
-data_1 <- read_excel(paste0('REVISE2d1_Fig_z2_df_ORI_time', time_set, '_V8F.xlsx'), sheet = 'THEORY_3')
+vari_set <- 'TP'  #to_be_set_key 
+data_1 <- read_excel(paste0('REVISE2d1_Fig_z2_df_ORI_time', time_set, '_V15E.xlsx'), sheet = 'THEORY_3') #to_be_set
 
 if(vari_set == 'RH'){
   RCI_1 <- data_1$RCI_RH_1 

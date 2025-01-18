@@ -9,7 +9,7 @@ setwd('E:/zyf_gn/zyf_gn_2301_data/ppa_2302_k2/ARCGIS')
 #=======================================
 #up2024_0816_19:00
 
-TEST_NUM <- 8 #to_be_set_key
+TEST_NUM <- 45 #to_be_set_key
 buf_data_set <- 2 #to_be_set
 buf_data_set2 <- 2 #to_be_set
 len_strs_mo <- 6  #to_be_set
@@ -25,7 +25,6 @@ if(buf_data_set == 1){
 }else{
   print('ERROR')
 }
-
 
 
 plot(bh_1)
@@ -106,7 +105,7 @@ for(ii in 1: len_strs_mo){
 #=======================================
 #up2024_0816_19:00
 
-str_wid <- c(25,25,45,20,25,20)  #to_be_set
+str_wid <- c(51,45,73,44,48,43)  #to_be_set
 asp_1 <- rep(0, len_strs_mo)  #to_be_set
 asp_2 <- rep(0, len_strs_mo)  #to_be_set
 for(ii in 1:len_strs_mo){
@@ -158,10 +157,10 @@ rce_relate_1[,6] <- str_wid
 rce_relate_1[,7] <- bh_1_data_mean
 rce_relate_1[,8] <- bh_2_data_mean
 rce_relate_1[,9] <- bh_sub_3_mean
-rce_relate_1[,10] <- bh_sub_4_mean
+rce_relate_1[,10] <- round(bh_sub_4_mean,3)
 rce_relate_1[,11] <- asp_1
 rce_relate_1[,12] <- asp_2
-rce_relate_2 <- do.call(rbind, replicate(6, rce_relate_1, simplify = FALSE))  
+rce_relate_2 <- do.call(rbind, replicate(6, rce_relate_1, simplify = FALSE))
 
 rce_relate_1_df <- as.data.frame(rce_relate_1)
 rce_relate_2_df <- as.data.frame(rce_relate_2)

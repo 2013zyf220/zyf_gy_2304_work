@@ -2,7 +2,7 @@
 library(sf)
 library(dplyr)
 
-TEST_NUM <- 8 #to_be_set_key
+TEST_NUM <- 45 #to_be_set_key
 
 buf_size <- 100 #to_be_set
 

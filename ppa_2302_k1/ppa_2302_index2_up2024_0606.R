@@ -59,7 +59,7 @@ dis_1 <- seq(10,500,10) #to_be_set
 dis_2 <- rep(dis_1, len_strs_mo) #to_be_set
 
 sw_1 <- rep(0, len_all)
-sw_2 <- c(25,25,45,20,25,20)  #to_be_set
+sw_2 <- c(29,33,58,32,26,24)  #to_be_set
 
 for(ii in 1:len_strs_mo){
   c_1 <- (ii - 1) * 50 + 1
